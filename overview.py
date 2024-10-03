@@ -1,23 +1,18 @@
 import pandas as pd
 import os
 
-# Dictionary to store cached data and their modification time
 _dataframe_cache = {}
 
 def get_cached_dataframe(file_path):
     global _dataframe_cache
 
-    # Get the last modification time of the file
     file_mod_time = os.path.getmtime(file_path)
 
-    # Check if the file is in the cache and if it is up to date
     if file_path in _dataframe_cache and _dataframe_cache[file_path]['mod_time'] == file_mod_time:
         return _dataframe_cache[file_path]['dataframe']
 
-    # If the file is not cached or it has been modified, read it again
     df = pd.read_excel(file_path)
 
-    # Cache the dataframe with its modification time
     _dataframe_cache[file_path] = {
         'dataframe': df,
         'mod_time': file_mod_time
@@ -25,86 +20,110 @@ def get_cached_dataframe(file_path):
 
     return df
 
-#на входе disease_abbrev и ген и на выходе список pmid
-def get_unique_studies(disease_abbrev, gene, directory='excel'):
-    pmid_list = []
+def apply_filter(df, filter_criteria, aao, country):
+    if filter_criteria == 1:
+        df = df[df['index_pat'] == 'yes']
+    elif filter_criteria == 2 and aao is not None:
+        df = df[df['aao'] < aao]
+    elif filter_criteria == 3 and aao is not None:
+        df = df[df['aao'] >= aao]
+    elif filter_criteria == 4:
+        df = df[df['sex'] == 'female']
+    elif filter_criteria == 5:
+        df = df[df['sex'] == 'male']
+    elif filter_criteria == 6:
+        df = df[(df['mut1_genotype'] == 'hom') | (df['mut2_genotype'] == 'hom') | (df['mut3_genotype'] == 'hom')]
+    elif filter_criteria == 7:
+        df = df[(df['mut1_genotype'] == 'het') | (df['mut2_genotype'] == 'het') | (df['mut3_genotype'] == 'het')]
+    elif filter_criteria == 8:
+        df = df[(df['mut1_genotype'] == 'comp_het') | (df['mut2_genotype'] == 'comp_het') | (df['mut3_genotype'] == 'comp_het')]
+    elif filter_criteria == 9:
+        df = df[(df['mut1_genotype'].isin(['hom', 'comp_het'])) | (df['mut2_genotype'].isin(['hom', 'comp_het'])) | (df['mut3_genotype'].isin(['hom', 'comp_het']))]
 
-    # Iterate through all files in the specified directory
+    if country:
+        country_map = {
+            'AUS': 'Austria',
+            'FRA': 'France',
+            'GER': 'Germany',
+            'IND': 'India',
+            'ITA': 'Italy',
+            'PAK': 'Pakistan',
+            'PRI': 'Puerto Rico',
+            'UK': 'United Kingdom',
+            'USA': 'United States'
+        }
+        if country in country_map:
+            df = df[df['country'] == country_map[country]]
+
+    return df
+
+def get_unique_studies(disease_abbrev, gene, filter_criteria, aao, country, directory='excel'):
+    results = []
+
     for filename in os.listdir(directory):
         if filename.endswith('.xlsx') or filename.endswith('.xls'):
             file_path = os.path.join(directory, filename)
-
-            # Read the Excel file using the cache function
             df = get_cached_dataframe(file_path)
-
-            # Filter the rows where 'ensemble_decision' is 'IN'
             df = df[df['ensemble_decision'] == 'IN']
-
-            # Filter the rows where 'disease_abbrev' and 'gene' match the input values
+            df = apply_filter(df, filter_criteria, aao, country)
             filtered_df = df[(df['disease_abbrev'] == disease_abbrev) & (df['gene1'] == gene)]
-
-            # the same for gene2 and gene3
             filtered_df = filtered_df.append(df[(df['disease_abbrev'] == disease_abbrev) & (df['gene2'] == gene)])
-
             filtered_df = filtered_df.append(df[(df['disease_abbrev'] == disease_abbrev) & (df['gene3'] == gene)])
 
-            # Add 'pmid' values to the list
-            pmid_list.extend(filtered_df['pmid'])
+            for pmid in filtered_df['pmid'].unique():
+                study_df = filtered_df[filtered_df['pmid'] == pmid]
+                study_design = study_df['study_design'].iloc[0]
+                number_of_cases = len(study_df)
+                ethnicity = study_df['ethnicity'].iloc[0]
+                proportion_of_male_patients = len(study_df[study_df['sex'] == 'male']) / number_of_cases
+                mean_age_at_onset = study_df['aao'].mean()
+                std_dev_age_at_onset = study_df['aao'].std()
+                mutations = {
+                    'mut1_p': study_df['mut1_genotype'].iloc[0],
+                    'mut2_p': study_df['mut2_genotype'].iloc[0],
+                    'mut3_p': study_df['mut3_genotype'].iloc[0]
+                }
 
-    return pmid_list
+                results.append({
+                    'pmid': pmid,
+                    'study_design': study_design,
+                    'number_of_cases': number_of_cases,
+                    'ethnicity': ethnicity,
+                    'proportion_of_male_patients': proportion_of_male_patients,
+                    'mean_age_at_onset': mean_age_at_onset,
+                    'std_dev_age_at_onset': std_dev_age_at_onset,
+                    'mutations': mutations
+                })
 
+    return results
 
-def get_study_design_for_each_study(disease_abbrev, gene, pmids:str, directory='excel'):
+def get_study_design_for_each_study(pmids, filter_criteria, aao, country, directory='excel'):
     study_design_list = []
 
-    # Iterate through all files in the specified directory
     for filename in os.listdir(directory):
         if filename.endswith('.xlsx') or filename.endswith('.xls'):
             file_path = os.path.join(directory, filename)
-
-            # Read the Excel file using the cache function
             df = get_cached_dataframe(file_path)
-
-            # Filter the rows where 'ensemble_decision' is 'IN'
-            filtered_df = df[df['ensemble_decision'] == 'IN']
-
-            # Convert the input string to a list of integers
+            df = df[df['ensemble_decision'] == 'IN']
+            df = apply_filter(df, filter_criteria, aao, country)
             pmid_list = list(map(int, pmids.split(',')))
-
-            # Filter the rows where 'pmid' is in the input list
             filtered_df = df[df['pmid'].isin(pmid_list)]
-
-            # Add 'study_design' values to the list
             study_design_list.extend(filtered_df['study_design'])
 
     return study_design_list
 
-
-# Add a new function to get the number of cases for each study in a list of PMIDs
-def get_number_of_cases_for_each_study(pmids:str, directory='excel'):
+def get_number_of_cases_for_each_study(pmids, filter_criteria, aao, country, directory='excel'):
     number_of_cases_list = []
 
-    # Iterate through all files in the specified directory
     for filename in os.listdir(directory):
         if filename.endswith('.xlsx') or filename.endswith('.xls'):
             file_path = os.path.join(directory, filename)
-
-            # Read the Excel file using the cache function
             df = get_cached_dataframe(file_path)
-
-            # Filter the rows where 'ensemble_decision' is 'IN'
-            filtered_df = df[df['ensemble_decision'] == 'IN']
-
-            # Convert the input string to a list of integers
+            df = df[df['ensemble_decision'] == 'IN']
+            df = apply_filter(df, filter_criteria, aao, country)
             pmid_list = list(map(int, pmids.split(',')))
-
-            # Filter the rows where 'pmid' is in the input list
             filtered_df = df[df['pmid'].isin(pmid_list)]
-
-            # number of cases should be related to the amount of the patients for each pmid each line is one patient
             filtered_df = filtered_df.groupby('pmid').size().reset_index(name='number_of_cases')
-
-            # get map of pmid and number of cases
             number_of_cases_map = dict(zip(filtered_df['pmid'], filtered_df['number_of_cases']))
 
     return number_of_cases_map
