@@ -9,16 +9,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_unique_studies(
-    disease_abbrev,
-    gene,
-    filter_criteria=None,
-    aao=None,
-    country=None,
-    directory="excel",
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = None,
+    aao: float = None,
+    country: str = None,
+    directory: str = "excel",
 ):
-    logger.debug(
-        f"get_unique_studies called with: disease_abbrev={disease_abbrev}, gene={gene}, filter_criteria={filter_criteria}, aao={aao}, country={country}"
-    )
 
     results = []
 
@@ -29,22 +26,16 @@ def get_unique_studies(
         if filename.endswith(".xlsx") or filename.endswith(".xls"):
             file_path = os.path.join(directory, filename)
             try:
-                logger.debug(f"Processing file: {filename}")
                 df = get_cached_dataframe(file_path)
                 df = df[df["ensemble_decision"] == "IN"]
 
-                logger.debug(
-                    f"DataFrame shape after ensemble_decision filter: {df.shape}"
-                )
-
-                # Only apply the filter if filter_criteria is provided
+                # Only apply the filter if filter_criteria, aao, or country is provided
                 if (
                     filter_criteria is not None
                     or aao is not None
                     or country is not None
                 ):
                     df = apply_filter(df, filter_criteria, aao, country)
-                    logger.debug(f"DataFrame shape after apply_filter: {df.shape}")
 
                 # Use pd.concat instead of append
                 filtered_df = pd.concat(
@@ -63,8 +54,6 @@ def get_unique_studies(
                         ],
                     ]
                 )
-
-                logger.debug(f"Filtered DataFrame shape: {filtered_df.shape}")
 
                 for pmid in filtered_df["pmid"].unique():
                     try:
@@ -139,7 +128,6 @@ def get_unique_studies(
                 logger.error(f"Error reading file {filename}: {str(e)}")
                 continue
 
-    logger.debug(f"Number of results: {len(results)}")
     return results
 
 

@@ -1,11 +1,25 @@
 from fastapi import FastAPI, Query
 import diseases
 import overview
-
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from study_details import get_patients_for_publication
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Allow your frontend origin
+    allow_credentials=True,
+    allow_methods=["*"],  # You can specify specific HTTP methods if needed
+    allow_headers=["*"],  # You can specify specific headers if needed
+)
 
 
 def custom_openapi():
@@ -43,32 +57,27 @@ async def disease_genes_endpoint():
     return disease_genes
 
 
-# Add a new endpoint to get the unique studies for a given disease abbreviation and gene
 @app.get("/unique_studies/{disease_abbrev}/{gene}")
 async def unique_studies_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
     aao: float = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country"),
+    countries: str = Query(
+        None, description="Comma-separated list of countries to filter by"
+    ),
 ):
-    unique_studies = overview.get_unique_studies(
-        disease_abbrev, gene, filter_criteria=filter_criteria, aao=aao, country=country
-    )
-    return unique_studies
 
-
-@app.get("/unique_studies/{disease_abbrev}/{gene}")
-async def unique_studies_endpoint(
-    disease_abbrev: str,
-    gene: str,
-    filter_criteria: str = Query(None, description="Filter criteria"),
-    aao: str = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country"),
-):
     unique_studies = overview.get_unique_studies(
-        disease_abbrev, gene, filter_criteria, aao, country
+        disease_abbrev,
+        gene,
+        filter_criteria=filter_criteria,
+        aao=aao,
+        country=countries,
     )
+
+    logger.debug(f"Number of unique studies returned: {len(unique_studies)}")
+
     return unique_studies
 
 
