@@ -7,6 +7,7 @@ from study_details import get_patients_for_publication
 
 app = FastAPI()
 
+
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
@@ -41,45 +42,61 @@ async def disease_genes_endpoint():
     disease_genes = diseases.get_disease_and_genes()
     return disease_genes
 
-#создай мне endpoint
-
 
 # Add a new endpoint to get the unique studies for a given disease abbreviation and gene
 @app.get("/unique_studies/{disease_abbrev}/{gene}")
-async def unique_studies_endpoint(disease_abbrev: str, gene: str):
-    unique_studies = overview.get_unique_studies(disease_abbrev, gene)
+async def unique_studies_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    aao: float = Query(None, description="Age at onset"),
+    country: str = Query(None, description="Country"),
+):
+    unique_studies = overview.get_unique_studies(
+        disease_abbrev, gene, filter_criteria=filter_criteria, aao=aao, country=country
+    )
     return unique_studies
+
 
 @app.get("/unique_studies/{disease_abbrev}/{gene}")
 async def unique_studies_endpoint(
-    disease_abbrev: str, 
-    gene: str, 
+    disease_abbrev: str,
+    gene: str,
     filter_criteria: str = Query(None, description="Filter criteria"),
     aao: str = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country")
+    country: str = Query(None, description="Country"),
 ):
-    unique_studies = overview.get_unique_studies(disease_abbrev, gene, filter_criteria, aao, country)
+    unique_studies = overview.get_unique_studies(
+        disease_abbrev, gene, filter_criteria, aao, country
+    )
     return unique_studies
+
 
 @app.get("/study_designs")
 async def study_designs_endpoint(
     pmid_list: str,
     filter_criteria: str = Query(None, description="Filter criteria"),
     aao: str = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country")
+    country: str = Query(None, description="Country"),
 ):
-    study_designs = overview.get_study_design_for_each_study(pmid_list, filter_criteria, aao, country)
+    study_designs = overview.get_study_design_for_each_study(
+        pmid_list, filter_criteria, aao, country
+    )
     return study_designs
+
 
 @app.get("/number_of_cases")
 async def number_of_cases_endpoint(
     pmid_list: str,
     filter_criteria: str = Query(None, description="Filter criteria"),
     aao: str = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country")
+    country: str = Query(None, description="Country"),
 ):
-    number_of_cases = overview.get_number_of_cases_for_each_study(pmid_list, filter_criteria, aao, country)
+    number_of_cases = overview.get_number_of_cases_for_each_study(
+        pmid_list, filter_criteria, aao, country
+    )
     return number_of_cases
+
 
 @app.get("/patients_for_publication")
 async def patients_for_publication_endpoint(
@@ -88,7 +105,9 @@ async def patients_for_publication_endpoint(
     pmid: str,
     filter_criteria: str = Query(None, description="Filter criteria"),
     aao: str = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country")
+    country: str = Query(None, description="Country"),
 ):
-    patients = get_patients_for_publication(disease_abbrev, gene, pmid, filter_criteria, aao, country)
+    patients = get_patients_for_publication(
+        disease_abbrev, gene, pmid, filter_criteria, aao, country
+    )
     return patients

@@ -2,7 +2,10 @@ import pandas as pd
 import numpy as np
 import os
 import json
+import logging
 
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 _dataframe_cache = {}
 
 
@@ -34,6 +37,9 @@ def get_cached_dataframe(file_path):
 
 
 def apply_filter(df, filter_criteria, aao, country):
+    logger.debug(f"Initial DataFrame shape: {df.shape}")
+    logger.debug(f"Filter criteria: {filter_criteria}, AAO: {aao}, Country: {country}")
+
     if filter_criteria == 1:
         df = df[df["index_pat"] == "yes"]
     elif filter_criteria == 2 and aao is not None:
@@ -69,7 +75,12 @@ def apply_filter(df, filter_criteria, aao, country):
             | (df["mut3_genotype"].isin(["hom", "comp_het"]))
         ]
 
+    logger.debug(f"DataFrame shape after main filters: {df.shape}")
+
     if country:
+        logger.debug(f"Attempting to filter by country: {country}")
+        logger.debug(f"Unique values in 'country' column: {df['country'].unique()}")
+
         country_map = [
             "AFG",
             "ALB",
@@ -258,8 +269,16 @@ def apply_filter(df, filter_criteria, aao, country):
         ]
 
         if country in country_map:
-            df = df[df["country"] == country_map[country]]
+            logger.debug(f"Country {country} found in country_map")
+            df_filtered = df[df["country"] == country]
+            logger.debug(f"DataFrame shape after country filter: {df_filtered.shape}")
+            if df_filtered.empty:
+                logger.warning(f"No data found for country: {country}")
+            return df_filtered
+        else:
+            logger.warning(f"Country {country} not found in country_map")
 
+    logger.debug(f"Final DataFrame shape: {df.shape}")
     return df
 
 
