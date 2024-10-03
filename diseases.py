@@ -30,21 +30,17 @@ def get_cached_dataframe(file_path):
 def get_unique_disease_abbrev(directory='excel'):
     disease_abbrev_set = set()
 
-    # Iterate through all files in the specified directory
     for filename in os.listdir(directory):
         if filename.endswith('.xlsx') or filename.endswith('.xls'):
             file_path = os.path.join(directory, filename)
 
-            # Read the Excel file using the cache function
             df = get_cached_dataframe(file_path)
 
-            # Filter the rows where 'ensemble_decision' is 'IN'
             filtered_df = df[df['ensemble_decision'] == 'IN']
 
-            # Add unique 'disease_abbrev' values to the set
-            disease_abbrev_set.update(filtered_df['disease_abbrev'])
+            # Convert disease_abbrev to uppercase before adding to the set
+            disease_abbrev_set.update(filtered_df['disease_abbrev'].str.upper())
 
-    # Convert the set to a list to get unique values
     return list(disease_abbrev_set)
 
 

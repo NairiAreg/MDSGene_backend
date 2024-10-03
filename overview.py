@@ -94,8 +94,10 @@ def safe_get(df, column, index, default=None):
     except:
         return default
 
+
 def get_unique_studies(disease_abbrev, gene, filter_criteria=None, aao=None, country=None, directory='excel'):
     results = []
+    disease_abbrev = disease_abbrev.upper()  # Convert input to uppercase
 
     for filename in os.listdir(directory):
         if filename.startswith('.~') or filename.startswith('~$'):
@@ -106,6 +108,9 @@ def get_unique_studies(disease_abbrev, gene, filter_criteria=None, aao=None, cou
             try:
                 df = get_cached_dataframe(file_path)
                 df = df[df['ensemble_decision'] == 'IN']
+                
+                # Convert disease_abbrev column to uppercase
+                df['disease_abbrev'] = df['disease_abbrev'].str.upper()
                 
                 # Only apply the filter if filter_criteria is provided
                 if filter_criteria is not None:
