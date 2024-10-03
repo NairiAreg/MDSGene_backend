@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 import diseases
 import overview
 
@@ -49,20 +49,33 @@ async def unique_studies_endpoint(disease_abbrev: str, gene: str):
     unique_studies = overview.get_unique_studies(disease_abbrev, gene)
     return unique_studies
 
-# Add a new endpoint to get the study design for each study in a list of PMIDs
+@app.get("/unique_studies/{disease_abbrev}/{gene}")
+async def unique_studies_endpoint(
+    disease_abbrev: str, 
+    gene: str, 
+    filter_criteria: str = Query(None, description="Filter criteria"),
+    aao: str = Query(None, description="Age at onset"),
+    country: str = Query(None, description="Country")
+):
+    unique_studies = overview.get_unique_studies(disease_abbrev, gene, filter_criteria, aao, country)
+    return unique_studies
+
 @app.get("/study_designs")
-async def study_designs_endpoint(pmid_list: str):
-    study_designs = overview.get_study_design_for_each_study(pmid_list)
+async def study_designs_endpoint(
+    pmid_list: str,
+    filter_criteria: str = Query(None, description="Filter criteria"),
+    aao: str = Query(None, description="Age at onset"),
+    country: str = Query(None, description="Country")
+):
+    study_designs = overview.get_study_design_for_each_study(pmid_list, filter_criteria, aao, country)
     return study_designs
 
 @app.get("/number_of_cases")
-async def number_of_cases_endpoint(pmid_list: str):
-    number_of_cases = overview.get_number_of_cases_for_each_study(pmid_list)
+async def number_of_cases_endpoint(
+    pmid_list: str,
+    filter_criteria: str = Query(None, description="Filter criteria"),
+    aao: str = Query(None, description="Age at onset"),
+    country: str = Query(None, description="Country")
+):
+    number_of_cases = overview.get_number_of_cases_for_each_study(pmid_list, filter_criteria, aao, country)
     return number_of_cases
-
-#добавь еще один endpoinт для get_unique_studies(disease_abbrev, gene, filter_criteria, aao, country, directory='excel'):
-#все параметры кромe disease_abbrev: str, gene: str не обязательные
-@app.get("/unique_studies/{disease_abbrev}/{gene}/{filter_criteria}/{aao}/{country}")
-async def unique_studies_endpoint(disease_abbrev: str, gene: str, filter_criteria: str = None, aao: str = None, country: str = None):
-    unique_studies = overview.get_unique_studies(disease_abbrev, gene, filter_criteria, aao, country)
-    return unique_studies
