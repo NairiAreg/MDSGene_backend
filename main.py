@@ -3,6 +3,7 @@ import diseases
 import overview
 
 from fastapi.openapi.utils import get_openapi
+from study_details import get_patients_for_publication
 
 app = FastAPI()
 
@@ -79,3 +80,15 @@ async def number_of_cases_endpoint(
 ):
     number_of_cases = overview.get_number_of_cases_for_each_study(pmid_list, filter_criteria, aao, country)
     return number_of_cases
+
+@app.get("/patients_for_publication")
+async def patients_for_publication_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    pmid: str,
+    filter_criteria: str = Query(None, description="Filter criteria"),
+    aao: str = Query(None, description="Age at onset"),
+    country: str = Query(None, description="Country")
+):
+    patients = get_patients_for_publication(disease_abbrev, gene, pmid, filter_criteria, aao, country)
+    return patients
