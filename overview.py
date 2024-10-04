@@ -87,6 +87,12 @@ def get_unique_studies(
                             "mut1_p": safe_get(study_df, "mut1_p", 0, "Unknown"),
                             "mut2_p": safe_get(study_df, "mut2_p", 0, "Unknown"),
                             "mut3_p": safe_get(study_df, "mut3_p", 0, "Unknown"),
+                            "mut1_g": safe_get(study_df, "mut1_g", 0, "Unknown"),
+                            "mut2_g": safe_get(study_df, "mut2_g", 0, "Unknown"),
+                            "mut3_g": safe_get(study_df, "mut3_g", 0, "Unknown"),
+                            "mut1_c": safe_get(study_df, "mut1_c", 0, "Unknown"),
+                            "mut2_c": safe_get(study_df, "mut2_c", 0, "Unknown"),
+                            "mut3_c": safe_get(study_df, "mut3_c", 0, "Unknown"),
                             "mut1_genotype": safe_get(
                                 study_df, "mut1_genotype", 0, "Unknown"
                             ),

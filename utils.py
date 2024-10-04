@@ -3,10 +3,24 @@ import numpy as np
 import os
 import json
 import logging
+from difflib import get_close_matches
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 _dataframe_cache = {}
+
+# List of expected headers extracted from the provided code
+EXPECTED_HEADERS = {
+    "ensemble_decision", "disease_abbrev", "gene1", "gene2", "gene3", "pmid", "study_design",
+    "ethnicity", "sex", "aao", "mut1_p", "mut2_p", "mut3_p", "mut1_genotype", "mut2_genotype",
+    "mut3_genotype", "mut1_c", "mut2_c", "mut3_c", "mut1_g", "mut2_g", "mut3_g", "mut1_alias",
+    "mut2_alias", "mut3_alias", "observed_allele1", "observed_allele2", "observed_allele3",
+    "reference_allele1", "reference_allele2", "reference_allele3", "hg_version", "genomic_location1",
+    "genomic_location2", "genomic_location3", "impact", "pathogenicity1", "pathogenicity2",
+    "pathogenicity3", "CADD_1", "CADD_2", "CADD_3", "protein_related", "positive_evidence",
+    "status_clinical", "index_pat", "famhx", "initial_sympt1", "initial_sympt2", "initial_sympt3",
+    "country"
+}
 
 
 def get_cached_dataframe(file_path):
@@ -30,6 +44,29 @@ def get_cached_dataframe(file_path):
         raise ValueError(f"Unsupported file extension: {file_extension}")
 
     df = pd.read_excel(file_path, engine=engine)
+
+    # Convert all headers to lower case
+    df.columns = df.columns.str.lower()
+
+    # Check if the headers match the expected headers
+    file_headers = set(df.columns)
+    header_mapping = {}
+    for header in EXPECTED_HEADERS:
+        closest_match = get_close_matches(header.lower(), file_headers, n=1, cutoff=0.6)
+        if closest_match:
+            header_mapping[closest_match[0]] = header.lower()
+        else:
+            # Add missing header as a blank column
+            df[header.lower()] = None
+            print(f"Adding missing column '{header.lower()}' as blank")
+
+    # Log the changes
+    for old_header, new_header in header_mapping.items():
+        if old_header != new_header:
+            print(f"Renaming column '{old_header}' to '{new_header}'")
+
+    # Rename the columns
+    df.rename(columns=header_mapping, inplace=True)
 
     _dataframe_cache[file_path] = {"dataframe": df, "mod_time": file_mod_time}
 
@@ -74,7 +111,6 @@ def apply_filter(df, filter_criteria, aao, country: str):
         ]
 
     if country:
-
         country_map = [
             "AFG",
             "ALB",
@@ -301,3 +337,6 @@ def safe_get(df, column, index, default=None):
         return value
     except:
         return default
+
+
+
