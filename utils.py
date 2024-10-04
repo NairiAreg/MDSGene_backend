@@ -287,7 +287,13 @@ class NumpyEncoder(json.JSONEncoder):
 
 def safe_get(df, column, index, default=None):
     try:
-        value = df[column].iloc[index]
+        if isinstance(df, pd.DataFrame):
+            value = df[column].iloc[index]
+        elif isinstance(df, pd.Series):
+            value = df.iloc[index] if column is None else df[column]
+        else:
+            value = df[column]
+
         if pd.isna(value):
             return default
         if isinstance(value, (np.integer, np.floating)):

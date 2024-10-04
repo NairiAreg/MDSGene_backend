@@ -3,6 +3,8 @@ import diseases
 import overview
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
+
+from mutation_details import get_data_for_mutation
 from study_details import get_patients_for_publication
 import logging
 
@@ -120,3 +122,19 @@ async def patients_for_publication_endpoint(
         disease_abbrev, gene, pmid, filter_criteria, aao, country
     )
     return patients
+
+
+#добавь еще один endpoint def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria=None, aao=None, country=None, directory='excel') который получает на вход disease_abbrev, gene, pmid, mut_p, filter_criteria, aao, country и directory и возвращает результат работы функции get_data_for_mutation из mutation_details.py
+@app.get("/data_for_mutation")
+async def data_for_mutation_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    pmid: str,
+    mut_p: str,
+    filter_criteria: str = Query(None, description="Filter criteria"),
+    aao: str = Query(None, description="Age at onset"),
+    country: str = Query(None, description="Country"),
+    directory: str = Query('excel', description="Directory")
+):
+    data = get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria, aao, country, directory)
+    return data
