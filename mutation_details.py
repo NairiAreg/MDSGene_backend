@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 import os
 import json
-from utils import get_cached_dataframe, apply_filter, NumpyEncoder, safe_get
+from utils import get_cached_dataframe, safe_get
 from const import protein_level_identifier_map, cdna_level_identifier_map
 
-def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria=None, aao=None, country=None, directory='excel'):
+def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory='excel'):
     results = []
     disease_abbrev = disease_abbrev.upper()
     pmid = int(pmid)  # Convert pmid to integer
@@ -21,9 +21,6 @@ def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria=Non
                 df = df[df['ensemble_decision'] == 'IN']
 
                 df['disease_abbrev'] = df['disease_abbrev'].str.upper()
-
-                if filter_criteria is not None:
-                    df = apply_filter(df, filter_criteria, aao, country)
 
                 filtered_df = pd.concat([
                     df[(df['disease_abbrev'] == disease_abbrev) & (df['gene1'] == gene)],

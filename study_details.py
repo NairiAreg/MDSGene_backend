@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 import os
 import json
-from utils import get_cached_dataframe, apply_filter, NumpyEncoder, safe_get
+from utils import get_cached_dataframe, apply_filter
 
-def get_patients_for_publication(disease_abbrev, gene, pmid, filter_criteria=None, aao=None, country=None, directory='excel'):
+def get_patients_for_publication(disease_abbrev, gene, pmid, filter_criteria=None, aao=None, country=None, mutation = None, directory='excel'):
     results = []
     disease_abbrev = disease_abbrev.upper()
     pmid = int(pmid)  # Convert pmid to integer
@@ -22,8 +22,13 @@ def get_patients_for_publication(disease_abbrev, gene, pmid, filter_criteria=Non
 
                 df['disease_abbrev'] = df['disease_abbrev'].str.upper()
 
-                if filter_criteria is not None:
-                    df = apply_filter(df, filter_criteria, aao, country)
+                if (
+                    filter_criteria is not None
+                    or aao is not None
+                    or country is not None
+                    or mutation is not None
+                ):
+                    df = apply_filter(df, filter_criteria, aao, country, mutation)
 
                 filtered_df = pd.concat([
                     df[(df['disease_abbrev'] == disease_abbrev) & (df['gene1'] == gene)],

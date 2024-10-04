@@ -14,6 +14,7 @@ def get_unique_studies(
     filter_criteria: int = None,
     aao: float = None,
     country: str = None,
+    mutation: str = None,
     directory: str = "excel",
 ):
 
@@ -34,8 +35,9 @@ def get_unique_studies(
                     filter_criteria is not None
                     or aao is not None
                     or country is not None
+                    or mutation is not None
                 ):
-                    df = apply_filter(df, filter_criteria, aao, country)
+                    df = apply_filter(df, filter_criteria, aao, country, mutation)
 
                 # Use pd.concat instead of append
                 filtered_df = pd.concat(
@@ -136,49 +138,3 @@ def get_unique_studies(
 
     return results
 
-
-def get_study_design_for_each_study(
-    pmids, filter_criteria=None, aao=None, country=None, directory="excel"
-):
-    study_design_list = []
-
-    for filename in os.listdir(directory):
-        if filename.endswith(".xlsx") or filename.endswith(".xls"):
-            file_path = os.path.join(directory, filename)
-            df = get_cached_dataframe(file_path)
-            df = df[df["ensemble_decision"] == "IN"]
-
-            if filter_criteria is not None:
-                df = apply_filter(df, filter_criteria, aao, country)
-
-            pmid_list = list(map(int, pmids.split(",")))
-            filtered_df = df[df["pmid"].isin(pmid_list)]
-            study_design_list.extend(filtered_df["study_design"])
-
-    return study_design_list
-
-
-def get_number_of_cases_for_each_study(
-    pmids, filter_criteria=None, aao=None, country=None, directory="excel"
-):
-    number_of_cases_list = []
-
-    for filename in os.listdir(directory):
-        if filename.endswith(".xlsx") or filename.endswith(".xls"):
-            file_path = os.path.join(directory, filename)
-            df = get_cached_dataframe(file_path)
-            df = df[df["ensemble_decision"] == "IN"]
-
-            if filter_criteria is not None:
-                df = apply_filter(df, filter_criteria, aao, country)
-
-            pmid_list = list(map(int, pmids.split(",")))
-            filtered_df = df[df["pmid"].isin(pmid_list)]
-            filtered_df = (
-                filtered_df.groupby("pmid").size().reset_index(name="number_of_cases")
-            )
-            number_of_cases_map = dict(
-                zip(filtered_df["pmid"], filtered_df["number_of_cases"])
-            )
-
-    return number_of_cases_map

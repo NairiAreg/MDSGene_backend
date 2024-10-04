@@ -83,32 +83,6 @@ async def unique_studies_endpoint(
     return unique_studies
 
 
-@app.get("/study_designs")
-async def study_designs_endpoint(
-    pmid_list: str,
-    filter_criteria: str = Query(None, description="Filter criteria"),
-    aao: str = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country"),
-):
-    study_designs = overview.get_study_design_for_each_study(
-        pmid_list, filter_criteria, aao, country
-    )
-    return study_designs
-
-
-@app.get("/number_of_cases")
-async def number_of_cases_endpoint(
-    pmid_list: str,
-    filter_criteria: str = Query(None, description="Filter criteria"),
-    aao: str = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country"),
-):
-    number_of_cases = overview.get_number_of_cases_for_each_study(
-        pmid_list, filter_criteria, aao, country
-    )
-    return number_of_cases
-
-
 @app.get("/patients_for_publication")
 async def patients_for_publication_endpoint(
     disease_abbrev: str,
@@ -117,9 +91,10 @@ async def patients_for_publication_endpoint(
     filter_criteria: str = Query(None, description="Filter criteria"),
     aao: str = Query(None, description="Age at onset"),
     country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
 ):
     patients = get_patients_for_publication(
-        disease_abbrev, gene, pmid, filter_criteria, aao, country
+        disease_abbrev, gene, pmid, filter_criteria, aao, country, mutation
     )
     return patients
 
@@ -131,10 +106,7 @@ async def data_for_mutation_endpoint(
     gene: str,
     pmid: str,
     mut_p: str,
-    filter_criteria: str = Query(None, description="Filter criteria"),
-    aao: str = Query(None, description="Age at onset"),
-    country: str = Query(None, description="Country"),
     directory: str = Query('excel', description="Directory")
 ):
-    data = get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria, aao, country, directory)
+    data = get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory)
     return data
