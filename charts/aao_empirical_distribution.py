@@ -73,7 +73,7 @@ def _fetch_aao_data(
                     & (filtered_df["pathogenicity3"] != "benign")
                 )
                 aao_mask = (
-                    filtered_df["aao"].notnull()
+                    (filtered_df["aao"].notnull() & (filtered_df["aao"] != -99))
                     if "aao" in filtered_df.columns
                     else pd.Series(True, index=filtered_df.index)
                 )
@@ -105,15 +105,19 @@ def generate_aao_empirical_distribution(
         disease_abbrev, gene, filter_criteria, country, mutation, directory
     )
 
+    # Remove any remaining -99 values
+    aao_data = [x for x in aao_data if x != -99]
+
     if not aao_data:
         logger.warning(
-            f"No data found for disease_abbrev: {disease_abbrev}, gene: {gene}"
+            f"No valid data found for disease_abbrev: {disease_abbrev}, gene: {gene}"
         )
         return None
 
     aao_data.sort()
     stats_by_years = describe(aao_data)
 
+    # Check if we have enough data points for percentiles
     if len(aao_data) >= 4:
         percentiles = np.percentile(aao_data, [25, 50, 75])
         hist_aao_25_percent = round(percentiles[0], 2)
