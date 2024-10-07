@@ -5,7 +5,8 @@ from utils import get_cached_dataframe, apply_filter
 
 logger = logging.getLogger(__name__)
 
-def _fetch_country_pie_chart(
+
+def _fetch_country_data(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
@@ -15,60 +16,7 @@ def _fetch_country_pie_chart(
 ):
     disease_abbrev = disease_abbrev.upper()
     country_counts = {}
-
-    for filename in os.listdir(directory):
-        if filename.startswith(".~") or filename.startswith("~$"):
-            continue  # Skip temporary Excel files
-
-        if filename.endswith(".xlsx") or filename.endswith(".xls"):
-            file_path = os.path.join(directory, filename)
-            try:
-                df = get_cached_dataframe(file_path)
-                df = df[df["ensemble_decision"] == "IN"]
-
-                if filter_criteria is not None or country is not None or mutation is not None:
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
-
-                filtered_df = pd.concat(
-                    [
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene1"] == gene)
-                        ],
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene2"] == gene)
-                        ],
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene3"] == gene)
-                        ],
-                    ]
-                )
-
-                filtered_df = filtered_df[
-                    (filtered_df["status_clinical"] != "clinically unaffected")
-                    & (filtered_df["pathogenicity"] != "benign")
-                    & (filtered_df["country"].notnull())
-                ]
-
-                country_counts.update(filtered_df["country"].value_counts().to_dict())
-
-            except Exception as e:
-                logger.error(f"Error reading file {filename}: {str(e)}")
-                continue
-
-    return country_counts
-
-def _fetch_country_pie_missing(
-    disease_abbrev: str,
-    gene: str,
-    filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
-    directory: str = "excel",
-):
-    disease_abbrev = disease_abbrev.upper()
+    total_count = 0
     missing_count = 0
 
     for filename in os.listdir(directory):
@@ -81,7 +29,11 @@ def _fetch_country_pie_missing(
                 df = get_cached_dataframe(file_path)
                 df = df[df["ensemble_decision"] == "IN"]
 
-                if filter_criteria is not None or country is not None or mutation is not None:
+                if (
+                    filter_criteria is not None
+                    or country is not None
+                    or mutation is not None
+                ):
                     df = apply_filter(df, filter_criteria, None, country, mutation)
 
                 filtered_df = pd.concat(
@@ -103,17 +55,26 @@ def _fetch_country_pie_missing(
 
                 filtered_df = filtered_df[
                     (filtered_df["status_clinical"] != "clinically unaffected")
-                    & (filtered_df["pathogenicity"] != "benign")
-                    & (filtered_df["country"].isnull())
+                    & (filtered_df["pathogenicity1"] != "benign")
+                    & (filtered_df["pathogenicity2"] != "benign")
+                    & (filtered_df["pathogenicity3"] != "benign")
                 ]
 
-                missing_count += filtered_df["patient_id"].nunique()
+                total_count += len(filtered_df)
+
+                country_data = filtered_df["country"].value_counts().to_dict()
+                for c, count in country_data.items():
+                    if c != -99 and pd.notna(c):
+                        country_counts[c] = country_counts.get(c, 0) + count
+                    else:
+                        missing_count += count
 
             except Exception as e:
                 logger.error(f"Error reading file {filename}: {str(e)}")
                 continue
 
-    return missing_count
+    return country_counts, missing_count, total_count
+
 
 def generate_country_pie_chart(
     disease_abbrev: str,
@@ -123,29 +84,45 @@ def generate_country_pie_chart(
     mutation: str = None,
     directory: str = "excel",
 ):
-    country_counts = _fetch_country_pie_chart(
-        disease_abbrev,
-        gene,
-        filter_criteria,
-        country,
-        mutation,
-        directory
+    country_counts, missing_count, total_count = _fetch_country_data(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
     )
 
-    country_pie_missing = _fetch_country_pie_missing(
-        disease_abbrev,
-        gene,
-        filter_criteria,
-        country,
-        mutation,
-        directory
-    )
+    # Prepare pie chart data
+    pie_chart_data = [{"name": k, "y": v} for k, v in country_counts.items()]
 
-    total_eligible = sum(country_counts.values()) + country_pie_missing
-    country_pie_missing_percentage = (country_pie_missing * 100.0) / total_eligible if total_eligible > 0 else 0.0
+    # Sort data by value in descending order
+    pie_chart_data.sort(key=lambda x: x["y"], reverse=True)
 
-    return {
-        "country_pie_chart": country_counts,
-        "country_pie_missing": country_pie_missing,
-        "country_pie_missing_percentage": f"{country_pie_missing_percentage:.2f}".replace(",", ".")
+    # Calculate percentages
+    total = sum(item["y"] for item in pie_chart_data)
+    for item in pie_chart_data:
+        item["y"] = (item["y"] / total) * 100
+
+    # Calculate missing percentage
+    missing_percentage = (missing_count / total_count * 100) if total_count > 0 else 0
+
+    # Prepare the chart configuration
+    chart_config = {
+        "chart": {"type": "pie"},
+        "accessibility": {
+            "enabled": False,
+        },
+        "title": {"text": "Country Distribution"},
+        "subtitle": {
+            "text": f"Number of patients with missing data: {missing_count} ({missing_percentage:.1f}%)"
+        },
+        "plotOptions": {
+            "pie": {
+                "allowPointSelect": True,
+                "cursor": "pointer",
+                "dataLabels": {
+                    "enabled": True,
+                    "format": "<b>{point.name}</b>: {point.percentage:.1f} %",
+                },
+            }
+        },
+        "series": [{"name": "Country", "colorByPoint": True, "data": pie_chart_data}],
     }
+
+    return chart_config
