@@ -6,9 +6,9 @@ from fastapi.openapi.utils import get_openapi
 from charts.aao_empirical_distribution import generate_aao_empirical_distribution
 from charts.aao_histogram import generate_aao_histogram
 from charts.country_pie import generate_country_pie_chart
-from ethnicity_pie import generate_ethnicity_pie_chart
-from initial_signs_symptoms import generate_initial_signs_symptoms
-from levodopa_response import generate_levodopa_response
+from charts.ethnicity_pie import generate_ethnicity_pie_chart
+from charts.initial_signs_symptoms import generate_initial_signs_symptoms
+from charts.levodopa_response import generate_levodopa_response
 import logging
 
 # Set up logging
