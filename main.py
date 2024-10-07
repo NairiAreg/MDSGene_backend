@@ -7,6 +7,7 @@ from charts.aao_empirical_distribution import generate_aao_empirical_distributio
 from charts.aao_histogram import generate_aao_histogram
 from charts.country_pie import generate_country_pie_chart
 from charts.ethnicity_pie import generate_ethnicity_pie_chart
+from charts.reporter_signs_symptoms import generate_symptoms_chart
 from charts.initial_signs_symptoms import generate_initial_signs_symptoms
 from charts.levodopa_response import generate_levodopa_response
 from study_details import get_patients_for_publication
@@ -208,6 +209,21 @@ async def levodopa_response_endpoint(
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_levodopa_response(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
+    )
+    return data
+
+
+@app.get("/reporter_signs_symptoms")
+async def levodopa_response_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
+    directory: str = Query("excel", description="Directory"),
+):
+    data = generate_symptoms_chart(
         disease_abbrev, gene, filter_criteria, country, mutation, directory
     )
     return data
