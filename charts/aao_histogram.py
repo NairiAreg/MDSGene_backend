@@ -2,8 +2,11 @@ import pandas as pd
 import os
 import logging
 from utils import get_cached_dataframe, apply_filter
+from scipy.stats import describe
+import numpy as np
 
 logger = logging.getLogger(__name__)
+
 
 def _fetch_aao_data(
     disease_abbrev: str,
@@ -12,9 +15,8 @@ def _fetch_aao_data(
     country: str = None,
     mutation: str = None,
     directory: str = "excel",
-    include_missing: bool = False
 ):
-    disease_abbrev = disease_abbrev
+    disease_abbrev = disease_abbrev.upper()
     aao_data = []
 
     for filename in os.listdir(directory):
@@ -70,21 +72,18 @@ def _fetch_aao_data(
                     & (filtered_df["pathogenicity2"] != "benign")
                     & (filtered_df["pathogenicity3"] != "benign")
                 )
-                if not include_missing:
-                    aao_mask = (
-                        (filtered_df["aao"].notnull() & (filtered_df["aao"] != -99))
-                        if "aao" in filtered_df.columns
-                        else pd.Series(True, index=filtered_df.index)
-                    )
-                else:
-                    aao_mask = pd.Series(True, index=filtered_df.index)
+                aao_mask = (
+                    (filtered_df["aao"].notnull() & (filtered_df["aao"] != -99))
+                    if "aao" in filtered_df.columns
+                    else pd.Series(True, index=filtered_df.index)
+                )
 
                 filtered_df = filtered_df[status_mask & pathogenicity_mask & aao_mask]
                 logger.info(f"After additional filters: {filtered_df.shape}")
 
                 # Collect age at onset data
                 if "aao" in filtered_df.columns:
-                    aao_data.extend(filtered_df["aao"].tolist())
+                    aao_data.extend(filtered_df["aao"].dropna().tolist())
 
             except Exception as e:
                 logger.error(f"Error processing file {filename}: {str(e)}")
@@ -93,79 +92,91 @@ def _fetch_aao_data(
     logger.info(f"Total aao_data points: {len(aao_data)}")
     return aao_data
 
-def _count_patients_within_aao_range(
-    disease_abbrev: str,
-    gene: str,
-    aao_range: tuple,
-    filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
-    directory: str = "excel",
-):
-    aao_data = _fetch_aao_data(disease_abbrev, gene, filter_criteria, country, mutation, directory)
-    count = sum(1 for aao in aao_data if pd.notna(aao) and aao_range[0] <= aao <= aao_range[1])
-    return count
-
-def _aao_histogram_missing(
-    disease_abbrev: str,
-    gene: str,
-    filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
-    directory: str = "excel",
-):
-    aao_data = _fetch_aao_data(disease_abbrev, gene, filter_criteria, country, mutation, directory, include_missing=True)
-    count = sum(1 for aao in aao_data if pd.isna(aao) or aao == -99)
-    return count
 
 def generate_aao_histogram(
     disease_abbrev: str,
     gene: str,
-    aao_intervals: list,
     filter_criteria: int = None,
     country: str = None,
     mutation: str = None,
     directory: str = "excel",
 ):
-    histogram_data = []
-    total_patients = 0
-
-    for interval in aao_intervals:
-        nof_patients = _count_patients_within_aao_range(
-            disease_abbrev,
-            gene,
-            (interval, interval + 9),
-            filter_criteria,
-            country,
-            mutation,
-            directory
-        )
-        total_patients += nof_patients
-        histogram_data.append([f"{interval} - {interval + 9}", nof_patients])
-
-    hist_missing = _aao_histogram_missing(
-        disease_abbrev,
-        gene,
-        filter_criteria,
-        country,
-        mutation,
-        directory
+    aao_data = _fetch_aao_data(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
     )
 
-    total_eligible = total_patients + hist_missing
-    hist_missing_percentage = (hist_missing * 100.0) / total_eligible if total_eligible > 0 else 0.0
+    # Remove any remaining -99 values
+    aao_data = [x for x in aao_data if x != -99]
 
-    return {
-        "chart": {"type": "column"},
-        "title": {"text": "Age at Onset Histogram"},
-        "subtitle": {
-            "text": f"Number of patients with missing data: {hist_missing} ({hist_missing_percentage}%)"
+    if not aao_data:
+        logger.warning(
+            f"No valid data found for disease_abbrev: {disease_abbrev}, gene: {gene}"
+        )
+        return None
+
+    aao_data.sort()
+    stats_by_years = describe(aao_data)
+
+    # Check if we have enough data points for percentiles
+    if len(aao_data) >= 4:
+        percentiles = np.percentile(aao_data, [25, 50, 75])
+        hist_aao_25_percent = round(percentiles[0], 2)
+        hist_aao_median = round(percentiles[1], 2)
+        hist_aao_75_percent = round(percentiles[2], 2)
+    else:
+        hist_aao_25_percent = hist_aao_median = hist_aao_75_percent = None
+
+    # Group the aao_data into age ranges
+    grouped_data = [0] * 10  # Initialize with 10 groups (0-9, 10-19, ..., 90-99)
+
+    for age in aao_data:
+        if 0 <= age <= 99:
+            group_index = int(age // 10)
+            grouped_data[group_index] += 1
+
+    chart_config = {
+        "accessibility": {
+            "enabled": False,
         },
-        "xAxis": {"categories": [interval[0] for interval in histogram_data], "title": {"text": "Age at Onset"}},
-        "yAxis": {"min": 0, "title": {"text": "Number of patients"}},
-        "plotOptions": {"column": {"dataLabels": {"enabled": True}}},
-        "series": [
-            {"name": "Patients", "data": [interval[1] for interval in histogram_data], "color": "#A52A2A"}
-            # Dark red color
-        ],
+        "chart": {"type": "column"},
+        "title": {"text": "Distribution of age at onset"},
+        "subtitle": {
+            "text": f"Median: {hist_aao_median}; 25th/75th perc.: {hist_aao_25_percent}/{hist_aao_75_percent}; Range: {stats_by_years.minmax[0]:.2f}-{stats_by_years.minmax[1]:.2f} yrs."
+        },
+        "xAxis": {
+            "categories": [
+                "0 - 9",
+                "10 - 19",
+                "20 - 29",
+                "30 - 39",
+                "40 - 49",
+                "50 - 59",
+                "60 - 69",
+                "70 - 79",
+                "80 - 89",
+                "90 - 99",
+            ],
+            "title": {"text": "Age at onset"},
+        },
+        "yAxis": {
+            "title": {"text": "Number of patients"},
+            "min": 0,
+            "max": max(grouped_data)
+            + 50
+            - (max(grouped_data) % 50),  # Round up to nearest 50
+            "tickInterval": 50,
+        },
+        "plotOptions": {
+            "column": {
+                "color": "#8B0000",  # Dark red color
+                "groupPadding": 0,
+                "pointPadding": 0,
+                "borderWidth": 0,
+            }
+        },
+        "series": [{"name": "Age distribution", "data": grouped_data}],
+        "credits": {"enabled": False},
+        "legend": {"enabled": False},
     }
+
+    return chart_config

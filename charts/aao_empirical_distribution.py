@@ -126,57 +126,53 @@ def generate_aao_empirical_distribution(
     else:
         hist_aao_25_percent = hist_aao_median = hist_aao_75_percent = None
 
-    # Group the aao_data into age ranges
-    grouped_data = [0] * 10  # Initialize with 10 groups (0-9, 10-19, ..., 90-99)
+    histogram_data = []
+    start_from_0years = [0, 0]
+    histogram_data.append(start_from_0years)
+    prev = start_from_0years
+    prev_value = -1
 
-    for age in aao_data:
-        if 0 <= age <= 99:
-            group_index = int(age // 10)
-            grouped_data[group_index] += 1
+    for x in aao_data:
+        if prev_value < x:
+            prev_value = x
+        else:
+            continue
+        if not (0.0 <= x <= 99.9):
+            continue
+        pp = (sum(1 for a in aao_data if a <= x) * 100.0) / len(aao_data)
+        histogram_data.append([x, prev[1]])
+        histogram_data.append([x + 0.1, round(pp, 2)])
+        prev = [x + 0.1, round(pp, 2)]
 
+    histogram_data.append([100, prev[1]])
+
+    # Prepare the chart configuration
     chart_config = {
         "accessibility": {
             "enabled": False,
         },
-        "chart": {"type": "column"},
-        "title": {"text": "Distribution of age at onset"},
+        "chart": {"type": "line"},
+        "title": {"text": "Empirical distribution of age at onset"},
         "subtitle": {
             "text": f"Median: {hist_aao_median}; 25th/75th perc.: {hist_aao_25_percent}/{hist_aao_75_percent}; Range: {stats_by_years.minmax[0]:.2f}-{stats_by_years.minmax[1]:.2f} yrs."
         },
-        "xAxis": {
-            "categories": [
-                "0 - 9",
-                "10 - 19",
-                "20 - 29",
-                "30 - 39",
-                "40 - 49",
-                "50 - 59",
-                "60 - 69",
-                "70 - 79",
-                "80 - 89",
-                "90 - 99",
-            ],
-            "title": {"text": "Age at onset"},
-        },
+        "xAxis": {"title": {"text": "Age at onset"}, "min": 0, "max": 100},
         "yAxis": {
-            "title": {"text": "Number of patients"},
+            "title": {"text": "Percent rank"},
             "min": 0,
-            "max": max(grouped_data)
-            + 50
-            - (max(grouped_data) % 50),  # Round up to nearest 50
-            "tickInterval": 50,
+            "max": 100,
+            "labels": {"formatter": "function () { return this.value + '%'; }"},
         },
-        "plotOptions": {
-            "column": {
-                "color": "#8B0000",  # Dark red color
-                "groupPadding": 0,
-                "pointPadding": 0,
-                "borderWidth": 0,
-            }
-        },
-        "series": [{"name": "Age distribution", "data": grouped_data}],
-        "credits": {"enabled": False},
-        "legend": {"enabled": False},
+        "tooltip": {"pointFormat": "{point.x} years: {point.y}%"},
+        "plotOptions": {"area": {"marker": {"enabled": False}}},
+        "series": [
+            {
+                "name": "Age distribution",
+                "data": histogram_data,
+                "lineWidth": 3,
+                "color": "#800000",
+            },
+        ],
     }
 
     return chart_config

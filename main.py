@@ -105,7 +105,7 @@ async def patients_for_publication_endpoint(
     return patients
 
 
-#добавь еще один endpoint def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria=None, aao=None, country=None, directory='excel') который получает на вход disease_abbrev, gene, pmid, mut_p, filter_criteria, aao, country и directory и возвращает результат работы функции get_data_for_mutation из mutation_details.py
+# добавь еще один endpoint def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria=None, aao=None, country=None, directory='excel') который получает на вход disease_abbrev, gene, pmid, mut_p, filter_criteria, aao, country и directory и возвращает результат работы функции get_data_for_mutation из mutation_details.py
 @app.get("/data_for_mutation")
 async def data_for_mutation_endpoint(
     disease_abbrev: str,
@@ -142,11 +142,9 @@ async def aao_histogram_endpoint(
     mutation: str = Query(None, description="Mutation"),
     directory: str = Query("excel", description="Directory"),
 ):
-    aao_intervals: list = [0, 9, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     data = generate_aao_histogram(
         disease_abbrev,
         gene,
-        aao_intervals,
         filter_criteria,
         country,
         mutation,
