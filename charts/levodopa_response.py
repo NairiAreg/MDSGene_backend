@@ -129,6 +129,9 @@ def generate_levodopa_response(
     # Prepare the chart configuration
     chart_config = {
         "chart": {"type": "column"},
+        "accessibility": {
+            "enabled": False,
+        },
         "title": {"text": "Levodopa response"},
         "subtitle": {
             "text": f"Number of patients with missing data: {missing_count} ({missing_percentage:.2f}%)"

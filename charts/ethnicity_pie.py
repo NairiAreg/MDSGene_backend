@@ -1,8 +1,9 @@
 import pandas as pd
 import os
 import logging
-from utils import get_cached_dataframe, apply_filter
+from utils import get_cached_dataframe, apply_filter, CHART_COLORS
 from collections import Counter
+import random
 
 logger = logging.getLogger(__name__)
 
@@ -116,7 +117,25 @@ def generate_ethnicity_pie_chart(
     for item in pie_chart_data:
         item["y"] = (item["y"] / total) * 100
 
-    # Prepare the chart configuration
+    # Function to generate a random color in hex format (if needed)
+    def generate_random_color():
+        return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+
+    # Assign colors to pie_chart_data
+    pie_chart_data_with_colors = [
+        {
+            "name": data_point["name"],
+            "y": data_point["y"],
+            # Use predefined colors, or default to None if there are more data points than colors
+            "color": (
+                CHART_COLORS[index] if index < len(CHART_COLORS) else None
+            ),  # Continue with default color
+            # "color": colors[index] if index < len(colors) else generate_random_color()  # Optional random color
+        }
+        for index, data_point in enumerate(pie_chart_data)
+    ]
+
+    # Prepare the chart configuration with the colored data
     chart_config = {
         "chart": {"type": "pie"},
         "accessibility": {
@@ -136,7 +155,13 @@ def generate_ethnicity_pie_chart(
                 },
             }
         },
-        "series": [{"name": "Ethnicity", "colorByPoint": True, "data": pie_chart_data}],
+        "series": [
+            {
+                "name": "Ethnicity",
+                "colorByPoint": False,
+                "data": pie_chart_data_with_colors,
+            }
+        ],
     }
 
     return chart_config

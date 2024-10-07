@@ -1,7 +1,8 @@
 import pandas as pd
 import os
 import logging
-from utils import get_cached_dataframe, apply_filter
+from utils import get_cached_dataframe, apply_filter, CHART_COLORS
+import random
 
 logger = logging.getLogger(__name__)
 
@@ -102,7 +103,26 @@ def generate_country_pie_chart(
     # Calculate missing percentage
     missing_percentage = (missing_count / total_count * 100) if total_count > 0 else 0
 
-    # Prepare the chart configuration
+    # Function to generate a random color in hex format
+    def generate_random_color():
+        return "#{:06x}".format(random.randint(0, 0xFFFFFF))
+
+    # Assign colors to pie_chart_data
+    pie_chart_data_with_colors = [
+        {
+            "name": data_point["name"],
+            "y": data_point["y"],
+            # If we run out of predefined colors, we can either:
+            # Use a default color or generate a new one.
+            "color": (
+                CHART_COLORS[index] if index < len(CHART_COLORS) else None
+            ),  # Continue with default color
+            # "color": colors[index] if index < len(colors) else generate_random_color()  # Generate random color
+        }
+        for index, data_point in enumerate(pie_chart_data)
+    ]
+
+    # Update chart config to include the colored data
     chart_config = {
         "chart": {"type": "pie"},
         "accessibility": {
@@ -122,7 +142,13 @@ def generate_country_pie_chart(
                 },
             }
         },
-        "series": [{"name": "Country", "colorByPoint": True, "data": pie_chart_data}],
+        "series": [
+            {
+                "name": "Country",
+                "colorByPoint": False,
+                "data": pie_chart_data_with_colors,
+            }
+        ],
     }
 
     return chart_config
