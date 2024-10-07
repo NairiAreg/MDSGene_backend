@@ -9,6 +9,9 @@ from charts.country_pie import generate_country_pie_chart
 from charts.ethnicity_pie import generate_ethnicity_pie_chart
 from charts.initial_signs_symptoms import generate_initial_signs_symptoms
 from charts.levodopa_response import generate_levodopa_response
+from study_details import get_patients_for_publication
+from mutation_details import get_data_for_mutation
+
 import logging
 
 # Set up logging
@@ -102,14 +105,14 @@ async def patients_for_publication_endpoint(
     return patients
 
 
-#добавь еще один endpoint def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria=None, aao=None, country=None, directory='excel') который получает на вход disease_abbrev, gene, pmid, mut_p, filter_criteria, aao, country и directory и возвращает результат работы функции get_data_for_mutation из mutation_details.py
+# добавь еще один endpoint def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria=None, aao=None, country=None, directory='excel') который получает на вход disease_abbrev, gene, pmid, mut_p, filter_criteria, aao, country и directory и возвращает результат работы функции get_data_for_mutation из mutation_details.py
 @app.get("/data_for_mutation")
 async def data_for_mutation_endpoint(
     disease_abbrev: str,
     gene: str,
     pmid: str,
     mut_p: str,
-    directory: str = Query('excel', description="Directory")
+    directory: str = Query("excel", description="Directory"),
 ):
     data = get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory)
     return data
@@ -122,9 +125,11 @@ async def aao_empirical_distribution_endpoint(
     filter_criteria: int = Query(None, description="Filter criteria"),
     country: str = Query(None, description="Country"),
     mutation: str = Query(None, description="Mutation"),
-    directory: str = Query("excel", description="Directory")
+    directory: str = Query("excel", description="Directory"),
 ):
-    data = generate_aao_empirical_distribution(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    data = generate_aao_empirical_distribution(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
+    )
     return data
 
 
@@ -136,9 +141,17 @@ async def aao_histogram_endpoint(
     filter_criteria: int = Query(None, description="Filter criteria"),
     country: str = Query(None, description="Country"),
     mutation: str = Query(None, description="Mutation"),
-    directory: str = Query("excel", description="Directory")
+    directory: str = Query("excel", description="Directory"),
 ):
-    data = generate_aao_histogram(disease_abbrev, gene, aao_intervals, filter_criteria, country, mutation, directory)
+    data = generate_aao_histogram(
+        disease_abbrev,
+        gene,
+        aao_intervals,
+        filter_criteria,
+        country,
+        mutation,
+        directory,
+    )
     return data
 
 
@@ -149,9 +162,11 @@ async def country_pie_chart_endpoint(
     filter_criteria: int = Query(None, description="Filter criteria"),
     country: str = Query(None, description="Country"),
     mutation: str = Query(None, description="Mutation"),
-    directory: str = Query("excel", description="Directory")
+    directory: str = Query("excel", description="Directory"),
 ):
-    data = generate_country_pie_chart(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    data = generate_country_pie_chart(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
+    )
     return data
 
 
@@ -162,9 +177,11 @@ async def ethnicity_pie_chart_endpoint(
     filter_criteria: int = Query(None, description="Filter criteria"),
     country: str = Query(None, description="Country"),
     mutation: str = Query(None, description="Mutation"),
-    directory: str = Query("excel", description="Directory")
+    directory: str = Query("excel", description="Directory"),
 ):
-    data = generate_ethnicity_pie_chart(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    data = generate_ethnicity_pie_chart(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
+    )
     return data
 
 
@@ -175,9 +192,11 @@ async def initial_signs_symptoms_endpoint(
     filter_criteria: int = Query(None, description="Filter criteria"),
     country: str = Query(None, description="Country"),
     mutation: str = Query(None, description="Mutation"),
-    directory: str = Query("excel", description="Directory")
+    directory: str = Query("excel", description="Directory"),
 ):
-    data = generate_initial_signs_symptoms(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    data = generate_initial_signs_symptoms(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
+    )
     return data
 
 
@@ -188,7 +207,9 @@ async def levodopa_response_endpoint(
     filter_criteria: int = Query(None, description="Filter criteria"),
     country: str = Query(None, description="Country"),
     mutation: str = Query(None, description="Mutation"),
-    directory: str = Query("excel", description="Directory")
+    directory: str = Query("excel", description="Directory"),
 ):
-    data = generate_levodopa_response(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    data = generate_levodopa_response(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
+    )
     return data
