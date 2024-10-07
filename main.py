@@ -3,9 +3,12 @@ import diseases
 import overview
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
-
-from mutation_details import get_data_for_mutation
-from study_details import get_patients_for_publication
+from charts.aao_empirical_distribution import generate_aao_empirical_distribution
+from charts.aao_histogram import generate_aao_histogram
+from charts.country_pie import generate_country_pie_chart
+from ethnicity_pie import generate_ethnicity_pie_chart
+from initial_signs_symptoms import generate_initial_signs_symptoms
+from levodopa_response import generate_levodopa_response
 import logging
 
 # Set up logging
@@ -109,4 +112,83 @@ async def data_for_mutation_endpoint(
     directory: str = Query('excel', description="Directory")
 ):
     data = get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory)
+    return data
+
+
+@app.get("/aao_empirical_distribution")
+async def aao_empirical_distribution_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
+    directory: str = Query("excel", description="Directory")
+):
+    data = generate_aao_empirical_distribution(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    return data
+
+
+@app.get("/aao_histogram")
+async def aao_histogram_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    aao_intervals: list,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
+    directory: str = Query("excel", description="Directory")
+):
+    data = generate_aao_histogram(disease_abbrev, gene, aao_intervals, filter_criteria, country, mutation, directory)
+    return data
+
+
+@app.get("/country_pie_chart")
+async def country_pie_chart_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
+    directory: str = Query("excel", description="Directory")
+):
+    data = generate_country_pie_chart(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    return data
+
+
+@app.get("/ethnicity_pie_chart")
+async def ethnicity_pie_chart_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
+    directory: str = Query("excel", description="Directory")
+):
+    data = generate_ethnicity_pie_chart(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    return data
+
+
+@app.get("/initial_signs_symptoms")
+async def initial_signs_symptoms_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
+    directory: str = Query("excel", description="Directory")
+):
+    data = generate_initial_signs_symptoms(disease_abbrev, gene, filter_criteria, country, mutation, directory)
+    return data
+
+
+@app.get("/levodopa_response")
+async def levodopa_response_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
+    directory: str = Query("excel", description="Directory")
+):
+    data = generate_levodopa_response(disease_abbrev, gene, filter_criteria, country, mutation, directory)
     return data
