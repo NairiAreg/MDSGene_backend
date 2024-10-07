@@ -2,118 +2,10 @@ import pandas as pd
 import os
 import logging
 from utils import get_cached_dataframe, apply_filter
+from collections import Counter
 
 logger = logging.getLogger(__name__)
 
-def _fetch_ethnicity_pie_chart(
-    disease_abbrev: str,
-    gene: str,
-    filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
-    directory: str = "excel",
-):
-    disease_abbrev = disease_abbrev.upper()
-    ethnicity_counts = {}
-
-    for filename in os.listdir(directory):
-        if filename.startswith(".~") or filename.startswith("~$"):
-            continue  # Skip temporary Excel files
-
-        if filename.endswith(".xlsx") or filename.endswith(".xls"):
-            file_path = os.path.join(directory, filename)
-            try:
-                df = get_cached_dataframe(file_path)
-                df = df[df["ensemble_decision"] == "IN"]
-
-                if filter_criteria is not None or country is not None or mutation is not None:
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
-
-                filtered_df = pd.concat(
-                    [
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene1"] == gene)
-                        ],
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene2"] == gene)
-                        ],
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene3"] == gene)
-                        ],
-                    ]
-                )
-
-                filtered_df = filtered_df[
-                    (filtered_df["status_clinical"] != "clinically unaffected")
-                    & (filtered_df["pathogenicity"] != "benign")
-                    & (filtered_df["ethnicity"].notnull())
-                ]
-
-                ethnicity_counts.update(filtered_df["ethnicity"].value_counts().to_dict())
-
-            except Exception as e:
-                logger.error(f"Error reading file {filename}: {str(e)}")
-                continue
-
-    return ethnicity_counts
-
-def _fetch_ethnicity_pie_missing(
-    disease_abbrev: str,
-    gene: str,
-    filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
-    directory: str = "excel",
-):
-    disease_abbrev = disease_abbrev.upper()
-    missing_count = 0
-
-    for filename in os.listdir(directory):
-        if filename.startswith(".~") or filename.startswith("~$"):
-            continue  # Skip temporary Excel files
-
-        if filename.endswith(".xlsx") or filename.endswith(".xls"):
-            file_path = os.path.join(directory, filename)
-            try:
-                df = get_cached_dataframe(file_path)
-                df = df[df["ensemble_decision"] == "IN"]
-
-                if filter_criteria is not None or country is not None or mutation is not None:
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
-
-                filtered_df = pd.concat(
-                    [
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene1"] == gene)
-                        ],
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene2"] == gene)
-                        ],
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene3"] == gene)
-                        ],
-                    ]
-                )
-
-                filtered_df = filtered_df[
-                    (filtered_df["status_clinical"] != "clinically unaffected")
-                    & (filtered_df["pathogenicity"] != "benign")
-                    & (filtered_df["ethnicity"].isnull())
-                ]
-
-                missing_count += filtered_df["patient_id"].nunique()
-
-            except Exception as e:
-                logger.error(f"Error reading file {filename}: {str(e)}")
-                continue
-
-    return missing_count
 
 def generate_ethnicity_pie_chart(
     disease_abbrev: str,
@@ -123,29 +15,99 @@ def generate_ethnicity_pie_chart(
     mutation: str = None,
     directory: str = "excel",
 ):
-    ethnicity_counts = _fetch_ethnicity_pie_chart(
-        disease_abbrev,
-        gene,
-        filter_criteria,
-        country,
-        mutation,
-        directory
-    )
+    disease_abbrev = disease_abbrev.upper()
+    ethnicity_data = []
+    total_count = 0
 
-    ethnicity_pie_missing = _fetch_ethnicity_pie_missing(
-        disease_abbrev,
-        gene,
-        filter_criteria,
-        country,
-        mutation,
-        directory
-    )
+    for filename in os.listdir(directory):
+        if filename.startswith(".~") or filename.startswith("~$"):
+            continue  # Skip temporary Excel files
 
-    total_eligible = sum(ethnicity_counts.values()) + ethnicity_pie_missing
-    ethnicity_pie_missing_percentage = (ethnicity_pie_missing * 100.0) / total_eligible if total_eligible > 0 else 0.0
+        if filename.endswith(".xlsx") or filename.endswith(".xls"):
+            file_path = os.path.join(directory, filename)
+            try:
+                df = get_cached_dataframe(file_path)
+                logger.info(
+                    f"Processing file: {filename}, Initial DataFrame shape: {df.shape}"
+                )
+
+                # Safely filter based on ensemble_decision
+                if "ensemble_decision" in df.columns:
+                    df = df[df["ensemble_decision"] == "IN"]
+                logger.info(f"After ensemble_decision filter: {df.shape}")
+
+                # Only apply the filter if filter_criteria, country, or mutation is provided
+                if (
+                    filter_criteria is not None
+                    or country is not None
+                    or mutation is not None
+                ):
+                    df = apply_filter(df, filter_criteria, None, country, mutation)
+                logger.info(f"After apply_filter: {df.shape}")
+
+                # Safely filter based on disease_abbrev and gene
+                disease_mask = (
+                    df["disease_abbrev"] == disease_abbrev
+                    if "disease_abbrev" in df.columns
+                    else pd.Series(True, index=df.index)
+                )
+                gene_mask = (
+                    (df["gene1"] == gene)
+                    | (df["gene2"] == gene)
+                    | (df["gene3"] == gene)
+                )
+                filtered_df = df[disease_mask & gene_mask]
+                logger.info(
+                    f"After disease_abbrev and gene filter: {filtered_df.shape}"
+                )
+
+                # Safely apply additional filters
+                status_mask = (
+                    filtered_df["status_clinical"] != "clinically unaffected"
+                    if "status_clinical" in filtered_df.columns
+                    else pd.Series(True, index=filtered_df.index)
+                )
+                pathogenicity_mask = (
+                    (filtered_df["pathogenicity1"] != "benign")
+                    & (filtered_df["pathogenicity2"] != "benign")
+                    & (filtered_df["pathogenicity3"] != "benign")
+                )
+
+                filtered_df = filtered_df[status_mask & pathogenicity_mask]
+                logger.info(f"After additional filters: {filtered_df.shape}")
+
+                # Collect ethnicity data
+                if "ethnicity" in filtered_df.columns:
+                    ethnicity_data.extend(filtered_df["ethnicity"].dropna().tolist())
+                total_count += len(filtered_df)
+
+            except Exception as e:
+                logger.error(f"Error processing file {filename}: {str(e)}")
+                continue
+
+    logger.info(f"Total ethnicity data points: {len(ethnicity_data)}")
+
+    # Count ethnicities, excluding -99
+    ethnicity_counts = Counter(str(e) for e in ethnicity_data if e != -99)
+
+    # Calculate missing data
+    missing_count = total_count - sum(ethnicity_counts.values())
+    missing_percentage = (missing_count / total_count * 100) if total_count > 0 else 0
+
+    # Prepare pie chart data
+    pie_chart_data = {
+        k: v for k, v in ethnicity_counts.items() if k.lower() != "unknown"
+    }
+
+    # Add "Unknown" category if present
+    unknown_count = ethnicity_counts.get("Unknown", 0) + ethnicity_counts.get(
+        "unknown", 0
+    )
+    if unknown_count > 0:
+        pie_chart_data["Unknown"] = unknown_count
 
     return {
-        "ethnicity_pie_chart": ethnicity_counts,
-        "ethnicity_pie_missing": ethnicity_pie_missing,
-        "ethnicity_pie_missing_percentage": f"{ethnicity_pie_missing_percentage:.2f}".replace(",", ".")
+        "ethnicity_pie_chart": pie_chart_data,
+        "ethnicity_pie_missing": missing_count,
+        "ethnicity_pie_missing_percentage": f"{missing_percentage:.2f}",
     }
