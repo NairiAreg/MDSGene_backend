@@ -97,8 +97,12 @@ def generate_ethnicity_pie_chart(
 
     # Prepare pie chart data
     pie_chart_data = [
-        {"name": k, "y": v}
-        for k, v in ethnicity_counts.items()
+        {
+            "name": k,
+            "y": v,
+            "color": CHART_COLORS[i] if i < len(CHART_COLORS) else None,
+        }
+        for i, (k, v) in enumerate(ethnicity_counts.items())
         if k.lower() != "unknown"
     ]
 
@@ -107,43 +111,39 @@ def generate_ethnicity_pie_chart(
         "unknown", 0
     )
     if unknown_count > 0:
-        pie_chart_data.append({"name": "Unknown", "y": unknown_count})
+        pie_chart_data.append(
+            {
+                "name": "Unknown",
+                "y": unknown_count,
+                "color": (
+                    CHART_COLORS[len(pie_chart_data)]
+                    if len(pie_chart_data) < len(CHART_COLORS)
+                    else None
+                ),
+            }
+        )
 
     # Sort data by value in descending order
     pie_chart_data.sort(key=lambda x: x["y"], reverse=True)
 
     # Calculate percentages
     total = sum(item["y"] for item in pie_chart_data)
-    for item in pie_chart_data:
+    for i, item in enumerate(pie_chart_data):
+        item["count"] = item["y"]  # Store the original count
         item["y"] = (item["y"] / total) * 100
-
-    # Function to generate a random color in hex format (if needed)
-    def generate_random_color():
-        return "#{:06x}".format(random.randint(0, 0xFFFFFF))
-
-    # Assign colors to pie_chart_data
-    pie_chart_data_with_colors = [
-        {
-            "name": data_point["name"],
-            "y": data_point["y"],
-            # Use predefined colors, or default to None if there are more data points than colors
-            "color": (
-                CHART_COLORS[index] if index < len(CHART_COLORS) else None
-            ),  # Continue with default color
-            # "color": colors[index] if index < len(colors) else generate_random_color()  # Optional random color
-        }
-        for index, data_point in enumerate(pie_chart_data)
-    ]
+        item["color"] = CHART_COLORS[i] if i < len(CHART_COLORS) else None
 
     # Prepare the chart configuration with the colored data
     chart_config = {
         "chart": {"type": "pie"},
-        "accessibility": {
-            "enabled": False,
-        },
+        "accessibility": {"enabled": False},
         "title": {"text": "Ethnicity"},
         "subtitle": {
             "text": f"Number of patients with missing data: {missing_count} ({missing_percentage:.1f}%)"
+        },
+        "tooltip": {
+            "pointFormat": "<b>{point.count}</b> patient(s)",
+            "useHTML": True,
         },
         "plotOptions": {
             "pie": {
@@ -159,9 +159,11 @@ def generate_ethnicity_pie_chart(
             {
                 "name": "Ethnicity",
                 "colorByPoint": False,
-                "data": pie_chart_data_with_colors,
+                "data": pie_chart_data,
             }
         ],
     }
+
+    logger.info(f"Final chart config: {chart_config}")
 
     return chart_config

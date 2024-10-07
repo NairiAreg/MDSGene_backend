@@ -161,7 +161,6 @@ def generate_aao_empirical_distribution(
             "title": {"text": "Percent rank"},
             "min": 0,
             "max": 100,
-            # "labels": {"formatter": "function () { return this.value + '%'; }"},
             "labels": {
                 "formatter": {
                     "__function": """
@@ -170,7 +169,11 @@ def generate_aao_empirical_distribution(
                 },
             },
         },
-        "tooltip": {"pointFormat": "{point.x} years: {point.y}%"},
+        "tooltip": {
+            "useHTML": True,
+            "headerFormat": "",
+            "pointFormat": "<b>{point.x} years</b><br><b>{point.y:.1f}%</b>",
+        },
         "plotOptions": {"area": {"marker": {"enabled": False}}},
         "series": [
             {
