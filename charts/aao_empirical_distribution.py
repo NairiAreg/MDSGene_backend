@@ -146,15 +146,33 @@ def generate_aao_empirical_distribution(
 
     histogram_data.append([100, prev[1]])
 
-    return {
-        "hist_aao_ed_data": histogram_data,
-        "hist_aao_25_percent": hist_aao_25_percent,
-        "hist_aao_75_percent": hist_aao_75_percent,
-        "hist_aao_median": hist_aao_median,
-        "hist_range_min_years": (
-            stats_by_years.minmax[0] if hasattr(stats_by_years, "minmax") else None
-        ),
-        "hist_range_max_years": (
-            stats_by_years.minmax[1] if hasattr(stats_by_years, "minmax") else None
-        ),
+    # Prepare the chart configuration
+    chart_config = {
+        "accessibility": {
+            "enabled": False,
+        },
+        "chart": {"type": "line"},
+        "title": {"text": "Empirical distribution of age at onset"},
+        "subtitle": {
+            "text": f"Median: {hist_aao_median}; 25th/75th perc.: {hist_aao_25_percent}/{hist_aao_75_percent}; Range: {stats_by_years.minmax[0]:.2f}-{stats_by_years.minmax[1]:.2f} yrs."
+        },
+        "xAxis": {"title": {"text": "Age at onset"}, "min": 0, "max": 100},
+        "yAxis": {
+            "title": {"text": "Percent rank"},
+            "min": 0,
+            "max": 100,
+            "labels": {"formatter": "function () { return this.value + '%'; }"},
+        },
+        "tooltip": {"pointFormat": "{point.x} years: {point.y}%"},
+        "plotOptions": {"area": {"marker": {"enabled": False}}},
+        "series": [
+            {
+                "name": "Age distribution",
+                "data": histogram_data,
+                "lineWidth": 3,
+                "color": "#800000",
+            },
+        ],
     }
+
+    return chart_config

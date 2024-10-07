@@ -95,19 +95,48 @@ def generate_ethnicity_pie_chart(
     missing_percentage = (missing_count / total_count * 100) if total_count > 0 else 0
 
     # Prepare pie chart data
-    pie_chart_data = {
-        k: v for k, v in ethnicity_counts.items() if k.lower() != "unknown"
-    }
+    pie_chart_data = [
+        {"name": k, "y": v}
+        for k, v in ethnicity_counts.items()
+        if k.lower() != "unknown"
+    ]
 
     # Add "Unknown" category if present
     unknown_count = ethnicity_counts.get("Unknown", 0) + ethnicity_counts.get(
         "unknown", 0
     )
     if unknown_count > 0:
-        pie_chart_data["Unknown"] = unknown_count
+        pie_chart_data.append({"name": "Unknown", "y": unknown_count})
 
-    return {
-        "ethnicity_pie_chart": pie_chart_data,
-        "ethnicity_pie_missing": missing_count,
-        "ethnicity_pie_missing_percentage": f"{missing_percentage:.2f}",
+    # Sort data by value in descending order
+    pie_chart_data.sort(key=lambda x: x["y"], reverse=True)
+
+    # Calculate percentages
+    total = sum(item["y"] for item in pie_chart_data)
+    for item in pie_chart_data:
+        item["y"] = (item["y"] / total) * 100
+
+    # Prepare the chart configuration
+    chart_config = {
+        "chart": {"type": "pie"},
+        "accessibility": {
+            "enabled": False,
+        },
+        "title": {"text": "Ethnicity"},
+        "subtitle": {
+            "text": f"Number of patients with missing data: {missing_count} ({missing_percentage:.1f}%)"
+        },
+        "plotOptions": {
+            "pie": {
+                "allowPointSelect": True,
+                "cursor": "pointer",
+                "dataLabels": {
+                    "enabled": True,
+                    "format": "<b>{point.name}</b>: {point.percentage:.1f} %",
+                },
+            }
+        },
+        "series": [{"name": "Ethnicity", "colorByPoint": True, "data": pie_chart_data}],
     }
+
+    return chart_config
