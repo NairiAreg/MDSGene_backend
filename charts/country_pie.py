@@ -90,39 +90,22 @@ def generate_country_pie_chart(
     )
 
     # Prepare pie chart data
-    pie_chart_data = [{"name": k, "y": v} for k, v in country_counts.items()]
+    pie_chart_data = [
+        {"name": k, "y": v, "count": v} for k, v in country_counts.items()
+    ]
 
     # Sort data by value in descending order
-    pie_chart_data.sort(key=lambda x: x["y"], reverse=True)
+    pie_chart_data.sort(key=lambda x: x["count"], reverse=True)
 
-    # Calculate percentages
-    total = sum(item["y"] for item in pie_chart_data)
-    for item in pie_chart_data:
-        item["y"] = (item["y"] / total) * 100
+    # Calculate percentages and assign colors
+    total = sum(item["count"] for item in pie_chart_data)
+    for i, item in enumerate(pie_chart_data):
+        item["y"] = (item["count"] / total) * 100
+        item["color"] = CHART_COLORS[i] if i < len(CHART_COLORS) else None
 
     # Calculate missing percentage
     missing_percentage = (missing_count / total_count * 100) if total_count > 0 else 0
-
-    # Function to generate a random color in hex format
-    def generate_random_color():
-        return "#{:06x}".format(random.randint(0, 0xFFFFFF))
-
-    # Assign colors to pie_chart_data
-    pie_chart_data_with_colors = [
-        {
-            "name": data_point["name"],
-            "y": data_point["y"],
-            # If we run out of predefined colors, we can either:
-            # Use a default color or generate a new one.
-            "color": (
-                CHART_COLORS[index] if index < len(CHART_COLORS) else None
-            ),  # Continue with default color
-            # "color": colors[index] if index < len(colors) else generate_random_color()  # Generate random color
-        }
-        for index, data_point in enumerate(pie_chart_data)
-    ]
-
-    # Update chart config to include the colored data
+    # Update chart config
     chart_config = {
         "chart": {"type": "pie"},
         "accessibility": {
@@ -131,6 +114,10 @@ def generate_country_pie_chart(
         "title": {"text": "Country Distribution"},
         "subtitle": {
             "text": f"Number of patients with missing data: {missing_count} ({missing_percentage:.1f}%)"
+        },
+        "tooltip": {
+            "pointFormat": "<br><b>{point.count}</b> patient(s)",
+            "useHTML": True,
         },
         "plotOptions": {
             "pie": {
@@ -145,8 +132,8 @@ def generate_country_pie_chart(
         "series": [
             {
                 "name": "Country",
-                "colorByPoint": False,
-                "data": pie_chart_data_with_colors,
+                "colorByPoint": True,
+                "data": pie_chart_data,
             }
         ],
     }
