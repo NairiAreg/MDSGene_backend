@@ -1,3 +1,4 @@
+import json
 from typing import List
 
 from fastapi import FastAPI, Query
@@ -5,6 +6,8 @@ import diseases
 import overview
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
+
+import utils
 from charts.aao_empirical_distribution import generate_aao_empirical_distribution
 from charts.aao_histogram import generate_aao_histogram
 from charts.country_pie import generate_country_pie_chart
@@ -29,7 +32,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Allow your frontend origin
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Allow your frontend origin
     allow_credentials=True,
     allow_methods=["*"],  # You can specify specific HTTP methods if needed
     allow_headers=["*"],  # You can specify specific headers if needed
@@ -381,3 +384,84 @@ async def symptoms_for_diagnosis_endpoint(
     }
 
     return response
+
+
+@app.post("/ai_prompt")
+async def run_ollama_endpoint(prompt: str):
+    input_text = """
+    You are a model that converts patient information into a JSON format. I will provide you with data about the patient's age and symptoms in plain text, and your task is to return it in a structured JSON format. Here’s an example:
+
+Input data:
+
+Age: 42  
+Symptoms:  
+- Limb dystonia  
+- Bradykinesia  
+- Resting tremor  
+- Leg rigidity  
+
+Your response should be in the following JSON format:
+
+{
+  "age": 42,
+  "symptoms": [
+    {
+      "name": "Limb dystonia",
+      "description": "No symptom description provided"
+    },
+    {
+      "name": "Bradykinesia",
+      "description": "No symptom description provided"
+    },
+    {
+      "name": "Resting tremor",
+      "description": "No symptom description provided"
+    },
+    {
+      "name": "Leg rigidity",
+      "description": "No symptom description provided"
+    }
+  ]
+}
+
+Now, using this format, I will provide information about a different patient, and you will convert it into JSON.
+
+Input data:
+    """
+
+    extraction_response = utils.run_ollama_model(input_text + prompt + " please return the extracted data in JSON format without any additional text.")
+
+    if not extraction_response:
+        return {"error": "Failed to extract data from input text."}
+
+    return extraction_response
+    # try:
+    #     extraction_data = json.loads(extraction_response)
+    #     age = extraction_data.get("age")
+    #     symptoms = extraction_data.get("symptoms", [])
+    # except json.JSONDecodeError:
+    #     return {"error": "Failed to parse extraction response."}
+    #
+    # # Pass extracted data to the diagnosis function
+    # response = await symptoms_for_diagnosis_endpoint(aao=age, symptoms=symptoms)
+    # if not response:
+    #     return {"error": "Failed to process extracted data for diagnosis."}
+    #
+    # # Send response to Ollama to convert to readable text
+    # summary_request = {
+    #     "instruction": "Convert the diagnosis information into a readable patient report.",
+    #     "data": response
+    # }
+    # summary_response = utils.run_ollama_model(json.dumps(summary_request))
+    # if summary_response:
+    #     return {"response": summary_response}
+    # return {"error": "Failed to generate readable response."}
+
+
+# def clean_response_from_text(text):
+#     # Extract JSON string from the text
+#     start = text.find('```json') + len('```json')
+#     end = text.find('```', start)
+#     json_string = text[start:end].strip()
+#
+#     return json_string
