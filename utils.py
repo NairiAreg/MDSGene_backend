@@ -521,3 +521,16 @@ def safe_get(df, column, index, default=None):
         return value
     except:
         return default
+
+
+# Define the function to load the categories metadata
+def load_symptom_categories(directory='properties'):
+    # Construct the full path to the categories metadata file
+    categories_file_path = os.path.join(directory, "symptom_categories.json")
+
+    if os.path.exists(categories_file_path):
+        with open(categories_file_path, 'r') as file:
+            categories_metadata = json.load(file)
+    else:
+        categories_metadata = {}
+    return categories_metadata

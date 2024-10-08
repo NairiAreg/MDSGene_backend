@@ -1,0 +1,4 @@
+{
+    "Motor_signs_symptoms": ["motor_sympt", "parkinsonism_sympt", "bradykinesia_sympt", "tremor_HP:0001337"],
+    "Non_motor_signs_symptoms": ["NMS_park_sympt", "olfaction_sympt", "sleep_disorder_sympt"]
+}

@@ -16,6 +16,8 @@ from mutation_details import get_data_for_mutation
 
 import logging
 
+from utils import load_symptom_categories
+
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -243,3 +245,15 @@ async def generate_world_map_charts_data_endpoint(
         disease_abbrev, gene, filter_criteria, country, mutation, directory
     )
     return data
+
+
+# Endpoint to get the full content of the categories metadata file
+@app.get("/symptom_categories")
+async def get_categories_metadata(
+    directory: str = Query("excel", description="Directory where categories metadata is stored"),
+    categories_filename: str = Query("symptom_categories.json", description="Filename of the categories metadata file")
+):
+    # Load the categories metadata
+    categories_metadata = load_symptom_categories()
+
+    return categories_metadata
