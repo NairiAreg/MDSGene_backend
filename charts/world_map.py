@@ -3,7 +3,6 @@ import pandas as pd
 import os
 from collections import Counter
 from utils import get_cached_dataframe, apply_filter
-import pycountry
 
 
 def get_mutation_columns(df):
@@ -33,13 +32,6 @@ def process_dataframe(df, disease_abbrev, gene):
     return filtered_df
 
 
-def get_country_code(country_name):
-    try:
-        return pycountry.countries.search_fuzzy(country_name)[0].alpha_3
-    except:
-        return None
-
-
 def generate_world_map_data(all_data):
     country_counts = all_data["country"].value_counts()
     return [
@@ -56,16 +48,35 @@ def generate_world_map_data(all_data):
 
 
 def generate_mutation_data(country_data):
-    mutation_cols = get_mutation_columns(country_data)
+    mutation_counts = Counter()
 
-    mutations = []
-    for col in mutation_cols:
-        mutations.extend(
-            [mut for mut in country_data[col].dropna().tolist() if mut != -99]
-        )
+    # Handle mut1 and mut2
+    for i in range(1, 3):
+        alias_col = f"mut{i}_alias_original"
+        mutation_cols = [f"mut{i}_p", f"mut{i}_c", f"mut{i}_g"]
 
-    mutation_counts = Counter(mutations)
+        for _, row in country_data.iterrows():
+            alias = row[alias_col]
+            if pd.notna(alias) and alias != "-99":
+                if any(
+                    pd.notna(row[col]) and row[col] != "-99" for col in mutation_cols
+                ):
+                    mutation_counts[alias] += 1
+
+    # Handle mut3 separately
+    alias_col = "mut3_alias"
+    mutation_cols = ["mut3_p", "mut3_c", "mut3_g"]
+
+    for _, row in country_data.iterrows():
+        alias = row[alias_col]
+        if pd.notna(alias) and alias != "-99":
+            if any(pd.notna(row[col]) and row[col] != "-99" for col in mutation_cols):
+                mutation_counts[alias] += 1
+
     total_mutations = sum(mutation_counts.values())
+
+    if total_mutations == 0:
+        return []  # Return an empty list if there are no mutations
 
     pie_data = [
         {"name": mutation, "y": (count / total_mutations) * 100}
@@ -74,7 +85,13 @@ def generate_mutation_data(country_data):
 
     if len(mutation_counts) > 10:
         other_count = sum(dict(mutation_counts.most_common()[10:]).values())
-        pie_data.append({"name": "Other", "y": (other_count / total_mutations) * 100})
+        pie_data.append(
+            {
+                "name": "Other",
+                "y": (other_count / total_mutations) * 100,
+                "color": "#548b90",  # Set color for "Other" slice
+            }
+        )
 
     return pie_data
 
@@ -182,11 +199,12 @@ def generate_world_map_charts_data(
 
             charts_data["mutations"][country_name] = {
                 "chart": {"type": "pie"},
+                "accessibility": {"enabled": False},
                 "title": {
                     "text": f"Mutations in {country_name} (n = {len(country_data)})"
                 },
                 "series": [{"name": "Mutations", "data": mutation_data}],
-                "tooltip": {"pointFormat": "{point.name}: {point.y:.1f}%"},
+                "tooltip": {"pointFormat": "Mutations: <b>{point.y:.1f}%</b>"},
             }
 
     return charts_data
