@@ -10,6 +10,7 @@ from charts.ethnicity_pie import generate_ethnicity_pie_chart
 from charts.reporter_signs_symptoms import generate_symptoms_chart
 from charts.initial_signs_symptoms import generate_initial_signs_symptoms
 from charts.levodopa_response import generate_levodopa_response
+from charts.world_map import generate_world_map_charts_data
 from study_details import get_patients_for_publication
 from mutation_details import get_data_for_mutation
 
@@ -224,6 +225,21 @@ async def levodopa_response_endpoint(
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_symptoms_chart(
+        disease_abbrev, gene, filter_criteria, country, mutation, directory
+    )
+    return data
+
+
+@app.get("/world_map")
+async def generate_world_map_charts_data_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    country: str = Query(None, description="Country"),
+    mutation: str = Query(None, description="Mutation"),
+    directory: str = Query("excel", description="Directory"),
+):
+    data = generate_world_map_charts_data(
         disease_abbrev, gene, filter_criteria, country, mutation, directory
     )
     return data

@@ -180,7 +180,7 @@ def generate_aao_empirical_distribution(
                 "name": "Age distribution",
                 "data": histogram_data,
                 "lineWidth": 3,
-                "color": "#800000",
+                "color": "#AC202D",
             },
         ],
     }

@@ -168,7 +168,7 @@ def generate_aao_histogram(
         },
         "plotOptions": {
             "column": {
-                "color": "#8B0000",  # Dark red color
+                "color": "#AC202D",
                 "groupPadding": 0,
                 "pointPadding": 0,
                 "borderWidth": 0,

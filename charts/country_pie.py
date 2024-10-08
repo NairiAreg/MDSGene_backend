@@ -2,7 +2,6 @@ import pandas as pd
 import os
 import logging
 from utils import get_cached_dataframe, apply_filter, CHART_COLORS
-import random
 
 logger = logging.getLogger(__name__)
 
