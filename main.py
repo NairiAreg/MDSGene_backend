@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import FastAPI, Query
 import diseases
 import overview
