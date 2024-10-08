@@ -1,3 +1,4 @@
+from utils import COUNTRIES, CHART_COLORS
 import pandas as pd
 import os
 from collections import Counter
@@ -9,7 +10,7 @@ def get_mutation_columns(df):
     return [
         col
         for col in df.columns
-        if col.startswith("mut") and col.endswith(("_g", "_c", "_p"))
+        if col.startswith("mut") and col.split("_")[-1] in ("g", "c", "p")
     ]
 
 
@@ -29,7 +30,6 @@ def process_dataframe(df, disease_abbrev, gene):
         .isin(["benign"])
         .any(axis=1)
     ]
-
     return filtered_df
 
 
@@ -44,13 +44,14 @@ def generate_world_map_data(all_data):
     country_counts = all_data["country"].value_counts()
     return [
         {
-            "name": country,
+            "name": COUNTRIES.get(country, country),
             "value": int(count),
             "z": int(count),
-            "code": country,  # Assuming 'country' is the ISO code. If not, you'll need to map it.
+            "code": country,
         }
         for country, count in country_counts.items()
         if country != -99
+        and country in COUNTRIES  # Ensure we have a valid country code
     ]
 
 
@@ -59,19 +60,21 @@ def generate_mutation_data(country_data):
 
     mutations = []
     for col in mutation_cols:
-        mutations.extend(country_data[col].dropna().tolist())
+        mutations.extend(
+            [mut for mut in country_data[col].dropna().tolist() if mut != -99]
+        )
 
     mutation_counts = Counter(mutations)
     total_mutations = sum(mutation_counts.values())
 
     pie_data = [
-        {"name": mutation, "y": count / total_mutations * 100}
-        for mutation, count in mutation_counts.most_common(5)
+        {"name": mutation, "y": (count / total_mutations) * 100}
+        for mutation, count in mutation_counts.most_common(10)
     ]
 
-    if len(mutation_counts) > 5:
-        other_count = sum(dict(mutation_counts.most_common()[5:]).values())
-        pie_data.append({"name": "Other", "y": other_count / total_mutations * 100})
+    if len(mutation_counts) > 10:
+        other_count = sum(dict(mutation_counts.most_common()[10:]).values())
+        pie_data.append({"name": "Other", "y": (other_count / total_mutations) * 100})
 
     return pie_data
 
@@ -109,13 +112,20 @@ def generate_world_map_charts_data(
                 print(f"Error reading file {filename}: {str(e)}")
                 continue
 
-    top_countries = all_data["country"].value_counts().nlargest(4).index.tolist()
+    # Remove data with country code "-99"
+    all_data = all_data[all_data["country"] != -99]
+
+    # Remove "-99" values from mutation columns
+    mutation_cols = get_mutation_columns(all_data)
+    for col in mutation_cols:
+        all_data[col] = all_data[col].replace(-99, pd.NA)
 
     world_map_data = generate_world_map_data(all_data)
 
     charts_data = {
         "worldMap": {
-            "chart": {"map": None},  # This will be set to topology in JavaScript
+            "chart": {"map": None},
+            "accessibility": {"enabled": False},
             "title": {"text": f"World map {gene}"},
             "subtitle": {"text": "Click bubbles to select"},
             "mapNavigation": {
@@ -136,27 +146,47 @@ def generate_world_map_charts_data(
                 },
                 {
                     "type": "mapbubble",
-                    "name": "Countries",
+                    "name": gene,
                     "data": world_map_data,
                     "joinBy": ["iso-a3", "code"],
                     "minSize": "4%",
                     "maxSize": "12%",
-                    "tooltip": {"pointFormat": "{point.name}: {point.z}"},
+                    "color": "rgba(44, 175, 254, 0.5)",
+                    "borderColor": "#2CAFFE",
+                    "borderWidth": 1,
+                    "tooltip": {
+                        "pointFormat": "{point.name}: {point.z} patients",
+                        "headerFormat": "{series.name}<br>",
+                    },
                 },
             ],
         },
         "mutations": {},
     }
 
-    for country in top_countries:
-        country_data = all_data[all_data["country"] == country]
+    # Generate mutation pie charts for each country and sort by patient count
+    country_patient_counts = all_data["country"].value_counts()
+    sorted_countries = country_patient_counts.index.tolist()
+
+    for country_code in sorted_countries:
+        country_name = COUNTRIES.get(country_code, country_code)
+        country_data = all_data[all_data["country"] == country_code]
         mutation_data = generate_mutation_data(country_data)
-        charts_data["mutations"][country] = {
-            "chart": {"type": "pie"},
-            "title": {
-                "text": f"Number of mutations in {country} n = {len(country_data)}"
-            },
-            "series": [{"name": "Mutations", "data": mutation_data}],
-        }
+
+        # Only create a chart if there are mutations after filtering out -99
+        if mutation_data:
+            # Assign colors to pie slices
+            for i, data_point in enumerate(mutation_data):
+                if i < len(CHART_COLORS):
+                    data_point["color"] = CHART_COLORS[i]
+
+            charts_data["mutations"][country_name] = {
+                "chart": {"type": "pie"},
+                "title": {
+                    "text": f"Mutations in {country_name} (n = {len(country_data)})"
+                },
+                "series": [{"name": "Mutations", "data": mutation_data}],
+                "tooltip": {"pointFormat": "{point.name}: {point.y:.1f}%"},
+            }
 
     return charts_data
