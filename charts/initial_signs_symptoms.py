@@ -5,6 +5,21 @@ from utils import get_cached_dataframe, apply_filter
 
 logger = logging.getLogger(__name__)
 
+SYMPTOM_MAPPING = {
+    "tremor_HP:0001337": "Tremor (any or unspecified)",
+    "bradykinesia": "Bradykinesia",
+    "rigidity": "Rigidity",
+    "resting_tremor": "Resting tremor",
+    "depression": "Depression",
+    "dystonia": "Dystonia",
+    "postural_instability": "Postural instability",
+    "anxiety": "Anxiety",
+    "cognitive_decline": "Cognitive decline",
+    "postural_tremor": "Postural tremor",
+    "psychotic": "Psychotic",
+    "sleep_disorder": "Sleep disorder",
+}
+
 
 def _fetch_initial_symptoms_data(
     disease_abbrev: str,
@@ -72,13 +87,12 @@ def _fetch_initial_symptoms_data(
                     if column in filtered_df.columns:
                         symptom_counts = filtered_df[column].value_counts().to_dict()
                         for symptom, count in symptom_counts.items():
-                            if (
-                                pd.notna(symptom) and symptom != -99
-                            ):  # Only change: exclude -99
-                                if symptom in initial_symptoms:
-                                    initial_symptoms[symptom] += count
+                            if pd.notna(symptom) and symptom != -99:
+                                mapped_symptom = SYMPTOM_MAPPING.get(symptom, symptom)
+                                if mapped_symptom in initial_symptoms:
+                                    initial_symptoms[mapped_symptom] += count
                                 else:
-                                    initial_symptoms[symptom] = count
+                                    initial_symptoms[mapped_symptom] = count
 
             except Exception as e:
                 logger.error(f"Error reading file {filename}: {str(e)}")
@@ -123,7 +137,7 @@ def generate_initial_signs_symptoms(
         },
         "title": {"text": "Initial Signs and Symptoms Histogram"},
         "subtitle": {
-            "text": f"Number of patients with missing data: {patients_with_missing_data} ({hist_missing_percentage}%)"
+            "text": f"Number of patients with missing data: {patients_with_missing_data} ({hist_missing_percentage:.2f}%)"
         },
         "xAxis": {
             "categories": [item["symptom"] for item in histogram_data],

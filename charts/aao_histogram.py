@@ -174,6 +174,13 @@ def generate_aao_histogram(
                 "borderWidth": 0,
             }
         },
+        "tooltip": {
+            "headerFormat": "{point.key}<br>",
+            "pointFormat": "<b>{point.y}</b>Patients",
+            "hideDelay": 0,
+            "shared": True,
+            "useHTML": True,
+        },
         "series": [{"name": "Age distribution", "data": grouped_data}],
         "credits": {"enabled": False},
         "legend": {"enabled": False},
