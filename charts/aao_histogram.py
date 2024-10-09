@@ -161,10 +161,8 @@ def generate_aao_histogram(
         "yAxis": {
             "title": {"text": "Number of patients"},
             "min": 0,
-            "max": max(grouped_data)
-            + 50
-            - (max(grouped_data) % 50),  # Round up to nearest 50
-            "tickInterval": 50,
+            "max": max(grouped_data),
+            "tickInterval": min(max(grouped_data), 50),
         },
         "plotOptions": {
             "column": {

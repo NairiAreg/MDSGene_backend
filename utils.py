@@ -387,6 +387,14 @@ COUNTRIES = {
     "ZWE": "Zimbabwe",
 }
 
+RESPONSE_QUANTIFICATION = {
+    "Good": ["good/excellent", "good/transient", "good", "excellent", "significantly"],
+    "Yes, undefined": ["-99"],
+    "Minimal": ["minimal/intermittent", "minimal", "intermittent", "poor"],
+    "Moderate": ["moderate", "marked"],
+    "Not treated": ["not treated"],
+}
+
 
 def get_cached_dataframe(file_path):
     global _dataframe_cache
@@ -1253,12 +1261,12 @@ def safe_get(df, column, index, default=None):
 
 
 # Define the function to load the categories metadata
-def load_symptom_categories(directory='properties'):
+def load_symptom_categories(directory="properties"):
     # Construct the full path to the categories metadata file
     categories_file_path = os.path.join(directory, "symptom_categories.json")
 
     if os.path.exists(categories_file_path):
-        with open(categories_file_path, 'r') as file:
+        with open(categories_file_path, "r") as file:
             categories_metadata = json.load(file)
     else:
         categories_metadata = {}
@@ -1273,7 +1281,7 @@ def run_ollama_model(prompt, model_name="llama3.1:latest"):
             input=str(prompt),
             text=True,
             capture_output=True,
-            check=True
+            check=True,
         )
         # Process the response
         response = result.stdout.strip()
@@ -1283,7 +1291,9 @@ def run_ollama_model(prompt, model_name="llama3.1:latest"):
         logger.error(f"CalledProcessError: {e.stderr}")
         return None
     except FileNotFoundError:
-        logger.error("Error: The 'ollama' command was not found. Make sure it is installed and available in the PATH.")
+        logger.error(
+            "Error: The 'ollama' command was not found. Make sure it is installed and available in the PATH."
+        )
         return None
     except Exception as e:
         logger.error(f"Unexpected error: {e}")

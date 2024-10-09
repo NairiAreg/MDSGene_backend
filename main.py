@@ -32,7 +32,10 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Allow your frontend origin
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],  # Allow your frontend origin
     allow_credentials=True,
     allow_methods=["*"],  # You can specify specific HTTP methods if needed
     allow_headers=["*"],  # You can specify specific headers if needed
@@ -255,8 +258,13 @@ async def generate_world_map_charts_data_endpoint(
 # Endpoint to get the full content of the categories metadata file
 @app.get("/symptom_categories")
 async def get_categories_metadata(
-    directory: str = Query("excel", description="Directory where categories metadata is stored"),
-    categories_filename: str = Query("symptom_categories.json", description="Filename of the categories metadata file")
+    directory: str = Query(
+        "excel", description="Directory where categories metadata is stored"
+    ),
+    categories_filename: str = Query(
+        "symptom_categories.json",
+        description="Filename of the categories metadata file",
+    ),
 ):
     # Load the categories metadata
     categories_metadata = load_symptom_categories()
@@ -266,14 +274,11 @@ async def get_categories_metadata(
 
 @app.get("/symptoms_for_diagnosis")
 async def symptoms_for_diagnosis_endpoint(
-        aao: float = Query(None, description="Age at onset"),
-        symptoms: List[str] = Query(None, description="List of selected symptoms"),
+    aao: float = Query(None, description="Age at onset"),
+    symptoms: List[str] = Query(None, description="List of selected symptoms"),
 ):
     # Получить список заболеваний и соответствующих симптомов из модуля diseases
-    matching_diseases = diseases.get_matching_diseases(
-        aao=aao,
-        symptoms=symptoms
-    )
+    matching_diseases = diseases.get_matching_diseases(aao=aao, symptoms=symptoms)
 
     logger.debug(f"Number of matching diseases: {len(matching_diseases)}")
 
@@ -282,8 +287,8 @@ async def symptoms_for_diagnosis_endpoint(
 
 @app.get("/symptoms_for_diagnosis")
 async def symptoms_for_diagnosis_endpoint(
-        aao: float = Query(None, description="Age at onset"),
-        symptoms: List[str] = Query(None, description="List of selected symptoms"),
+    aao: float = Query(None, description="Age at onset"),
+    symptoms: List[str] = Query(None, description="List of selected symptoms"),
 ):
     # Пример данных, которые могут быть возвращены (на основании изображения)
     matching_diseases = [
@@ -294,9 +299,9 @@ async def symptoms_for_diagnosis_endpoint(
             "signs_and_symptoms": {
                 "selected_and_previously_reported": "Abnormal central motor function (100%)",
                 "previously_reported_but_not_selected": "Dystonia (96%), Dysarthria (89%), Abnormality of skeletal morphology (79%)",
-                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)"
+                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
             },
-            "reported_mutations": "p.Ile51Thr: hom c.1068+1G>T + p.Arg201His: comp. het., p.Ile51Asn: comp. het."
+            "reported_mutations": "p.Ile51Thr: hom c.1068+1G>T + p.Arg201His: comp. het., p.Ile51Asn: comp. het.",
         },
         {
             "diagnosis": "DYT/PARK-PTS",
@@ -305,9 +310,9 @@ async def symptoms_for_diagnosis_endpoint(
             "signs_and_symptoms": {
                 "selected_and_previously_reported": "Abnormal central motor function (81%)",
                 "previously_reported_but_not_selected": "Cognitive impairment (78%), Global developmental delay (75%), Intellectual developmental disorder (70%)",
-                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)"
+                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
             },
-            "reported_mutations": "p.Ile114Val: hom p.Asp136Val + p.Thr67Met: comp. het., p.Val57del + p.Lys29_Ser32del: comp. het."
+            "reported_mutations": "p.Ile114Val: hom p.Asp136Val + p.Thr67Met: comp. het., p.Val57del + p.Lys29_Ser32del: comp. het.",
         },
         {
             "diagnosis": "DYT/PARK-PLA2G6",
@@ -316,9 +321,9 @@ async def symptoms_for_diagnosis_endpoint(
             "signs_and_symptoms": {
                 "selected_and_previously_reported": "Abnormal central motor function (81%)",
                 "previously_reported_but_not_selected": "Pyramidal sign (77%), Cerebellar atrophy (69%), MRI brain other abnormalities sympt (59%)",
-                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)"
+                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
             },
-            "reported_mutations": "p.Ala80Thr: hom p.Val691del: hom p.Arg37* + p.Ser774Ile: comp. het."
+            "reported_mutations": "p.Ala80Thr: hom p.Val691del: hom p.Arg37* + p.Ser774Ile: comp. het.",
         },
         {
             "diagnosis": "PARK-SYNJ1",
@@ -327,9 +332,9 @@ async def symptoms_for_diagnosis_endpoint(
             "signs_and_symptoms": {
                 "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (24%)",
                 "previously_reported_but_not_selected": "Bradykinesia (82%), Tremor (64%), Hyperreflexia (29%)",
-                "selected_but_not_previously_reported": "Abnormal central motor function (0%)"
+                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
             },
-            "reported_mutations": "p.Arg258Gln: hom p.Arg459Pro: hom"
+            "reported_mutations": "p.Arg258Gln: hom p.Arg459Pro: hom",
         },
         {
             "diagnosis": "PARK-ATP13A2",
@@ -338,9 +343,9 @@ async def symptoms_for_diagnosis_endpoint(
             "signs_and_symptoms": {
                 "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (86%)",
                 "previously_reported_but_not_selected": "Parkinsonism (100%), Bradykinesia (92%), Hypertonia (86%)",
-                "selected_but_not_previously_reported": "Abnormal central motor function (0%)"
+                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
             },
-            "reported_mutations": "p.Gly797Asp: hom p.Gly509Arg: hom"
+            "reported_mutations": "p.Gly797Asp: hom p.Gly509Arg: hom",
         },
         {
             "diagnosis": "PARK-CP",
@@ -349,9 +354,9 @@ async def symptoms_for_diagnosis_endpoint(
             "signs_and_symptoms": {
                 "selected_and_previously_reported": "Abnormal central motor function (69%)",
                 "previously_reported_but_not_selected": "Hypotonia on physical examination (81%), Spastic paraplegia (50%), Diabetes mellitus (39%)",
-                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)"
+                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
             },
-            "reported_mutations": "p.Trp283Ser: hom c.1864+1G>C: n.a."
+            "reported_mutations": "p.Trp283Ser: hom c.1864+1G>C: n.a.",
         },
         {
             "diagnosis": "PARK-DCTN1",
@@ -360,27 +365,47 @@ async def symptoms_for_diagnosis_endpoint(
             "signs_and_symptoms": {
                 "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (100%)",
                 "previously_reported_but_not_selected": "Bradykinesia (87%), Resting tremor (58%)",
-                "selected_but_not_previously_reported": "Abnormal central motor function (0%)"
+                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
             },
-            "reported_mutations": "p.Gly174Arg: het p.Ser76Thr: het"
-        }
+            "reported_mutations": "p.Gly174Arg: het p.Ser76Thr: het",
+        },
     ]
 
     # Перечень заболеваний, по которым не было записано никаких выбранных признаков и симптомов
     no_matching_diseases = [
-        "PARK-LRRK2", "PARK-SNCA", "PARK-PINK1", "PARK-VPS35", "PARK-TOR1A", "DYT-KMT2B", "DYT-GNAL", "DYT-THAP1",
+        "PARK-LRRK2",
+        "PARK-SNCA",
+        "PARK-PINK1",
+        "PARK-VPS35",
+        "PARK-TOR1A",
+        "DYT-KMT2B",
+        "DYT-GNAL",
+        "DYT-THAP1",
         "DYT-ANO3",
-        "PARK-DNKQ", "PARK-RFXOX", "DYT/PARK-SLC30A10", "DYT/PARK-TAF1", "DYT/PARK-QDPR", "DYT/PARK-SLC6A3",
-        "HSP-REEP1", "DYT-PRKRA",
-        "DYT/PARK-GCH1", "DYT-HPCA", "PARK-VPS13C", "DYT/PARK-TH", "DYT-KCTD17", "DYT-SGCE", "DYT/PARK-SPR", "HSP-ATL1",
-        "HSP-SPAST"
+        "PARK-DNKQ",
+        "PARK-RFXOX",
+        "DYT/PARK-SLC30A10",
+        "DYT/PARK-TAF1",
+        "DYT/PARK-QDPR",
+        "DYT/PARK-SLC6A3",
+        "HSP-REEP1",
+        "DYT-PRKRA",
+        "DYT/PARK-GCH1",
+        "DYT-HPCA",
+        "PARK-VPS13C",
+        "DYT/PARK-TH",
+        "DYT-KCTD17",
+        "DYT-SGCE",
+        "DYT/PARK-SPR",
+        "HSP-ATL1",
+        "HSP-SPAST",
     ]
 
     logger.debug(f"Number of matching diseases: {len(matching_diseases)}")
 
     response = {
         "matching_diseases": matching_diseases,
-        "no_matching_diseases": no_matching_diseases
+        "no_matching_diseases": no_matching_diseases,
     }
 
     return response
@@ -429,7 +454,11 @@ Now, using this format, I will provide information about a different patient, an
 Input data:
     """
 
-    extraction_response = utils.run_ollama_model(input_text + prompt + " please return the extracted data in JSON format without any additional text.")
+    extraction_response = utils.run_ollama_model(
+        input_text
+        + prompt
+        + " please return the extracted data in JSON format without any additional text."
+    )
 
     if not extraction_response:
         return {"error": "Failed to extract data from input text."}

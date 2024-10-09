@@ -1,29 +1,30 @@
 import pandas as pd
 import os
 import logging
-from utils import get_cached_dataframe, apply_filter
+from utils import get_cached_dataframe, apply_filter, RESPONSE_QUANTIFICATION
 
 logger = logging.getLogger(__name__)
 
 
 def categorize_levodopa_response(row):
-    if row["levodopa_response"] == "yes":
-        if row["response_quantification"] == -99:
-            return "Yes, undefined"
-        elif row["response_quantification"] == "good/excellent":
-            return "Good"
-        elif row["response_quantification"] == "minimal":
-            return "Minimal"
-        elif row["response_quantification"] == "moderate":
-            return "Moderate"
-        else:
-            return "Yes, undefined"  # For any other cases
-    elif row["levodopa_response"] == "no":
+    levodopa_response = str(row["levodopa_response"]).lower()
+    response_quantification = str(row["response_quantification"]).lower()
+
+    # If levodopa_response or response_quantification is -99, return None
+    # TODO incorrect code, the or response_quantification == "-99" should be removed as it excludes the "Yes, undefined" case
+    if levodopa_response == "-99" or response_quantification == "-99":
+        return None
+
+    # If levodopa_response is "no", return "No"
+    if levodopa_response == "no":
         return "No"
-    elif row["levodopa_response"] == "not treated":
-        return "Not treated"
-    else:
-        return None  # This will include cases where levodopa_response is -99 or any other value
+
+    # Loop through the dictionary to match response_quantification
+    for category, keywords in RESPONSE_QUANTIFICATION.items():
+        if response_quantification in map(str.lower, keywords):
+            return category
+
+    return None  # Default case if nothing matches
 
 
 def _fetch_levodopa_response(
