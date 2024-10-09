@@ -10,7 +10,8 @@ def _fetch_country_data(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
+    countries: str = None,
+    aao: float = None,
     mutation: str = None,
     directory: str = "excel",
 ):
@@ -34,7 +35,7 @@ def _fetch_country_data(
                     or country is not None
                     or mutation is not None
                 ):
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
+                    df = apply_filter(df, filter_criteria, aao, countries, mutation)
 
                 filtered_df = pd.concat(
                     [
@@ -80,12 +81,13 @@ def generate_country_pie_chart(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
+    countries: str = None,
+    aao: float = None,
     mutation: str = None,
     directory: str = "excel",
 ):
     country_counts, missing_count, total_count = _fetch_country_data(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, countries, aao, mutation, directory
     )
 
     # Prepare pie chart data
