@@ -31,8 +31,9 @@ def _fetch_levodopa_response(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    countries: str = None,
+    aao: float = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     disease_abbrev = disease_abbrev.upper()
@@ -52,10 +53,10 @@ def _fetch_levodopa_response(
 
                 if (
                     filter_criteria is not None
-                    or country is not None
-                    or mutation is not None
+                    or countries is not None
+                    or mutations is not None
                 ):
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
+                    df = apply_filter(df, filter_criteria, aao, countries, mutations)
 
                 filtered_df = df[
                     (df["disease_abbrev"] == disease_abbrev)
@@ -103,12 +104,13 @@ def generate_levodopa_response(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    aao: float = None,
+    countries: str = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     levodopa_response_counts, missing_count, total_count = _fetch_levodopa_response(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
 
     # Calculate missing percentage

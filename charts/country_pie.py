@@ -12,7 +12,7 @@ def _fetch_country_data(
     filter_criteria: int = None,
     countries: str = None,
     aao: float = None,
-    mutation: str = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     disease_abbrev = disease_abbrev.upper()
@@ -32,10 +32,10 @@ def _fetch_country_data(
 
                 if (
                     filter_criteria is not None
-                    or country is not None
-                    or mutation is not None
+                    or countries is not None
+                    or mutations is not None
                 ):
-                    df = apply_filter(df, filter_criteria, aao, countries, mutation)
+                    df = apply_filter(df, filter_criteria, aao, countries, mutations)
 
                 filtered_df = pd.concat(
                     [
@@ -83,17 +83,25 @@ def generate_country_pie_chart(
     filter_criteria: int = None,
     countries: str = None,
     aao: float = None,
-    mutation: str = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     country_counts, missing_count, total_count = _fetch_country_data(
-        disease_abbrev, gene, filter_criteria, countries, aao, mutation, directory
+        disease_abbrev, gene, filter_criteria, countries, aao, mutations, directory
     )
 
     # Prepare pie chart data
     pie_chart_data = [
         {"name": k, "y": v, "count": v} for k, v in country_counts.items()
     ]
+
+    if not pie_chart_data:
+        logger.warning("pie_chart_data is empty. No data to display.")
+        return {
+            "chart": {"type": "pie"},
+            "title": {"text": "No Data Available"},
+            "series": [{"data": []}],
+        }
 
     # Sort data by value in descending order
     pie_chart_data.sort(key=lambda x: x["count"], reverse=True)

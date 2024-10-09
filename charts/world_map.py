@@ -100,8 +100,9 @@ def generate_world_map_charts_data(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    aao: float = None,
+    countries: str = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     all_data = pd.DataFrame()
@@ -118,10 +119,10 @@ def generate_world_map_charts_data(
 
                 if (
                     filter_criteria is not None
-                    or country is not None
-                    or mutation is not None
+                    or countries is not None
+                    or mutations is not None
                 ):
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
+                    df = apply_filter(df, filter_criteria, aao, countries, mutations)
 
                 all_data = pd.concat([all_data, df])
 

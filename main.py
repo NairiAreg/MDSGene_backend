@@ -135,12 +135,13 @@ async def aao_empirical_distribution_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
-    country: str = Query(None, description="Country"),
-    mutation: str = Query(None, description="Mutation"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_aao_empirical_distribution(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, countries, aao, mutations, directory
     )
     return data
 
@@ -150,17 +151,13 @@ async def aao_histogram_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
-    country: str = Query(None, description="Country"),
-    mutation: str = Query(None, description="Mutation"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_aao_histogram(
-        disease_abbrev,
-        gene,
-        filter_criteria,
-        country,
-        mutation,
-        directory,
+        disease_abbrev, gene, filter_criteria, countries, aao, mutations, directory
     )
     return data
 
@@ -170,12 +167,13 @@ async def country_pie_chart_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
-    country: str = Query(None, description="Country"),
-    mutation: str = Query(None, description="Mutation"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_country_pie_chart(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, countries, aao, mutations, directory
     )
     return data
 
@@ -185,12 +183,13 @@ async def ethnicity_pie_chart_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
-    country: str = Query(None, description="Country"),
-    mutation: str = Query(None, description="Mutation"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_ethnicity_pie_chart(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, countries, aao, mutations, directory
     )
     return data
 
@@ -200,12 +199,13 @@ async def initial_signs_symptoms_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
-    country: str = Query(None, description="Country"),
-    mutation: str = Query(None, description="Mutation"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_initial_signs_symptoms(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, countries, aao, mutations, directory
     )
     return data
 
@@ -215,27 +215,29 @@ async def levodopa_response_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
-    country: str = Query(None, description="Country"),
-    mutation: str = Query(None, description="Mutation"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_levodopa_response(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, countries, aao, mutations, directory
     )
     return data
 
 
 @app.get("/reporter_signs_symptoms")
-async def levodopa_response_endpoint(
+async def reporter_signs_symptoms_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
-    country: str = Query(None, description="Country"),
-    mutation: str = Query(None, description="Mutation"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_symptoms_chart(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
     return data
 
@@ -245,12 +247,13 @@ async def generate_world_map_charts_data_endpoint(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = Query(None, description="Filter criteria"),
-    country: str = Query(None, description="Country"),
-    mutation: str = Query(None, description="Mutation"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
     directory: str = Query("excel", description="Directory"),
 ):
     data = generate_world_map_charts_data(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
     return data
 

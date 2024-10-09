@@ -12,8 +12,9 @@ def _fetch_aao_data(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    aao: float = None,
+    countries: str = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     disease_abbrev = disease_abbrev.upper()
@@ -39,10 +40,10 @@ def _fetch_aao_data(
                 # Only apply the filter if filter_criteria, country, or mutation is provided
                 if (
                     filter_criteria is not None
-                    or country is not None
-                    or mutation is not None
+                    or countries is not None
+                    or mutations is not None
                 ):
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
+                    df = apply_filter(df, filter_criteria, aao, countries, mutations)
                 logger.info(f"After apply_filter: {df.shape}")
 
                 # Safely filter based on disease_abbrev and gene
@@ -97,12 +98,13 @@ def generate_aao_histogram(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    countries: str = None,
+    aao: float = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     aao_data = _fetch_aao_data(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
 
     # Remove any remaining -99 values

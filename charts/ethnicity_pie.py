@@ -3,7 +3,6 @@ import os
 import logging
 from utils import get_cached_dataframe, apply_filter, CHART_COLORS
 from collections import Counter
-import random
 
 logger = logging.getLogger(__name__)
 
@@ -12,8 +11,9 @@ def generate_ethnicity_pie_chart(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    countries: str = None,
+    aao: float = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     disease_abbrev = disease_abbrev.upper()
@@ -40,10 +40,10 @@ def generate_ethnicity_pie_chart(
                 # Only apply the filter if filter_criteria, country, or mutation is provided
                 if (
                     filter_criteria is not None
-                    or country is not None
-                    or mutation is not None
+                    or countries is not None
+                    or mutations is not None
                 ):
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
+                    df = apply_filter(df, filter_criteria, aao, countries, mutations)
                 logger.info(f"After apply_filter: {df.shape}")
 
                 # Safely filter based on disease_abbrev and gene

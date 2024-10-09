@@ -25,8 +25,9 @@ def _fetch_initial_symptoms_data(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    aao: float = None,
+    countries: str = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     disease_abbrev = disease_abbrev.upper()
@@ -46,10 +47,10 @@ def _fetch_initial_symptoms_data(
 
                 if (
                     filter_criteria is not None
-                    or country is not None
-                    or mutation is not None
+                    or countries is not None
+                    or mutations is not None
                 ):
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
+                    df = apply_filter(df, filter_criteria, aao, countries, mutations)
 
                 filtered_df = pd.concat(
                     [
@@ -105,13 +106,14 @@ def generate_initial_signs_symptoms(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    countries: str = None,
+    aao: float = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     initial_symptoms, total_patients, patients_with_missing_data = (
         _fetch_initial_symptoms_data(
-            disease_abbrev, gene, filter_criteria, country, mutation, directory
+            disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
         )
     )
 

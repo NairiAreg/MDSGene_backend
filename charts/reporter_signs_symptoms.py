@@ -29,8 +29,9 @@ def fetch_symptom_data(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    aao: float = None,
+    countries: str = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     disease_abbrev = disease_abbrev.upper()
@@ -48,10 +49,10 @@ def fetch_symptom_data(
 
                 if (
                     filter_criteria is not None
-                    or country is not None
-                    or mutation is not None
+                    or countries is not None
+                    or mutations is not None
                 ):
-                    df = apply_filter(df, filter_criteria, None, country, mutation)
+                    df = apply_filter(df, filter_criteria, aao, countries, mutations)
 
                 filtered_df = df[
                     (df["disease_abbrev"] == disease_abbrev)
@@ -94,12 +95,13 @@ def generate_symptoms_chart(
     disease_abbrev: str,
     gene: str,
     filter_criteria: int = None,
-    country: str = None,
-    mutation: str = None,
+    aao: float = None,
+    countries: str = None,
+    mutations: str = None,
     directory: str = "excel",
 ):
     symptom_data = fetch_symptom_data(
-        disease_abbrev, gene, filter_criteria, country, mutation, directory
+        disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
 
     # Mapping of original names to correct names
