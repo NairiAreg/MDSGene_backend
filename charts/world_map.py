@@ -140,6 +140,10 @@ def generate_world_map_charts_data(
 
     world_map_data = generate_world_map_data(all_data)
 
+    # Handle the case where there's no data after filtering
+    if not world_map_data:
+        return None
+
     charts_data = {
         "worldMap": {
             "chart": {"map": None},
