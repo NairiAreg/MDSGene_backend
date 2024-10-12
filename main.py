@@ -96,8 +96,7 @@ async def unique_studies_endpoint(
         country=countries,
     )
 
-    logger.debug(f"Number of unique studies returned: {len(unique_studies)}")
-
+    # The results should already be in the correct format, so we can return them directly
     return unique_studies
 
 
