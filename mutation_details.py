@@ -125,24 +125,6 @@ def get_link_to_exac(row, i):
 
     return "not available"
 
-# def link_to_exac(row, i):
-#     chr = get_chromosome(row, i)
-#     spos = get_spos(row, i)
-#     ref = get_ref(row, i)
-#     alt = get_alt(row, i)
-#     exac = row.get(f'exac{i}', 'no').lower() == 'yes'
-#     hg = row.get(f'hg{i}', None)
-#
-#     if chr and spos:
-#         text = f"{chr}:{spos}"
-#         if exac and hg == 19:
-#             var = f"{chr}-{spos}-{ref}-{alt}"
-#             return f'<a href="{EXAC_BROWSER_URL}{var}?dataset=gnomad_r2_1" target="_blank">{text}</a>'
-#         else:
-#             return f"{text} (not available on ExAC)" if text != "null:null" else "not available"
-#     return "not available"
-
-
 def get_data_for_mutation_from_row(mutation_name, row):
     results = []
     for i in range(1, 4):
