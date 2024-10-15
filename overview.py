@@ -10,6 +10,8 @@ import numpy as np
 import os
 import json
 import logging
+
+import mutation_details
 from utils import get_cached_dataframe, apply_filter, safe_get, NumpyEncoder
 
 logger = logging.getLogger(__name__)
@@ -61,8 +63,8 @@ def get_mutations(df):
                 {
                     "type": "compound_het",
                     "mutations": [
-                        {"name": patient_mutations[0][0], "genotype": "het"},
-                        {"name": patient_mutations[1][0], "genotype": "het"},
+                        {"name": patient_mutations[0][0], "genotype": "het", "details": mutation_details.get_data_for_mutation_from_row(patient_mutations[0][0], row)},
+                        {"name": patient_mutations[1][0], "genotype": "het", "details": mutation_details.get_data_for_mutation_from_row(patient_mutations[1][0], row)},
                     ],
                 }
             )
@@ -74,6 +76,7 @@ def get_mutations(df):
                         "type": "single",
                         "name": mutation,
                         "genotype": genotype if genotype in ["hom", "het"] else "n.a.",
+                        "details": mutation_details.get_data_for_mutation_from_row(mutation, row),
                     }
                 )
 
@@ -211,7 +214,6 @@ def get_unique_studies(
                                 study_df, "mut3_genotype", 0, "Unknown"
                             ),
                         }
-
                         result = {
                             "pmid": to_python_type(pmid),
                             "author_year": author_year,  # Changed to snake_case
