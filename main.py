@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 import diseases
 import overview
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,10 +18,15 @@ from charts.levodopa_response import generate_levodopa_response
 from charts.world_map import generate_world_map_charts_data
 from study_details import get_patients_for_publication
 from mutation_details import get_data_for_mutation
-
 import logging
-
 from utils import load_symptom_categories
+import httpx
+from fastapi.responses import JSONResponse
+from cachetools import TTLCache
+from pubmed_search_endpoint import fetch_pubmed_summaries
+
+# Cache to store PubMed responses, with a 1-hour TTL
+pubmed_cache = TTLCache(maxsize=1000, ttl=3600)
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -255,6 +260,49 @@ async def generate_world_map_charts_data_endpoint(
         disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
     return data
+
+
+@app.get("/search_pubmed")
+async def search_pubmed(pubmed_ids: str):
+    try:
+        id_list = [int(id.strip()) for id in pubmed_ids.split(",") if id.strip()]
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid PubMed ID format. Please provide comma-separated integers.",
+        )
+
+    if len(id_list) > 200:  # NCBI allows up to 200 IDs per request
+        raise HTTPException(
+            status_code=400, detail="Maximum 200 PubMed IDs allowed per request"
+        )
+
+    if not id_list:
+        raise HTTPException(status_code=400, detail="No valid PubMed IDs provided")
+
+    # Check cache for all requested IDs
+    cached_results = {
+        str(id): pubmed_cache.get(id) for id in id_list if id in pubmed_cache
+    }
+    missing_ids = [id for id in id_list if str(id) not in cached_results]
+
+    if missing_ids:
+        try:
+            new_results = await fetch_pubmed_summaries(missing_ids)
+            # Update cache with new results
+            for id in missing_ids:
+                if str(id) in new_results["result"]:
+                    pubmed_cache[id] = new_results["result"][str(id)]
+                    cached_results[str(id)] = new_results["result"][str(id)]
+        except httpx.HTTPStatusError as e:
+            raise HTTPException(status_code=e.response.status_code, detail=str(e))
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
+    # Ensure the order of results matches the input order
+    ordered_results = {str(id): cached_results.get(str(id)) for id in id_list}
+
+    return JSONResponse(content={"result": ordered_results})
 
 
 # Endpoint to get the full content of the categories metadata file
