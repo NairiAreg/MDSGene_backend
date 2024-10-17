@@ -114,7 +114,6 @@ def get_unique_studies(
     directory: str = "excel",
 ):
     results = []
-    logger.info(f"🔍 Starting search for {disease_abbrev}-{gene}")
 
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):
@@ -122,15 +121,11 @@ def get_unique_studies(
 
         if filename.endswith(".xlsx") or filename.endswith(".xls"):
             file_path = os.path.join(directory, filename)
-            logger.info(f"📂 Processing file: {filename}")
             try:
                 df = get_cached_dataframe(file_path)
 
                 # Apply ensemble_decision filter first
                 df = df[df["ensemble_decision"] == "IN"]
-                logger.info(
-                    f"✅ Loaded dataframe from {filename}, shape after ensemble_decision filter: {df.shape}"
-                )
 
                 # Apply disease and gene filter
                 df = df[
@@ -141,9 +136,6 @@ def get_unique_studies(
                         | (df["gene3"] == gene)
                     )
                 ]
-                logger.info(
-                    f"🧬 Filtered for {disease_abbrev}-{gene}, shape: {df.shape}"
-                )
 
                 if (
                     filter_criteria is not None
@@ -152,16 +144,10 @@ def get_unique_studies(
                     or mutation is not None
                 ):
                     df = apply_filter(df, filter_criteria, aao, country, mutation)
-                    logger.info(f"🔎 Applied additional filters, new shape: {df.shape}")
-
-                logger.debug(f"🔬 Columns in filtered df: {df.columns}")
 
                 for pmid in df["pmid"].unique():
                     try:
                         study_df = df[df["pmid"] == pmid]
-                        logger.info(
-                            f"📊 Processing PMID: {pmid}, rows: {len(study_df)}"
-                        )
 
                         number_of_cases = len(study_df)
                         study_design = safe_get(study_df, "study_design", 0, "Unknown")
@@ -169,19 +155,8 @@ def get_unique_studies(
 
                         if "author, year" in study_df.columns:
                             author_year = study_df["author, year"].iloc[0]
-                            logger.info(f"📝 Author, year: {author_year}")
                         else:
                             author_year = "Unknown"
-                            logger.warning(
-                                f"⚠️ 'author, year' column not found for PMID {pmid}"
-                            )
-
-                        if author_year == "Unknown":
-                            logger.warning(f"⚠️ Author, year is Unknown for PMID {pmid}")
-                            logger.debug(f"🔬 Available columns: {study_df.columns}")
-                            logger.debug(
-                                f"🔬 First row of study_df: {study_df.iloc[0].to_dict()}"
-                            )
 
                         sex_data = study_df["sex"].value_counts()
                         total_with_sex = sex_data.sum()
@@ -244,7 +219,6 @@ def get_unique_studies(
                         }
 
                         results.append(result)
-                        logger.info(f"✅ Processed PMID: {pmid}")
                     except Exception as e:
                         logger.error(
                             f"❌ Error processing PMID {pmid} in file {filename}: {str(e)}"
@@ -257,5 +231,4 @@ def get_unique_studies(
                 logger.exception("Detailed error:")
                 continue
 
-    logger.info(f"🏁 Finished processing. Total results: {len(results)}")
     return results

@@ -4,6 +4,7 @@ import os
 import json
 import logging
 from difflib import get_close_matches
+import math
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -547,3 +548,16 @@ def load_symptom_categories(directory="properties"):
     else:
         categories_metadata = {}
     return categories_metadata
+
+
+def handle_nan_inf(obj):
+    if isinstance(obj, float):
+        if math.isnan(obj):
+            return "NaN"
+        elif math.isinf(obj):
+            return "Infinity" if obj > 0 else "-Infinity"
+    elif isinstance(obj, dict):
+        return {k: handle_nan_inf(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [handle_nan_inf(v) for v in obj]
+    return obj

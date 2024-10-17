@@ -76,9 +76,8 @@ def get_cadd_score(row, i):
 # Функция для получения функциональных доказательств
 def get_functional_evidence(row):
     evidence = [row.get(f"fun_evidence_pos_{i}", None) for i in range(1, 4)]
-    # remove from evidence -99 substrings
-    evidence = [e for e in evidence if e != -99]
-    return [e for e in evidence if pd.notna(e)] or ["n.a."]
+    evidence = [str(e) for e in evidence if e not in [-99, None, "n.a.", "-99", "NaN"]]
+    return evidence if evidence else None
 
 
 # Функция для получения данных о hg_version
@@ -169,25 +168,66 @@ def get_data_for_mutation_from_row(mutation_name, row):
         ):
             result = {
                 "proteinIdentifier": protein_level_identifier_map.get(
-                    protein_identifier, None
+                    protein_identifier
+                )
+                or None,
+                "proteinLevelIdentifier": (
+                    protein_identifier
+                    if protein_identifier not in [-99, "n.a.", "-99"]
+                    else None
                 ),
-                "proteinLevelIdentifier": protein_identifier,
-                "cdnaIdentifier": cdna_level_identifier_map.get(cdna_identifier, None),
-                "cdnaLevelIdentifier": cdna_identifier,
-                "gdnaLevelIdentifier": gdna_identifier,
-                "archiveIdentifierOtherDesignation": get_alias(row, i),
-                "referenceAlternativeAllele": get_allele(row, i),
-                "genomicLocation": get_location(row, i),
-                "hg": get_hg_version(row),
-                "exac": get_link_to_exac(row, i),
-                "geneName": row.get(f"gene{i}", None),
-                "geneLink": get_link_to_entrez_gene(row, i),
-                "consequence": get_impact_humanize_downcase(row, i),
-                "pathogenicityScoring": get_pathogenicity(row, i),
-                "caddScore": get_cadd_score(row, i),
+                "cdnaIdentifier": cdna_level_identifier_map.get(cdna_identifier)
+                or None,
+                "cdnaLevelIdentifier": (
+                    cdna_identifier
+                    if cdna_identifier not in [-99, "n.a.", "-99"]
+                    else None
+                ),
+                "gdnaLevelIdentifier": (
+                    gdna_identifier
+                    if gdna_identifier not in [-99, "n.a.", "-99"]
+                    else None
+                ),
+                "archiveIdentifierOtherDesignation": get_alias(row, i) or None,
+                "referenceAlternativeAllele": (
+                    get_allele(row, i) if get_allele(row, i) != "n.a." else None
+                ),
+                "genomicLocation": (
+                    get_location(row, i) if get_location(row, i) != "n.a." else None
+                ),
+                "hg": get_hg_version(row) if get_hg_version(row) != "n.a." else None,
+                "exac": (
+                    get_link_to_exac(row, i)
+                    if "not available on ExAC" not in get_link_to_exac(row, i)
+                    else None
+                ),
+                "geneName": (
+                    row.get(f"gene{i}")
+                    if row.get(f"gene{i}") not in [-99, "n.a.", "-99"]
+                    else None
+                ),
+                "geneLink": (
+                    get_link_to_entrez_gene(row, i)
+                    if get_link_to_entrez_gene(row, i) != "n.a."
+                    else None
+                ),
+                "consequence": (
+                    get_impact_humanize_downcase(row, i)
+                    if get_impact_humanize_downcase(row, i) != "n.a."
+                    else None
+                ),
+                "pathogenicityScoring": (
+                    get_pathogenicity(row, i)
+                    if get_pathogenicity(row, i) != "n.a."
+                    else None
+                ),
+                "caddScore": (
+                    get_cadd_score(row, i) if get_cadd_score(row, i) != "n.a." else None
+                ),
                 "phosphorylationActivity": phosphorylation_activity_map.get(
-                    mutation_name, None
-                ),
+                    mutation_name
+                )
+                or None,
                 "positiveFunctionalEvidence": get_functional_evidence(row),
             }
             results.append(result)
@@ -211,43 +251,27 @@ def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory="excel"):
 
                 df["disease_abbrev"] = df["disease_abbrev"].str.upper()
 
-                filtered_df = pd.concat(
-                    [
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene1"] == gene)
-                        ],
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene2"] == gene)
-                        ],
-                        df[
-                            (df["disease_abbrev"] == disease_abbrev)
-                            & (df["gene3"] == gene)
-                        ],
-                    ]
-                )
-
-                filtered_df = filtered_df[
-                    (filtered_df["pmid"] == pmid)
+                filtered_df = df[
+                    (df["disease_abbrev"] == disease_abbrev)
                     & (
-                        (filtered_df["mut1_p"] == mut_p)
-                        | (filtered_df["mut2_p"] == mut_p)
-                        | (filtered_df["mut3_p"] == mut_p)
+                        (df["gene1"] == gene)
+                        | (df["gene2"] == gene)
+                        | (df["gene3"] == gene)
                     )
+                    & (df["pmid"] == pmid)
                 ]
 
                 for _, row in filtered_df.iterrows():
-                    mut_index = None
-                    if row["mut1_p"] == mut_p:
-                        mut_index = 1
-                    elif row["mut2_p"] == mut_p:
-                        mut_index = 2
-                    elif row["mut3_p"] == mut_p:
-                        mut_index = 3
+                    for i in range(1, 4):
+                        if (
+                            row.get(f"mut{i}_p") == mut_p
+                            or row.get(f"mut{i}_c") == mut_p
+                            or row.get(f"mut{i}_g") == mut_p
+                        ):
 
-                    if mut_index is not None:
-                        results.append(get_data_for_mutation_from_row(mut_p, row))
+                            result = get_data_for_mutation_from_row(mut_p, row)
+                            if result:
+                                results.extend(result)
 
             except Exception as e:
                 print(f"Error reading file {filename}: {str(e)}")

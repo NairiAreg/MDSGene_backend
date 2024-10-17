@@ -19,7 +19,7 @@ from charts.world_map import generate_world_map_charts_data
 from study_details import get_patients_for_publication
 from mutation_details import get_data_for_mutation
 import logging
-from utils import load_symptom_categories
+from utils import load_symptom_categories, handle_nan_inf
 import httpx
 from fastapi.responses import JSONResponse
 from cachetools import TTLCache
@@ -92,7 +92,6 @@ async def unique_studies_endpoint(
         None, description="Comma-separated list of countries to filter by"
     ),
 ):
-
     unique_studies = overview.get_unique_studies(
         disease_abbrev,
         gene,
@@ -101,8 +100,10 @@ async def unique_studies_endpoint(
         country=countries,
     )
 
-    # The results should already be in the correct format, so we can return them directly
-    return unique_studies
+    # Handle NaN and Inf values
+    handled_studies = handle_nan_inf(unique_studies)
+
+    return handled_studies
 
 
 @app.get("/patients_for_publication")
@@ -121,7 +122,6 @@ async def patients_for_publication_endpoint(
     return patients
 
 
-# добавь еще один endpoint def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, filter_criteria=None, aao=None, country=None, directory='excel') который получает на вход disease_abbrev, gene, pmid, mut_p, filter_criteria, aao, country и directory и возвращает результат работы функции get_data_for_mutation из mutation_details.py
 @app.get("/data_for_mutation")
 async def data_for_mutation_endpoint(
     disease_abbrev: str,
@@ -131,7 +131,8 @@ async def data_for_mutation_endpoint(
     directory: str = Query("excel", description="Directory"),
 ):
     data = get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory)
-    return data
+    handled_data = handle_nan_inf(data)
+    return handled_data
 
 
 @app.get("/aao_empirical_distribution")
