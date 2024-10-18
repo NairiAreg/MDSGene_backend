@@ -318,9 +318,69 @@ async def get_categories_metadata(
     ),
 ):
     # Load the categories metadata
-    categories_metadata = load_symptom_categories()
+    # categories_metadata = load_symptom_categories()
+    categories = {
+        "Movement Disorders": [
+            "tremor_rest_sympt",
+            "bradykinesia_sympt",
+            "rigidity_sympt",
+            "postural_instability_sympt",
+            "dystonia_sympt",
+            "dyskinesia_sympt",
+            "ataxia_dysdiadochokinesia_sympt",
+        ],
+        "Cognitive and Behavioral Symptoms": [
+            "cognitive_decline_sympt",
+            "impulsive_control_disorder_sympt",
+            "anxiety_sympt",
+            "depression_sympt",
+            "psychotic_sympt",
+            "intellectual_disability_sympt",
+        ],
+        "Autonomic Symptoms": [
+            "autonomic_sympt",
+            "dysphagia_sympt",
+            "olfaction_sympt",
+            "hypomimia_sympt",
+        ],
+        "Sleep Disorders": ["rbd_sympt", "myoclonus_sympt"],
+        "Neurological Signs": [
+            "primitive_reflexes_sympt",
+            "spasticity_pyramidal_signs_sympt",
+            "gaze_palsy_sympt",
+            "saccadic_abnormalities_sympt",
+        ],
+        "Motor Complications": [
+            "motor_fluctuations_sympt",
+            "gait_difficulties_falls_sympt",
+            "dysarthria_anarthria_sympt",
+        ],
+        "Developmental and Seizure Disorders": [
+            "development_delay_sympt",
+            "seizures_sympt",
+        ],
+    }
+    return categories
+    # return categories_metadata
 
-    return categories_metadata
+
+@app.post("/submit_symptoms")
+async def submit_symptoms_endpoint(
+    age: str = Query(..., description="Age of the patient"),
+    symptoms: List[str] = Query(..., description="List of symptoms"),
+):
+    print(f"Received age: {age}")
+    print("Received symptoms:")
+    for symptom in symptoms:
+        print(f"- {symptom}")
+
+    # Here you can add any additional processing logic if needed
+
+    return {
+        "message": "Symptoms submitted successfully",
+        "age": age,
+        "symptoms": symptoms,
+    }
 
 
 @app.get("/symptoms_for_diagnosis")
