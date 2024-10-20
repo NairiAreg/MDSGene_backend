@@ -1,16 +1,15 @@
-# Send Author, year also, it shold be shown instead of pmid
 # Send Mean AAO
 # Ethnicities should be
 # Add hint tooltips
-# If no sex n.a should return not 0
-# Write hom, comp. het etc...
 
 import numpy as np
 import os
 import logging
 
 import mutation_details
-from utils import get_cached_dataframe, apply_filter, safe_get, NumpyEncoder
+from utils import get_cached_dataframe, apply_filter, safe_get, extract_year
+
+from typing import List, Dict, Any
 
 logger = logging.getLogger(__name__)
 
@@ -35,16 +34,16 @@ def get_mutations(df):
         patient_mutations = []
         for i in range(1, 4):
             mut_p = row.get(f"mut{i}_p", -99)
-            mut_g = row.get(f"mut{i}_g", -99)
             mut_c = row.get(f"mut{i}_c", -99)
+            mut_g = row.get(f"mut{i}_g", -99)
             genotype = row.get(f"mut{i}_genotype", -99)
 
             if mut_p != -99 and mut_p is not None:
                 mutation_name = mut_p
-            elif mut_g != -99 and mut_g is not None:
-                mutation_name = mut_g
             elif mut_c != -99 and mut_c is not None:
                 mutation_name = mut_c
+            elif mut_g != -99 and mut_g is not None:
+                mutation_name = mut_g
             else:
                 continue  # Skip if no valid mutation found
 
@@ -104,6 +103,41 @@ def get_mutations(df):
     return unique_mutations
 
 
+def mutation_key(mutation: Dict[str, Any]) -> tuple:
+    if mutation["type"] == "compound_het":
+        return (
+            mutation["type"],
+            tuple(
+                sorted(
+                    (m.get("name", "Unknown"), m.get("genotype", "Unknown"))
+                    for m in mutation["mutations"]
+                )
+            ),
+        )
+    else:
+        return (
+            mutation["type"],
+            mutation.get("name", "Unknown"),
+            mutation.get("genotype", "Unknown"),
+        )
+
+
+def get_unique_mutations(mutations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    unique_mutations = []
+    seen = set()
+    for mutation in mutations:
+        try:
+            key = mutation_key(mutation)
+            if key not in seen:
+                seen.add(key)
+                unique_mutations.append(mutation)
+        except KeyError as e:
+            logger.warning(
+                f"Skipping mutation due to missing key: {e}. Mutation data: {mutation}"
+            )
+    return unique_mutations
+
+
 def get_unique_studies(
     disease_abbrev: str,
     gene: str,
@@ -115,19 +149,23 @@ def get_unique_studies(
 ):
     results = []
 
+    print(
+        f"Function parameters: disease_abbrev={disease_abbrev}, gene={gene}, filter_criteria={filter_criteria}, aao={aao}, country={country}, mutation={mutation}"
+    )
+
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):
-            continue  # Skip temporary Excel files
+            continue
 
         if filename.endswith(".xlsx") or filename.endswith(".xls"):
             file_path = os.path.join(directory, filename)
             try:
                 df = get_cached_dataframe(file_path)
 
-                # Apply ensemble_decision filter first
-                df = df[df["ensemble_decision"] == "IN"]
+                print(f"\nProcessing file: {filename}")
+                print(f"Initial DataFrame shape: {df.shape}")
 
-                # Apply disease and gene filter
+                df = df[df["ensemble_decision"] == "IN"]
                 df = df[
                     (df["disease_abbrev"] == disease_abbrev)
                     & (
@@ -137,13 +175,10 @@ def get_unique_studies(
                     )
                 ]
 
-                if (
-                    filter_criteria is not None
-                    or aao is not None
-                    or country is not None
-                    or mutation is not None
-                ):
-                    df = apply_filter(df, filter_criteria, aao, country, mutation)
+                print(f"DataFrame shape after initial filtering: {df.shape}")
+
+                df = apply_filter(df, filter_criteria, aao, country, mutation)
+                print(f"DataFrame shape after apply_filter: {df.shape}")
 
                 for pmid in df["pmid"].unique():
                     try:
@@ -181,6 +216,10 @@ def get_unique_studies(
                         )
 
                         mutations = get_mutations(study_df)
+
+                        # Make mutations unique using the new function
+                        unique_mutations = get_unique_mutations(mutations)
+
                         full_mutations = {
                             "mut1_p": safe_get(study_df, "mut1_p", 0, "Unknown"),
                             "mut2_p": safe_get(study_df, "mut2_p", 0, "Unknown"),
@@ -203,7 +242,7 @@ def get_unique_studies(
                         }
                         result = {
                             "pmid": to_python_type(pmid),
-                            "author_year": author_year,  # Changed to snake_case
+                            "author_year": author_year,
                             "study_design": study_design,
                             "number_of_cases": int(number_of_cases),
                             "ethnicity": to_python_type(ethnicity),
@@ -215,7 +254,7 @@ def get_unique_studies(
                             "std_dev_age_at_onset": to_python_type(
                                 std_dev_age_at_onset
                             ),
-                            "mutations": mutations,  # Now this is a list of structured mutation objects
+                            "mutations": unique_mutations,  # Now this is a list of truly unique structured mutation objects
                         }
 
                         results.append(result)
@@ -231,4 +270,6 @@ def get_unique_studies(
                 logger.exception("Detailed error:")
                 continue
 
+    results.sort(key=lambda x: extract_year(x["author_year"]), reverse=True)
+    print(f"Total number of results: {len(results)}")
     return results

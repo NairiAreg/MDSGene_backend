@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import re
 import json
 import logging
 from difflib import get_close_matches
@@ -442,12 +443,18 @@ def get_cached_dataframe(file_path):
     # Rename the columns
     df.rename(columns=header_mapping, inplace=True)
 
+    # Replace -99 with None
+    df = df.replace(-99, None)
+
     _dataframe_cache[file_path] = {"dataframe": df, "mod_time": file_mod_time}
 
     return df
 
 
 def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
+    print(
+        f"Applying filter with criteria: {filter_criteria}, aao: {aao}, country: {country}, mutation: {mutation}"
+    )
 
     if filter_criteria == 1:
         df = df[df["index_pat"] == "yes"]
@@ -471,18 +478,51 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
             | (df["mut2_genotype"] == "het")
             | (df["mut3_genotype"] == "het")
         ]
-    elif filter_criteria == 8:
-        df = df[
-            (df["mut1_genotype"] == "comp_het")
-            | (df["mut2_genotype"] == "comp_het")
-            | (df["mut3_genotype"] == "comp_het")
-        ]
-    elif filter_criteria == 9:
-        df = df[
-            (df["mut1_genotype"].isin(["hom", "comp_het"]))
-            | (df["mut2_genotype"].isin(["hom", "comp_het"]))
-            | (df["mut3_genotype"].isin(["hom", "comp_het"]))
-        ]
+    elif filter_criteria == 8 or filter_criteria == 9:
+        if filter_criteria == 8:
+            genotype_condition = (
+                (df["mut1_genotype"] == "comp_het")
+                | (df["mut2_genotype"] == "comp_het")
+                | (df["mut3_genotype"] == "comp_het")
+            )
+        else:  # filter_criteria == 9
+            genotype_condition = (
+                df["mut1_genotype"].isin(["hom", "comp_het"])
+                | df["mut2_genotype"].isin(["hom", "comp_het"])
+                | df["mut3_genotype"].isin(["hom", "comp_het"])
+            )
+
+        comments_pat_column = next(
+            (col for col in df.columns if col.lower() == "comments_pat"), None
+        )
+
+        if comments_pat_column:
+            if filter_criteria == 8:
+                comments_condition = df[comments_pat_column].str.contains(
+                    "compound heterozygous mutation", case=False, na=False
+                )
+            else:  # filter_criteria == 9
+                comments_condition = df[comments_pat_column].str.contains(
+                    "compound heterozygous mutation|homozygous mutation",
+                    case=False,
+                    na=False,
+                )
+
+            condition = genotype_condition | comments_condition
+            logger.info(
+                f"Filtering using 'comments_pat' column (actual name: {comments_pat_column}) for criteria {filter_criteria}"
+            )
+        else:
+            condition = genotype_condition
+            logger.warning(
+                f"'comments_pat' column not found in the DataFrame for criteria {filter_criteria}. Available columns: %s",
+                df.columns.tolist(),
+            )
+            logger.warning(
+                f"Filtering based on genotype only for criteria {filter_criteria}."
+            )
+
+        df = df[condition]
 
     if country:
         # Use the keys of COUNTRIES dictionary instead of country_map
@@ -498,12 +538,43 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
             logger.warning(f"No valid countries found in the provided list: {country}")
 
     if mutation:
-        mutation_list = [m.strip() for m in mutation.split(",")]
-        df = df[
-            df["mut1_p"].isin(mutation_list)
-            | df["mut2_p"].isin(mutation_list)
-            | df["mut3_p"].isin(mutation_list)
+        mutation_list = [m.strip().lower() for m in mutation.split(",")]
+
+        # Pathogenicity filter
+        pathogenicity_condition = (
+            df["pathogenicity1"].str.lower().isin(mutation_list)
+            | df["pathogenicity2"].str.lower().isin(mutation_list)
+            | df["pathogenicity3"].str.lower().isin(mutation_list)
+        )
+
+        # Mutation filter
+        mutation_columns = [
+            "mut1_p",
+            "mut2_p",
+            "mut3_p",
+            "mut1_c",
+            "mut2_c",
+            "mut3_c",
+            "mut1_g",
+            "mut2_g",
+            "mut3_g",
         ]
+
+        mutation_condition = False
+        for col in mutation_columns:
+            if col in df.columns:
+                mutation_condition |= (
+                    df[col].astype(str).str.lower().isin(mutation_list)
+                )
+
+        # Combine pathogenicity and mutation conditions
+        combined_condition = pathogenicity_condition | mutation_condition
+
+        df = df[combined_condition]
+        logger.info(f"Filtered based on pathogenicity and mutations: {mutation_list}")
+
+    else:
+        print("No mutation filter applied.")
 
     return df
 
@@ -561,3 +632,11 @@ def handle_nan_inf(obj):
     elif isinstance(obj, list):
         return [handle_nan_inf(v) for v in obj]
     return obj
+
+
+def extract_year(author_year):
+    """Extract the year from the author_year string."""
+    match = re.search(r"\d{4}", author_year)
+    if match:
+        return int(match.group())
+    return 0  # Default to 0 if no year is found

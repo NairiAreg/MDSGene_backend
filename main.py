@@ -91,6 +91,7 @@ async def unique_studies_endpoint(
     countries: str = Query(
         None, description="Comma-separated list of countries to filter by"
     ),
+    mutations: str = Query(None, description="Carrying mutation"),
 ):
     unique_studies = overview.get_unique_studies(
         disease_abbrev,
@@ -98,6 +99,7 @@ async def unique_studies_endpoint(
         filter_criteria=filter_criteria,
         aao=aao,
         country=countries,
+        mutation=mutations,
     )
 
     # Handle NaN and Inf values
