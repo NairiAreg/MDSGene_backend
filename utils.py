@@ -616,8 +616,11 @@ def load_symptom_categories(directory="properties"):
     if os.path.exists(categories_file_path):
         with open(categories_file_path, "r") as file:
             categories_metadata = json.load(file)
+            # Remove the 'Unknown' category if it exists
+            categories_metadata.pop("Unknown", None)
     else:
         categories_metadata = {}
+
     return categories_metadata
 
 
