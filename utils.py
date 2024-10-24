@@ -398,57 +398,142 @@ RESPONSE_QUANTIFICATION = {
 }
 
 
+def get_symptom_translations():
+    """Create a flat dictionary of all symptom translations from symptom_categories.json"""
+    translations = {}
+
+    try:
+        with open("properties/symptom_categories.json", "r") as file:
+            categories = json.load(file)
+
+        # Flatten the nested structure and collect all translations
+        for category, category_data in categories.items():
+            if isinstance(category_data, dict):
+                for symptom_key, symptom_name in category_data.items():
+                    # Convert to snake_case for matching with column names
+                    snake_case_key = (
+                        symptom_key.lower().replace(" ", "_").replace(":", "_")
+                    )
+
+                    # Store both the original key and the modified version
+                    translations[snake_case_key] = {
+                        "display_name": symptom_name,
+                        "original_key": symptom_key,
+                    }
+                    # Add _sympt version
+                    translations[f"{snake_case_key}_sympt"] = {
+                        "display_name": symptom_name,
+                        "original_key": symptom_key,
+                    }
+    except Exception as e:
+        logger.error(f"Error loading symptom translations: {str(e)}")
+        return {}
+
+    return translations
+
+
+def translate_column_names(df):
+    """Translate symptom column names using the symptom translations"""
+    translations = get_symptom_translations()
+
+    # Create a mapping dictionary for column renames
+    column_mapping = {}
+    for col in df.columns:
+        # Remove the _sympt suffix for matching if it exists
+        base_col = col[:-6] if col.endswith("_sympt") else col
+
+        # Check if this column should be translated
+        if base_col in translations:
+            display_name = translations[base_col]["display_name"]
+            # Add suffix if it was present in original
+            new_col = (
+                f"{display_name}_sympt" if col.endswith("_sympt") else display_name
+            )
+            column_mapping[col] = new_col
+        elif col in translations:
+            display_name = translations[col]["display_name"]
+            new_col = (
+                f"{display_name}_sympt" if col.endswith("_sympt") else display_name
+            )
+            column_mapping[col] = new_col
+
+    # Create a copy of the DataFrame with renamed columns
+    if column_mapping:
+        # First, create a copy of the DataFrame
+        new_df = df.copy()
+        # Then rename the columns
+        new_df.rename(columns=column_mapping, inplace=True)
+        return new_df
+
+    return df
+
+
 def get_cached_dataframe(file_path):
     global _dataframe_cache
 
-    file_mod_time = os.path.getmtime(file_path)
+    try:
+        # Get the last modification time of the file
+        file_mod_time = os.path.getmtime(file_path)
 
-    if (
-        file_path in _dataframe_cache
-        and _dataframe_cache[file_path]["mod_time"] == file_mod_time
-    ):
-        return _dataframe_cache[file_path]["dataframe"]
+        # Check if the file is in the cache and if it is up to date
+        if (
+            file_path in _dataframe_cache
+            and _dataframe_cache[file_path]["mod_time"] == file_mod_time
+        ):
+            return _dataframe_cache[file_path]["dataframe"]
 
-    _, file_extension = os.path.splitext(file_path)
-
-    if file_extension.lower() == ".xlsx":
-        engine = "openpyxl"
-    elif file_extension.lower() == ".xls":
-        engine = "xlrd"
-    else:
-        raise ValueError(f"Unsupported file extension: {file_extension}")
-
-    df = pd.read_excel(file_path, engine=engine)
-
-    # Convert all headers to lower case
-    df.columns = df.columns.str.lower()
-
-    # Check if the headers match the expected headers
-    file_headers = set(df.columns)
-    header_mapping = {}
-    for header in EXPECTED_HEADERS:
-        closest_match = get_close_matches(header.lower(), file_headers, n=1, cutoff=0.6)
-        if closest_match:
-            header_mapping[closest_match[0]] = header.lower()
+        # Determine the Excel engine based on file extension
+        _, file_extension = os.path.splitext(file_path)
+        if file_extension.lower() == ".xlsx":
+            engine = "openpyxl"
+        elif file_extension.lower() == ".xls":
+            engine = "xlrd"
         else:
-            # Add missing header as a blank column
-            df[header.lower()] = None
-            print(f"Adding missing column '{header.lower()}' as blank")
+            raise ValueError(f"Unsupported file extension: {file_extension}")
 
-    # Log the changes
-    for old_header, new_header in header_mapping.items():
-        if old_header != new_header:
-            print(f"Renaming column '{old_header}' to '{new_header}'")
+        # Read the Excel file
+        df = pd.read_excel(file_path, engine=engine)
 
-    # Rename the columns
-    df.rename(columns=header_mapping, inplace=True)
+        # Store original column names before any transformation
+        original_columns = df.columns.tolist()
 
-    # Replace -99 with None
-    df = df.replace(-99, None)
+        # Convert all headers to lower case
+        df.columns = df.columns.str.lower()
 
-    _dataframe_cache[file_path] = {"dataframe": df, "mod_time": file_mod_time}
+        # Check and fix headers using the expected headers list
+        file_headers = set(df.columns)
+        header_mapping = {}
+        for header in EXPECTED_HEADERS:
+            closest_match = get_close_matches(
+                header.lower(), file_headers, n=1, cutoff=0.6
+            )
+            if closest_match:
+                header_mapping[closest_match[0]] = header.lower()
+            else:
+                # Add missing header as a blank column
+                df[header.lower()] = None
+                logger.debug(f"Adding missing column '{header.lower()}' as blank")
 
-    return df
+        # Rename the columns based on the header mapping
+        if header_mapping:
+            df.rename(columns=header_mapping, inplace=True)
+
+        # Replace -99 with None (but preserve the original data type)
+        for col in df.columns:
+            if df[col].dtype in ["int64", "float64"]:
+                df[col] = df[col].replace(-99, np.nan)
+            else:
+                df[col] = df[col].replace("-99", None)
+
+        # Store the processed dataframe in cache
+        _dataframe_cache[file_path] = {"dataframe": df, "mod_time": file_mod_time}
+
+        logger.debug(f"Successfully loaded and processed file: {file_path}")
+        return df
+
+    except Exception as e:
+        logger.error(f"Error processing file {file_path}: {str(e)}")
+        raise
 
 
 def apply_filter(df, filter_criteria, aao, country: str, mutation: str):

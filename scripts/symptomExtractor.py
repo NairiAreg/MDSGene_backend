@@ -18,8 +18,13 @@ def standardize_symptom(symptom):
     symptom = symptom.lower()
 
     # Remove common prefixes and suffixes
-    symptom = re.sub(r"_sympt$", "", symptom)
-    symptom = re.sub(r"_hp.*$", "", symptom)
+    # Option 1 - Using re.IGNORECASE flag
+    symptom = re.sub(r"_sympt$", "", symptom, flags=re.IGNORECASE)
+    symptom = re.sub(r"_hp.*$", "", symptom, flags=re.IGNORECASE)
+
+    # Option 2 - Using inline (?i) flag
+    symptom = re.sub(r"(?i)_sympt$", "", symptom)
+    symptom = re.sub(r"(?i)_hp.*$", "", symptom)
 
     # Remove special characters and extra spaces
     symptom = re.sub(r"[_\-/]", " ", symptom)
