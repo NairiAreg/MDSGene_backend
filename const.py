@@ -482,3 +482,5 @@ chromosomes = {
   'chr18': 18, 'chr19': 19, 'chr20': 20, 'chr21': 21, 'chr22': 22,
   'chrX': 23, 'chrY': 24, 'chrM': 25
 }
+
+EXCEL_DIRECTORY = "excel"

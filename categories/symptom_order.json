@@ -1,0 +1,230 @@
+[
+    {
+        "geneName": "GBA",
+        "symptomName": "sleep_disorder_sympt",
+        "categoryName": "Unknown",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "intellectual_disability_sympt",
+        "categoryName": "Unknown",
+        "order": 1
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "gaze_palsy_sympt",
+        "categoryName": "Imaging features",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "gd_blood_abnorm_sympt",
+        "categoryName": "Unknown",
+        "order": 2
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "dyskinesia_sympt",
+        "categoryName": "Unknown",
+        "order": 3
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "gait_difficulties_falls_sympt",
+        "categoryName": "Unknown",
+        "order": 4
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "parkinsonism_sympt",
+        "categoryName": "Unknown",
+        "order": 5
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "hyperreflexia_sympt",
+        "categoryName": "Unknown",
+        "order": 6
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "postural_instability_sympt",
+        "categoryName": "Non-motor interictal",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "gd_bone_abnorm_sympt",
+        "categoryName": "Unknown",
+        "order": 7
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "dystonia_sympt",
+        "categoryName": "Unknown",
+        "order": 8
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "motor_sympt",
+        "categoryName": "Unknown",
+        "order": 9
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "depression_sympt",
+        "categoryName": "Other interictal",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "impulsive_control_disorder_sympt",
+        "categoryName": "Unknown",
+        "order": 10
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "gd_hepatosplenomegaly_sympt",
+        "categoryName": "Other interictal",
+        "order": 1
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "myoclonus_sympt",
+        "categoryName": "Other interictal",
+        "order": 2
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "hypomimia_sympt",
+        "categoryName": "Other signs and symptoms",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "spasticity_pyramidal_signs_sympt",
+        "categoryName": "Therapy",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "cognitive_decline_sympt",
+        "categoryName": "Paroxysmal movements",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "sleep_benefit_sympt",
+        "categoryName": "Unknown",
+        "order": 11
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "atypical_park_sympt",
+        "categoryName": "Motor signs and symptoms",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "anxiety_sympt",
+        "categoryName": "Triggers",
+        "order": 0
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "saccadic_abnormalities_sympt",
+        "categoryName": "Triggers",
+        "order": 1
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "ataxia_dysdiadochokinesia_sympt",
+        "categoryName": "Therapy",
+        "order": 1
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "tremor_hp:0001337",
+        "categoryName": "Triggers",
+        "order": 2
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "tremor_postural_sympt",
+        "categoryName": "Triggers",
+        "order": 3
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "autonomic_sympt",
+        "categoryName": "Unknown",
+        "order": 12
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "dysphagia_sympt",
+        "categoryName": "Triggers",
+        "order": 4
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "dysarthria_anarthria_sympt",
+        "categoryName": "Triggers",
+        "order": 5
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "psychotic_sympt",
+        "categoryName": "Therapy",
+        "order": 2
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "olfaction_sympt",
+        "categoryName": "Paroxysmal movements",
+        "order": 1
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "bradykinesia_sympt",
+        "categoryName": "Unknown",
+        "order": 13
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "hallucinations_sympt",
+        "categoryName": "Paroxysmal movements",
+        "order": 2
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "nms_park_sympt",
+        "categoryName": "Unknown",
+        "order": 14
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "rigidity_sympt",
+        "categoryName": "Unknown",
+        "order": 15
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "diurnal_fluctuations_sympt",
+        "categoryName": "Unknown",
+        "order": 16
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "tremor_rest_sympt",
+        "categoryName": "Unknown",
+        "order": 17
+    },
+    {
+        "geneName": "GBA",
+        "symptomName": "development_delay_sympt",
+        "categoryName": "Unknown",
+        "order": 18
+    }
+]
