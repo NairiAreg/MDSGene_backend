@@ -690,13 +690,15 @@ async def upload_gene_excel_file(file: UploadFile = File(...)):
     if not file.filename:
         raise HTTPException(status_code=400, detail="No selected file")
 
-    file_path = gene_excel_file.save_file(file)
+    column_names = gene_excel_file.save_file(file)
 
-    return JSONResponse(content={"message": "File uploaded successfully", "file_path": file_path})
-
+    return JSONResponse(content={
+        "message": "File uploaded successfully",
+        "columns": column_names
+    })
 
 @app.delete("/api/gene/delete_excel_file")
-async def web_delete_excel_file(file_id: str = Query(..., description="ID of the file to delete")):
+async def web_delete_excel_file(file_id : str):
     logger.debug(f"Received file_id: {file_id}")
     file_path = f"excel/{file_id}"
     if delete_excel_file.delete(file_path):
