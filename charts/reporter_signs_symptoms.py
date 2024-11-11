@@ -26,26 +26,29 @@ def categorize_symptom(value):
 
 
 def map_symptom_to_category(symptom_name, categories_metadata):
-    # Remove _sympt suffix and convert to lowercase for matching
     clean_name = symptom_name.replace("_sympt", "").lower()
-
-    # Search through each category
     for category_name, category_data in categories_metadata.items():
-        # Check if the symptom is in this category
         if clean_name in category_data:
             return category_name
-
-    # If not found in any specific category, return "Unknown"
     return "Unknown"
 
 
-def generate_chart_config(category_name, symptom_data):
-    """Generate chart configuration for a specific category"""
-    # Prepare data for the chart
-    categories = list(symptom_data.keys())
-    present_data = [symptom_data[symptom]["Present"] for symptom in categories]
-    absent_data = [symptom_data[symptom]["Absent"] for symptom in categories]
-    unknown_data = [symptom_data[symptom]["Unknown"] for symptom in categories]
+def generate_chart_config(category_name, category_symptoms, categories_metadata):
+    categories = [
+        categories_metadata.get(category_name, {})
+        .get(symptom.lower().replace("_sympt", ""), symptom)
+        .capitalize()
+        for symptom in category_symptoms.keys()
+    ]
+    present_data = [
+        category_symptoms[symptom]["Present"] for symptom in category_symptoms.keys()
+    ]
+    absent_data = [
+        category_symptoms[symptom]["Absent"] for symptom in category_symptoms.keys()
+    ]
+    unknown_data = [
+        category_symptoms[symptom]["Unknown"] for symptom in category_symptoms.keys()
+    ]
 
     return {
         "chart": {
@@ -192,7 +195,6 @@ def fetch_symptom_data(
                 logger.error(f"Error reading file {filename}: {str(e)}")
                 continue
 
-    # Filter out symptoms with zero data
     return {k: v for k, v in symptom_data.items() if sum(v.values()) > 0}
 
 
@@ -205,36 +207,31 @@ def generate_symptoms_chart(
     mutations: str = None,
     directory: str = "excel",
 ):
-    # Load symptom categories from JSON
     categories_metadata = load_symptom_categories()
 
-    # Fetch all symptom data
     symptom_data = fetch_symptom_data(
         disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
 
-    # Group symptoms by category
     categorized_symptoms = {}
     for symptom_name, symptom_stats in symptom_data.items():
         category = map_symptom_to_category(symptom_name, categories_metadata)
-        if category not in categorized_symptoms:
-            categorized_symptoms[category] = {}
-        categorized_symptoms[category][symptom_name] = symptom_stats
+        if category != "Unknown":
+            if category not in categorized_symptoms:
+                categorized_symptoms[category] = {}
+            categorized_symptoms[category][symptom_name] = symptom_stats
 
-    # Generate chart configurations for each category
     chart_configs = []
     for category_name, category_symptoms in categorized_symptoms.items():
-        if category_symptoms:  # Only create charts for categories with data
+        if category_symptoms:
             chart_configs.append(
                 {
                     "name": category_name,
                     "chartConfig": generate_chart_config(
-                        category_name, category_symptoms
+                        category_name, category_symptoms, categories_metadata
                     ),
                 }
             )
 
-    # Sort categories by name for consistent ordering
     chart_configs.sort(key=lambda x: x["name"])
-
     return chart_configs
