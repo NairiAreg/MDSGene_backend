@@ -171,6 +171,9 @@ def get_unique_studies(
         f"Function parameters: disease_abbrev={disease_abbrev}, gene={gene}, filter_criteria={filter_criteria}, aao={aao}, country={country}, mutation={mutation}"
     )
 
+    # Split disease_abbrev by underscore and convert each part to lowercase for case-insensitive comparison
+    disease_parts = [part.lower() for part in disease_abbrev.split("_")]
+
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):
             continue
@@ -184,8 +187,12 @@ def get_unique_studies(
                 print(f"Initial DataFrame shape: {df.shape}")
 
                 df = df[df["ensemble_decision"] == "IN"]
+
+                # Convert df["disease_abbrev"] to lowercase and filter by checking if each part is present in the string
                 df = df[
-                    (df["disease_abbrev"] == disease_abbrev)
+                    df["disease_abbrev"]
+                    .str.lower()
+                    .apply(lambda x: all(part in x for part in disease_parts))
                     & (
                         (df["gene1"] == gene)
                         | (df["gene2"] == gene)
