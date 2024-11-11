@@ -1,17 +1,43 @@
 {
-  "Development in childhood/adolescence": {},
+  "Development in childhood/adolescence": {
+    "development delay": "Development delay",
+    "intellectual disability": "Intellectual disability"
+  },
   "Imaging features": {},
-  "Laboratory results": {},
+  "Laboratory results": {
+    "gd blood abnorm": "Gd blood abnorm",
+    "gd bone abnorm": "Gd bone abnorm",
+    "gd hepatosplenomegaly": "Gd hepatosplenomegaly"
+  },
   "Motor ictal": {
     "tremor_HP:0001337": "Tremor (any or unspecified)",
     "bradykinesia": "Bradykinesia",
     "rigidity": "Rigidity",
     "resting_tremor": "Resting tremor",
     "depression": "Depression",
-    "dystonia": "Dystonia"
+    "dystonia": "Dystonia",
+    "akinesia": "Akinesia",
+    "myoclonus": "Myoclonus"
   },
-  "Motor interictal": {},
-  "Motor signs and symptoms": {},
+  "Motor interictal": {
+    "motor fluctuations": "Motor fluctuations",
+    "muscle spasm": "Muscle spasm",
+    "spasticity pyramidal signs": "Spasticity pyramidal signs"
+  },
+  "Motor signs and symptoms": {
+    "ataxia dysdiadochokinesia": "Ataxia dysdiadochokinesia",
+    "dyskinesia": "Dyskinesia",
+    "hypomimia": "Hypomimia",
+    "hypophonia": "Hypophonia",
+    "rigidity": "Rigidity",
+    "tremor": "Tremor",
+    "tremor action": "Tremor action",
+    "tremor dystonic": "Tremor dystonic",
+    "tremor postural": "Tremor postural",
+    "tremor rest": "Tremor rest",
+    "tremor unspecified": "Tremor unspecified",
+    "weakness": "Weakness"
+  },
   "Non-motor ictal": {
     "postural_instability": "Postural instability",
     "anxiety": "Anxiety",
@@ -20,75 +46,54 @@
     "psychotic": "Psychotic",
     "sleep_disorder": "Sleep disorder"
   },
-  "Non-motor interictal": {},
-  "Non-motor signs and symptoms": {},
-  "Other ictal": {},
-  "Other interictal": {},
-  "Other signs and symptoms": {},
-  "Paroxysmal movements": {},
-  "Therapy": {},
-  "Triggers": {},
-  "Unknown": {
-    "add": "Add",
-    "akinesia": "Akinesia",
+  "Non-motor interictal": {
+    "constipation": "Constipation",
+    "pain": "Pain",
+    "sleep disorder": "Sleep disorder"
+  },
+  "Non-motor signs and symptoms": {
     "anosmia": "Anosmia",
     "apraxia": "Apraxia",
-    "ataxia dysdiadochokinesia": "Ataxia dysdiadochokinesia",
-    "atypical park": "Atypical park",
     "autonomic": "Autonomic",
     "behavioral abnormalities": "Behavioral abnormalities",
     "cognitive decline": "Cognitive decline",
-    "constipation": "Constipation",
-    "development delay": "Development delay",
     "diurnal fluctuations": "Diurnal fluctuations",
     "dysarthria anarthria": "Dysarthria anarthria",
-    "dyskinesia": "Dyskinesia",
     "dysphagia": "Dysphagia",
     "fatigue": "Fatigue",
     "flexion contraction": "Flexion contraction",
     "gait difficulties falls": "Gait difficulties falls",
     "gaze palsy": "Gaze palsy",
-    "gd blood abnorm": "Gd blood abnorm",
-    "gd bone abnorm": "Gd bone abnorm",
-    "gd hepatosplenomegaly": "Gd hepatosplenomegaly",
     "hallucinations": "Hallucinations",
     "hyperreflexia": "Hyperreflexia",
-    "hypomimia": "Hypomimia",
-    "hypophonia": "Hypophonia",
     "hyposmia": "Hyposmia",
     "impulsive control disorder": "Impulsive control disorder",
+    "insomnia": "Insomnia",
+    "olfaction": "Olfaction",
+    "parkinsonism": "Parkinsonism",
+    "primitive reflexes": "Primitive reflexes",
+    "saccadic abnormalities": "Saccadic abnormalities",
+    "seizures": "Seizures",
+    "vertigo": "Vertigo",
+    "weak voice": "Weak voice"
+  },
+  "Other ictal": {},
+  "Other interictal": {},
+  "Other signs and symptoms": {
+    "various symptoms": "Various symptoms"
+  },
+  "Paroxysmal movements": {
+    "rbd": "Rbd"
+  },
+  "Therapy": {
+    "sleep benefit": "Sleep benefit"
+  },
+  "Triggers": {},
+  "Unknown": {
+    "add": "Add",
     "initial sympt1": "Initial sympt1",
     "initial sympt2": "Initial sympt2",
     "initial sympt3": "Initial sympt3",
-    "insomnia": "Insomnia",
-    "intellectual disability": "Intellectual disability",
-    "motor": "Motor",
-    "motor fluctuations": "Motor fluctuations",
-    "muscle spasm": "Muscle spasm",
-    "myoclonus": "Myoclonus",
-    "nms park": "Nms park",
-    "olfaction": "Olfaction",
-    "pain": "Pain",
-    "parkinsonism": "Parkinsonism",
-    "postural instability": "Postural instability",
-    "primitive reflexes": "Primitive reflexes",
-    "rbd": "Rbd",
-    "resting tremor": "Resting tremor",
-    "saccadic abnormalities": "Saccadic abnormalities",
-    "seizures": "Seizures",
-    "sleep benefit": "Sleep benefit",
-    "sleep disorder": "Sleep disorder",
-    "spasticity pyramidal signs": "Spasticity pyramidal signs",
-    "tremor": "Tremor",
-    "tremor action": "Tremor action",
-    "tremor dystonic": "Tremor dystonic",
-    "tremor other": "Tremor other",
-    "tremor postural": "Tremor postural",
-    "tremor rest": "Tremor rest",
-    "tremor unspecified": "Tremor unspecified",
-    "various symptoms": "Various symptoms",
-    "vertigo": "Vertigo",
-    "weak voice": "Weak voice",
-    "weakness": "Weakness"
+    "nms park": "Nms park"
   }
 }
