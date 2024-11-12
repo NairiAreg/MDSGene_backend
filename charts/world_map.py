@@ -43,6 +43,8 @@ def generate_world_map_data(all_data):
         }
         for country, count in country_counts.items()
         if country != -99
+        and country != "-99"
+        and pd.notna(country)
         and country in COUNTRIES  # Ensure we have a valid country code
     ]
 
@@ -56,22 +58,43 @@ def generate_mutation_data(country_data):
         mutation_cols = [f"mut{i}_p", f"mut{i}_c", f"mut{i}_g"]
 
         for _, row in country_data.iterrows():
-            alias = row[alias_col]
-            if pd.notna(alias) and alias != "-99":
-                if any(
-                    pd.notna(row[col]) and row[col] != "-99" for col in mutation_cols
-                ):
-                    mutation_counts[alias] += 1
+            # Get the first valid mutation value from p, c, or g columns
+            mutation_value = next(
+                (
+                    row[col]
+                    for col in mutation_cols
+                    if pd.notna(row[col]) and row[col] != -99 and row[col] != "-99"
+                ),
+                None,
+            )
 
-    # Handle mut3 separately
+            if mutation_value is not None:
+                alias = row[alias_col]
+                if pd.notna(alias) and alias != -99 and alias != "-99":
+                    mutation_counts[alias] += 1
+                else:
+                    mutation_counts[mutation_value] += 1
+
+    # Handle mut3 separately due to different alias column
     alias_col = "mut3_alias"
     mutation_cols = ["mut3_p", "mut3_c", "mut3_g"]
 
     for _, row in country_data.iterrows():
-        alias = row[alias_col]
-        if pd.notna(alias) and alias != "-99":
-            if any(pd.notna(row[col]) and row[col] != "-99" for col in mutation_cols):
+        mutation_value = next(
+            (
+                row[col]
+                for col in mutation_cols
+                if pd.notna(row[col]) and row[col] != -99 and row[col] != "-99"
+            ),
+            None,
+        )
+
+        if mutation_value is not None:
+            alias = row[alias_col]
+            if pd.notna(alias) and alias != -99 and alias != "-99":
                 mutation_counts[alias] += 1
+            else:
+                mutation_counts[mutation_value] += 1
 
     total_mutations = sum(mutation_counts.values())
 
@@ -79,7 +102,7 @@ def generate_mutation_data(country_data):
         return []  # Return an empty list if there are no mutations
 
     pie_data = [
-        {"name": mutation, "y": (count / total_mutations) * 100}
+        {"name": str(mutation), "y": (count / total_mutations) * 100}
         for mutation, count in mutation_counts.most_common(10)
     ]
 
@@ -129,14 +152,6 @@ def generate_world_map_charts_data(
             except Exception as e:
                 print(f"Error reading file {filename}: {str(e)}")
                 continue
-
-    # Remove data with country code "-99"
-    all_data = all_data[all_data["country"] != -99]
-
-    # Remove "-99" values from mutation columns
-    mutation_cols = get_mutation_columns(all_data)
-    for col in mutation_cols:
-        all_data[col] = all_data[col].replace(-99, pd.NA)
 
     world_map_data = generate_world_map_data(all_data)
 
@@ -188,7 +203,14 @@ def generate_world_map_charts_data(
 
     # Generate mutation pie charts for each country and sort by patient count
     country_patient_counts = all_data["country"].value_counts()
-    sorted_countries = country_patient_counts.index.tolist()
+    sorted_countries = [
+        country
+        for country in country_patient_counts.index
+        if country != -99
+        and country != "-99"
+        and pd.notna(country)
+        and country in COUNTRIES
+    ]
 
     for country_code in sorted_countries:
         country_name = COUNTRIES.get(country_code, country_code)

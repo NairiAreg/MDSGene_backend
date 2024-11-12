@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 import json
-
-import const
+import math
 from utils import get_cached_dataframe, safe_get
 from const import (
     protein_level_identifier_map,
@@ -155,89 +154,91 @@ def get_link_to_exac(row, i):
     return "not available"
 
 
+def handle_value(value):
+    """Safely handle any value for JSON serialization"""
+    if pd.isna(value) or value in [-99, "-99"]:
+        return "n.a."
+    if isinstance(value, (float, np.float64, np.float32)):
+        if math.isnan(value) or math.isinf(value):
+            return "n.a."
+        if value.is_integer():
+            return int(value)
+        return float(value)
+    if isinstance(value, (int, np.int64, np.int32)):
+        return int(value)
+    if isinstance(value, np.ndarray):
+        return [handle_value(v) for v in value]
+    if value is None:
+        return "n.a."
+    return str(value)
+
+
+def safe_handle_list(value_list):
+    """Safely handle lists of values"""
+    if value_list is None:
+        return []
+    if isinstance(value_list, (list, np.ndarray)):
+        return [
+            handle_value(v)
+            for v in value_list
+            if v not in [-99, "-99", None] and not pd.isna(v)
+        ]
+    return []
+
+
 def get_data_for_mutation_from_row(mutation_name, row):
     results = []
     for i in range(1, 4):
-        protein_identifier = get_protein_identifier(row, i)
-        cdna_identifier = get_cdna_identifier(row, i)
-        gdna_identifier = get_gdna_identifier(row, i)
+        protein_identifier = row.get(f"mut{i}_p", None)
+        cdna_identifier = row.get(f"mut{i}_c", None)
+        gdna_identifier = row.get(f"mut{i}_g", None)
+
         if (
             mutation_name == protein_identifier
             or mutation_name == cdna_identifier
             or mutation_name == gdna_identifier
         ):
+
+            functional_evidence = [
+                handle_value(row.get(f"fun_evidence_pos_{j}", None))
+                for j in range(1, 4)
+            ]
+            functional_evidence = [e for e in functional_evidence if e != "n.a."]
+
             result = {
-                "proteinIdentifier": protein_level_identifier_map.get(
-                    protein_identifier
-                )
-                or None,
-                "proteinLevelIdentifier": (
-                    protein_identifier
-                    if protein_identifier not in [-99, "n.a.", "-99"]
-                    else None
+                "proteinIdentifier": handle_value(row.get(f"mut{i}_p", None)),
+                "proteinLevelIdentifier": handle_value(protein_identifier),
+                "cdnaIdentifier": handle_value(row.get(f"mut{i}_c", None)),
+                "cdnaLevelIdentifier": handle_value(cdna_identifier),
+                "gdnaLevelIdentifier": handle_value(gdna_identifier),
+                "archiveIdentifierOtherDesignation": handle_value(
+                    row.get(f"mut{i}_alias", None)
                 ),
-                "cdnaIdentifier": cdna_level_identifier_map.get(cdna_identifier)
-                or None,
-                "cdnaLevelIdentifier": (
-                    cdna_identifier
-                    if cdna_identifier not in [-99, "n.a.", "-99"]
-                    else None
+                "referenceAlternativeAllele": handle_value(
+                    f"{row.get(f'reference_allele{i}', 'n.a.')},{row.get(f'observed_allele{i}', 'n.a.')}"
                 ),
-                "gdnaLevelIdentifier": (
-                    gdna_identifier
-                    if gdna_identifier not in [-99, "n.a.", "-99"]
-                    else None
+                "genomicLocation": handle_value(
+                    row.get(f"physical_location{i}", "n.a.")
                 ),
-                "archiveIdentifierOtherDesignation": get_alias(row, i) or None,
-                "referenceAlternativeAllele": (
-                    get_allele(row, i) if get_allele(row, i) != "n.a." else None
-                ),
-                "genomicLocation": (
-                    get_location(row, i) if get_location(row, i) != "n.a." else None
-                ),
-                "hg": get_hg_version(row) if get_hg_version(row) != "n.a." else None,
-                "exac": (
-                    get_link_to_exac(row, i)
-                    if "not available on ExAC" not in get_link_to_exac(row, i)
-                    else None
-                ),
-                "geneName": (
-                    row.get(f"gene{i}")
-                    if row.get(f"gene{i}") not in [-99, "n.a.", "-99"]
-                    else None
-                ),
-                "geneLink": (
-                    get_link_to_entrez_gene(row, i)
-                    if get_link_to_entrez_gene(row, i) != "n.a."
-                    else None
-                ),
-                "consequence": (
-                    get_impact_humanize_downcase(row, i)
-                    if get_impact_humanize_downcase(row, i) != "n.a."
-                    else None
-                ),
-                "pathogenicityScoring": (
-                    get_pathogenicity(row, i)
-                    if get_pathogenicity(row, i) != "n.a."
-                    else None
-                ),
-                "caddScore": (
-                    get_cadd_score(row, i) if get_cadd_score(row, i) != "n.a." else None
-                ),
-                "phosphorylationActivity": phosphorylation_activity_map.get(
-                    mutation_name
-                )
-                or None,
-                "positiveFunctionalEvidence": get_functional_evidence(row),
+                "hg": handle_value(row.get("hg_version", "n.a.")),
+                "geneName": handle_value(row.get(f"gene{i}", None)),
+                "geneLink": f"https://www.ncbi.nlm.nih.gov/gene/?term={handle_value(row.get(f'gene{i}', 'n.a.'))}",
+                "consequence": handle_value(row.get(f"impact{i}", "n.a.")).lower(),
+                "pathogenicityScoring": handle_value(
+                    row.get(f"pathogenicity{i}", "n.a.")
+                ).lower(),
+                "caddScore": handle_value(row.get(f"cadd_{i}", "n.a.")),
+                "positiveFunctionalEvidence": functional_evidence,
             }
             results.append(result)
+
     return results
 
 
 def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory="excel"):
     results = []
     disease_abbrev = disease_abbrev.upper()
-    pmid = int(pmid)  # Convert pmid to integer
+    pmid = int(pmid)
 
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):
@@ -248,7 +249,6 @@ def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory="excel"):
             try:
                 df = get_cached_dataframe(file_path)
                 df = df[df["ensemble_decision"] == "IN"]
-
                 df["disease_abbrev"] = df["disease_abbrev"].str.upper()
 
                 filtered_df = df[
@@ -262,16 +262,9 @@ def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory="excel"):
                 ]
 
                 for _, row in filtered_df.iterrows():
-                    for i in range(1, 4):
-                        if (
-                            row.get(f"mut{i}_p") == mut_p
-                            or row.get(f"mut{i}_c") == mut_p
-                            or row.get(f"mut{i}_g") == mut_p
-                        ):
-
-                            result = get_data_for_mutation_from_row(mut_p, row)
-                            if result:
-                                results.extend(result)
+                    mutation_data = get_data_for_mutation_from_row(mut_p, row)
+                    if mutation_data:
+                        results.extend(mutation_data)
 
             except Exception as e:
                 print(f"Error reading file {filename}: {str(e)}")

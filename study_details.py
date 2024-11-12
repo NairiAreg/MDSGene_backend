@@ -2,11 +2,25 @@ import pandas as pd
 import numpy as np
 import os
 import logging
+import math
 from utils import get_cached_dataframe, apply_filter
-import mutation_details  # Assuming this module exists for get_data_for_mutation_from_row
+from mutation_details import handle_value, get_data_for_mutation_from_row
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+
+def safe_handle_list(value_list):
+    """Safely handle lists of values"""
+    if value_list is None:
+        return []
+    if isinstance(value_list, (list, np.ndarray)):
+        return [
+            handle_value(v)
+            for v in value_list
+            if v not in [-99, "-99", None] and not pd.isna(v)
+        ]
+    return []
 
 
 def get_mutations_for_patient(row):
@@ -16,34 +30,33 @@ def get_mutations_for_patient(row):
         mut_c = row.get(f"mut{i}_c", -99)
         genotype = row.get(f"mut{i}_genotype", -99)
 
-        if mut_p not in [-99, None, "-99"]:
+        if mut_p not in [-99, None, "-99"] and not pd.isna(mut_p):
             mutation_name = mut_p
-        elif mut_c not in [-99, None, "-99"]:
+        elif mut_c not in [-99, None, "-99"] and not pd.isna(mut_c):
             mutation_name = mut_c
         else:
-            continue  # Skip if no valid mutation found
+            continue
 
         patient_mutations.append((mutation_name, genotype))
 
     if len(patient_mutations) == 0:
         return [{"type": "single", "name": "n.a.", "genotype": "n.a."}]
     elif len(patient_mutations) == 2 and all(m[1] == "het" for m in patient_mutations):
-        # Compound heterozygous
         return [
             {
                 "type": "compound_het",
                 "mutations": [
                     {
-                        "name": patient_mutations[0][0],
+                        "name": handle_value(patient_mutations[0][0]),
                         "genotype": "het",
-                        "details": mutation_details.get_data_for_mutation_from_row(
+                        "details": get_data_for_mutation_from_row(
                             patient_mutations[0][0], row
                         ),
                     },
                     {
-                        "name": patient_mutations[1][0],
+                        "name": handle_value(patient_mutations[1][0]),
                         "genotype": "het",
-                        "details": mutation_details.get_data_for_mutation_from_row(
+                        "details": get_data_for_mutation_from_row(
                             patient_mutations[1][0], row
                         ),
                     },
@@ -51,15 +64,12 @@ def get_mutations_for_patient(row):
             }
         ]
     else:
-        # Single mutations or non-compound het
         return [
             {
                 "type": "single",
-                "name": mutation,
+                "name": handle_value(mutation),
                 "genotype": genotype if genotype in ["hom", "het"] else "n.a.",
-                "details": mutation_details.get_data_for_mutation_from_row(
-                    mutation, row
-                ),
+                "details": get_data_for_mutation_from_row(mutation, row),
             }
             for mutation, genotype in patient_mutations
         ]
@@ -77,7 +87,7 @@ def get_patients_for_publication(
 ):
     results = []
     disease_abbrev = disease_abbrev.upper()
-    pmid = int(pmid)  # Convert pmid to integer
+    pmid = int(pmid)
     logger.debug(f"Searching for disease: {disease_abbrev}, gene: {gene}, pmid: {pmid}")
 
     for filename in os.listdir(directory):
@@ -94,6 +104,7 @@ def get_patients_for_publication(
         try:
             df = get_cached_dataframe(file_path)
             logger.debug(f"Dataframe shape after loading: {df.shape}")
+            logger.debug(f"Available columns: {df.columns.tolist()}")
 
             if "ensemble_decision" in df.columns:
                 df = df[df["ensemble_decision"] == "IN"]
@@ -113,16 +124,15 @@ def get_patients_for_publication(
                 & (df["pmid"] == pmid)
             ]
 
-            logger.debug(
-                f"Dataframe shape after initial filtering: {filtered_df.shape}"
-            )
+            logger.debug(f"Initial filtered dataframe for PMID {pmid}:")
+            logger.debug(f"Number of rows: {len(filtered_df)}")
+            if not filtered_df.empty:
+                logger.debug("Sample of country values in filtered data:")
+                logger.debug(filtered_df["country"].head())
+                logger.debug("Unique country values in filtered data:")
+                logger.debug(filtered_df["country"].unique())
 
-            if (
-                filter_criteria is not None
-                or aao is not None
-                or country is not None
-                or mutation is not None
-            ):
+            if any(x is not None for x in [filter_criteria, aao, country, mutation]):
                 filtered_df = apply_filter(
                     filtered_df, filter_criteria, aao, country, mutation
                 )
@@ -130,21 +140,37 @@ def get_patients_for_publication(
                     f"Dataframe shape after applying additional filters: {filtered_df.shape}"
                 )
 
-            for _, row in filtered_df.iterrows():
+            for idx, row in filtered_df.iterrows():
                 symptoms = [
-                    col.replace("_sympt", "").replace("_hp", "")
+                    handle_value(col.replace("_sympt", "").replace("_hp", ""))
                     for col in filtered_df.columns
                     if ("_sympt" in col or "_hp" in col)
                     and row.get(col) in [1, True, "yes", "Yes"]
                 ]
 
                 initial_symptoms = [
-                    row.get(col)
+                    handle_value(row.get(col))
                     for col in ["initial_sympt1", "initial_sympt2", "initial_sympt3"]
                     if pd.notna(row.get(col)) and row.get(col) not in [-99, "-99"]
                 ]
 
                 mutations = get_mutations_for_patient(row)
+
+                # Get country value with detailed logging
+                country_value = row.get("country")
+                logger.debug(f"Raw country value for row {idx}: {country_value}")
+                logger.debug(f"Type of country value: {type(country_value)}")
+
+                # Check for various invalid values
+                is_invalid = (
+                    country_value in [-99, "-99", None]
+                    or pd.isna(country_value)
+                    or (isinstance(country_value, str) and country_value.strip() == "")
+                )
+                logger.debug(f"Is country value invalid? {is_invalid}")
+
+                country_str = handle_value(country_value) if not is_invalid else "n.a."
+                logger.debug(f"Processed country value: {country_str}")
 
                 result = {
                     "index_patient": (
@@ -152,50 +178,32 @@ def get_patients_for_publication(
                         if row.get("index_pat") in [1, True, "yes", "Yes"]
                         else "No"
                     ),
-                    "sex": (
-                        row.get("sex")
-                        if pd.notna(row.get("sex"))
-                        and row.get("sex") not in [-99, "-99"]
-                        else "n.a."
-                    ),
-                    "ethnicity": (
-                        row.get("ethnicity")
-                        if pd.notna(row.get("ethnicity"))
-                        and row.get("ethnicity") not in [-99, "-99"]
-                        else "n.a."
-                    ),
-                    "country_of_origin": (
-                        row.get("country")
-                        if pd.notna(row.get("country"))
-                        and row.get("country") not in [-99, "-99"]
-                        else "n.a."
-                    ),
-                    "aao": (
-                        int(row.get("aao"))
-                        if pd.notna(row.get("aao"))
-                        and row.get("aao") not in [-99, "-99"]
-                        else "n.a."
-                    ),
-                    "aae": (
-                        int(row.get("aae"))
-                        if pd.notna(row.get("aae"))
-                        and row.get("aae") not in [-99, "-99"]
-                        else "n.a."
-                    ),
+                    "sex": handle_value(row.get("sex")),
+                    "ethnicity": handle_value(row.get("ethnicity")),
+                    "country_of_origin": country_str,
+                    "aao": handle_value(row.get("aao")),
+                    "aae": handle_value(row.get("aae")),
                     "family_history": (
                         "Yes" if row.get("famhx") in [1, True, "yes", "Yes"] else "No"
                     ),
-                    "symptoms": symptoms,
-                    "initial_symptoms": initial_symptoms,
+                    "symptoms": safe_handle_list(symptoms),
+                    "initial_symptoms": safe_handle_list(initial_symptoms),
                     "reported_mutations": mutations,
                 }
 
                 results.append(result)
-                logger.debug(f"Added result: {result}")
+                logger.debug(
+                    f"Added result with country: {result['country_of_origin']}"
+                )
 
         except Exception as e:
             logger.error(f"Error reading file {filename}: {str(e)}")
+            logger.exception("Detailed error traceback:")
             continue
 
     logger.debug(f"Total results found: {len(results)}")
+    # Log a summary of countries in results
+    country_summary = [r["country_of_origin"] for r in results]
+    logger.debug(f"Countries in final results: {country_summary}")
+
     return results
