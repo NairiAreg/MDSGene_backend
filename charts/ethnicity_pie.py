@@ -6,6 +6,49 @@ from collections import Counter
 
 logger = logging.getLogger(__name__)
 
+ancestryMapper = {
+    "asian": "Asian",
+    "jewish ashkenazi": "Jewish (Ashkenazi)",
+    "hispanic": "Hispanic",
+    "african ancestry": "African Ancestry",
+    "jewish non-ashkenazi/undefined": "Jewish (non-ashkenazi/undefined)",
+    "indian ancestry": "Indian Ancestry",
+    "mixed/other": "Mixed Other",
+    "caucasian": "Caucasian",
+    "arab": "Arab",
+    "berber": "Berber",
+    "sephardi jew": "Sephardi Jew",
+}
+
+
+def map_ethnicity(ethnicity):
+    """Helper function to map ethnicity values using ancestryMapper"""
+    if pd.isna(ethnicity) or ethnicity == -99:
+        logger.debug(f"Skipping invalid ethnicity value: {ethnicity}")
+        return None
+
+    # Replace any invisible characters and normalize spaces
+    ethnicity_clean = " ".join(str(ethnicity).lower().split())
+
+    # Log the original and cleaned values to debug any invisible characters
+    if ethnicity_clean != str(ethnicity).lower():
+        logger.debug(f"Cleaned ethnicity value: '{ethnicity}' -> '{ethnicity_clean}'")
+        logger.debug(f"Hex representation: {ethnicity_clean.encode('utf-8').hex()}")
+
+    mapped_value = ancestryMapper.get(ethnicity_clean)
+
+    if mapped_value:
+        logger.debug(f"Successfully mapped '{ethnicity_clean}' to '{mapped_value}'")
+    else:
+        logger.warning(
+            f"No mapping found for: '{ethnicity_clean}' (original: '{ethnicity}')"
+        )
+        # Log hex values to see invisible characters
+        logger.warning(f"Hex values - original: {str(ethnicity).encode('utf-8').hex()}")
+        logger.warning(f"Hex values - cleaned: {ethnicity_clean.encode('utf-8').hex()}")
+
+    return mapped_value or ethnicity
+
 
 def generate_ethnicity_pie_chart(
     disease_abbrev: str,
@@ -77,9 +120,10 @@ def generate_ethnicity_pie_chart(
                 filtered_df = filtered_df[status_mask & pathogenicity_mask]
                 logger.info(f"After additional filters: {filtered_df.shape}")
 
-                # Collect ethnicity data
+                # Map ethnicities using ancestryMapper and collect data
                 if "ethnicity" in filtered_df.columns:
-                    ethnicity_data.extend(filtered_df["ethnicity"].dropna().tolist())
+                    mapped_ethnicities = filtered_df["ethnicity"].apply(map_ethnicity)
+                    ethnicity_data.extend(mapped_ethnicities.dropna().tolist())
                 total_count += len(filtered_df)
 
             except Exception as e:
@@ -88,8 +132,8 @@ def generate_ethnicity_pie_chart(
 
     logger.info(f"Total ethnicity data points: {len(ethnicity_data)}")
 
-    # Count ethnicities, excluding -99
-    ethnicity_counts = Counter(str(e) for e in ethnicity_data if e != -99)
+    # Count mapped ethnicities
+    ethnicity_counts = Counter(ethnicity_data)
 
     # Calculate missing data
     missing_count = total_count - sum(ethnicity_counts.values())

@@ -1,24 +1,72 @@
 import pandas as pd
 import os
 import logging
+import json
+import re
 from utils import get_cached_dataframe, apply_filter
 
 logger = logging.getLogger(__name__)
 
-SYMPTOM_MAPPING = {
-    "tremor_HP:0001337": "Tremor (any or unspecified)",
-    "bradykinesia": "Bradykinesia",
-    "rigidity": "Rigidity",
-    "resting_tremor": "Resting tremor",
-    "depression": "Depression",
-    "dystonia": "Dystonia",
-    "postural_instability": "Postural instability",
-    "anxiety": "Anxiety",
-    "cognitive_decline": "Cognitive decline",
-    "postural_tremor": "Postural tremor",
-    "psychotic": "Psychotic",
-    "sleep_disorder": "Sleep disorder",
-}
+
+def load_symptom_categories(directory="excel"):
+    """Load and flatten the symptom categories from JSON"""
+    try:
+        with open(os.path.join(directory, "symptom_categories.json"), "r") as f:
+            categories = json.load(f)
+
+        # Create a flattened mapping of all symptoms
+        symptom_mapping = {}
+        for category, symptoms in categories.items():
+            if isinstance(symptoms, dict):
+                for symptom_key, symptom_name in symptoms.items():
+                    standardized_key = standardize_symptom(symptom_key)
+                    if standardized_key:
+                        symptom_mapping[standardized_key] = symptom_name
+
+        return symptom_mapping
+    except Exception as e:
+        logger.error(f"Error loading symptom categories: {str(e)}")
+        return {}
+
+
+def standardize_symptom(symptom):
+    """Standardize symptom names by removing common variations and special characters"""
+    if not isinstance(symptom, str):
+        return None
+
+    # Convert to lowercase
+    symptom = symptom.lower()
+
+    # Remove common suffixes
+    symptom = re.sub(r"_sympt$", "", symptom, flags=re.IGNORECASE)
+    symptom = re.sub(r"_hp.*$", "", symptom, flags=re.IGNORECASE)
+
+    # Remove special characters and extra spaces
+    symptom = re.sub(r"[_\-/]", " ", symptom)
+    symptom = re.sub(r"\s+", " ", symptom)
+    symptom = symptom.strip()
+
+    # Common replacements
+    replacements = {
+        "parkinsonian": "parkinson",
+        "psychiatric": "psychotic",
+        "psychological": "psychotic",
+        "dysfunction": "disorder",
+        "abnormality": "disorder",
+    }
+
+    for old, new in replacements.items():
+        symptom = symptom.replace(old, new)
+
+    return symptom
+
+
+def get_standardized_symptom_name(symptom, symptom_mapping):
+    """Get standardized symptom name using the mapping"""
+    standardized = standardize_symptom(symptom)
+    if standardized in symptom_mapping:
+        return symptom_mapping[standardized]
+    return standardized.title()  # Return capitalized version if no mapping found
 
 
 def _fetch_initial_symptoms_data(
@@ -35,9 +83,12 @@ def _fetch_initial_symptoms_data(
     total_patients = 0
     patients_with_missing_data = 0
 
+    # Load symptom categories mapping
+    symptom_mapping = load_symptom_categories(directory)
+
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):
-            continue  # Skip temporary Excel files
+            continue
 
         if filename.endswith(".xlsx") or filename.endswith(".xls"):
             file_path = os.path.join(directory, filename)
@@ -77,27 +128,50 @@ def _fetch_initial_symptoms_data(
                 ]
 
                 total_patients += len(filtered_df)
-                patients_with_missing_data += (
-                    filtered_df[["initial_sympt1", "initial_sympt2", "initial_sympt3"]]
-                    .isnull()
-                    .any(axis=1)
-                    .sum()
-                )
 
+                # Count patients with ALL initial symptoms missing or -99
+                missing_mask = (
+                    (
+                        filtered_df["initial_sympt1"].isna()
+                        | (filtered_df["initial_sympt1"] == -99)
+                    )
+                    & (
+                        filtered_df["initial_sympt2"].isna()
+                        | (filtered_df["initial_sympt2"] == -99)
+                    )
+                    & (
+                        filtered_df["initial_sympt3"].isna()
+                        | (filtered_df["initial_sympt3"] == -99)
+                    )
+                )
+                patients_with_missing_data += missing_mask.sum()
+
+                # Process valid symptoms
                 for column in ["initial_sympt1", "initial_sympt2", "initial_sympt3"]:
                     if column in filtered_df.columns:
-                        symptom_counts = filtered_df[column].value_counts().to_dict()
+                        # Only count symptoms that are not null and not -99
+                        valid_symptoms = filtered_df[
+                            (~filtered_df[column].isna()) & (filtered_df[column] != -99)
+                        ][column]
+
+                        symptom_counts = valid_symptoms.value_counts().to_dict()
                         for symptom, count in symptom_counts.items():
-                            if pd.notna(symptom) and symptom != -99:
-                                mapped_symptom = SYMPTOM_MAPPING.get(symptom, symptom)
-                                if mapped_symptom in initial_symptoms:
-                                    initial_symptoms[mapped_symptom] += count
-                                else:
-                                    initial_symptoms[mapped_symptom] = count
+                            standardized_name = get_standardized_symptom_name(
+                                symptom, symptom_mapping
+                            )
+                            initial_symptoms[standardized_name] = (
+                                initial_symptoms.get(standardized_name, 0) + count
+                            )
 
             except Exception as e:
                 logger.error(f"Error reading file {filename}: {str(e)}")
                 continue
+
+    # Add debug logging
+    logger.debug(f"Total patients before percentage calc: {total_patients}")
+    logger.debug(
+        f"Missing patients before percentage calc: {patients_with_missing_data}"
+    )
 
     return initial_symptoms, total_patients, patients_with_missing_data
 
@@ -125,12 +199,17 @@ def generate_initial_signs_symptoms(
         {"symptom": symptom, "count": count} for symptom, count in sorted_symptoms
     ]
 
-    total_eligible = total_patients  # Assuming total_eligible is equivalent to total_patients for now
+    # Calculate missing percentage
     hist_missing_percentage = (
-        (patients_with_missing_data * 100.0) / total_eligible
-        if total_eligible > 0
+        (patients_with_missing_data * 100.0) / total_patients
+        if total_patients > 0
         else 0.0
     )
+
+    # Add debug logging
+    logger.debug(f"Total patients: {total_patients}")
+    logger.debug(f"Patients with missing data: {patients_with_missing_data}")
+    logger.debug(f"Missing percentage: {hist_missing_percentage:.2f}%")
 
     return {
         "chart": {"type": "column"},
