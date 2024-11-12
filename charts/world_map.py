@@ -38,6 +38,76 @@ def process_dataframe(df, disease_abbrev, gene):
     return filtered_df
 
 
+def generate_mutation_data(country_data):
+    mutation_counts = Counter()
+
+    # Handle mut1 and mut2
+    for i in range(1, 3):
+        alias_col = f"mut{i}_alias_original"
+        mutation_cols = [f"mut{i}_p", f"mut{i}_c", f"mut{i}_g"]
+
+        for _, row in country_data.iterrows():
+            # Get the first valid mutation value from p, c, or g columns
+            mutation_value = next(
+                (
+                    row[col]
+                    for col in mutation_cols
+                    if pd.notna(row[col]) and row[col] != -99 and row[col] != "-99"
+                ),
+                None,
+            )
+
+            if mutation_value is not None:
+                alias = row[alias_col]
+                if pd.notna(alias) and alias != -99 and alias != "-99":
+                    mutation_counts[alias] += 1
+                else:
+                    mutation_counts[mutation_value] += 1
+
+    # Handle mut3 separately due to different alias column
+    alias_col = "mut3_alias"
+    mutation_cols = ["mut3_p", "mut3_c", "mut3_g"]
+
+    for _, row in country_data.iterrows():
+        mutation_value = next(
+            (
+                row[col]
+                for col in mutation_cols
+                if pd.notna(row[col]) and row[col] != -99 and row[col] != "-99"
+            ),
+            None,
+        )
+
+        if mutation_value is not None:
+            alias = row[alias_col]
+            if pd.notna(alias) and alias != -99 and alias != "-99":
+                mutation_counts[alias] += 1
+            else:
+                mutation_counts[mutation_value] += 1
+
+    total_mutations = sum(mutation_counts.values())
+
+    if total_mutations == 0:
+        return []  # Return an empty list if there are no mutations
+
+    pie_data = [
+        {"name": str(mutation), "y": (count / total_mutations) * 100}
+        for mutation, count in mutation_counts.most_common(10)
+    ]
+
+    if len(mutation_counts) > 10:
+        other_count = sum(dict(mutation_counts.most_common()[10:]).values())
+        pie_data.append(
+            {
+                "name": "Other",
+                "y": (other_count / total_mutations) * 100,
+                "color": "#548b90",  # Set color for "Other" slice
+            }
+        )
+
+    return pie_data
+
+
 def generate_world_map_data(all_data):
     logger.debug("Generating world map data")
     # Log raw country data
