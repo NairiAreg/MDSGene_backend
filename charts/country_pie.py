@@ -20,109 +20,86 @@ def _fetch_country_data(
     total_count = 0
     missing_count = 0
 
-    logger.info(
-        f"Starting country data fetch with parameters: disease={disease_abbrev}, gene={gene}"
-    )
-    logger.info(
+    logger.debug(f"Starting country data fetch for {disease_abbrev} - {gene}")
+    logger.debug(
         f"Filters: criteria={filter_criteria}, countries={countries}, aao={aao}, mutations={mutations}"
     )
 
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):
-            continue  # Skip temporary Excel files
+            continue
 
         if filename.endswith(".xlsx") or filename.endswith(".xls"):
             file_path = os.path.join(directory, filename)
             try:
                 logger.debug(f"Processing file: {filename}")
                 df = get_cached_dataframe(file_path)
-                initial_rows = len(df)
-                logger.debug(f"Initial dataframe rows: {initial_rows}")
+                logger.debug(f"Initial dataframe shape: {df.shape}")
 
-                # Verify required columns exist
-                required_columns = [
-                    "disease_abbrev",
-                    "gene1",
-                    "gene2",
-                    "gene3",
-                    "country",
-                    "status_clinical",
-                    "pathogenicity1",
-                    "pathogenicity2",
-                    "pathogenicity3",
-                ]
-                missing_columns = [
-                    col for col in required_columns if col not in df.columns
-                ]
-                if missing_columns:
-                    logger.error(
-                        f"Missing required columns in {filename}: {missing_columns}"
-                    )
-                    logger.debug(f"Available columns: {df.columns.tolist()}")
-                    continue
+                df = df[df["ensemble_decision"] == "IN"]
+                logger.debug(f"After ensemble decision filter: {df.shape}")
 
-                # Filter by ensemble_decision
-                if "ensemble_decision" in df.columns:
-                    df = df[df["ensemble_decision"] == "IN"]
-                after_ensemble = len(df)
-                logger.debug(f"Rows after ensemble decision filter: {after_ensemble}")
-
-                # Apply user filters
                 if (
                     filter_criteria is not None
                     or countries is not None
                     or mutations is not None
                 ):
                     df = apply_filter(df, filter_criteria, aao, countries, mutations)
-                    logger.debug(f"Rows after applying user filters: {len(df)}")
+                    logger.debug(f"After applying filters: {df.shape}")
 
-                # Filter by disease and gene using boolean masks
-                disease_mask = df["disease_abbrev"] == disease_abbrev
-                gene_mask = (
-                    (df["gene1"] == gene)
-                    | (df["gene2"] == gene)
-                    | (df["gene3"] == gene)
+                filtered_df = pd.concat(
+                    [
+                        df[
+                            (df["disease_abbrev"] == disease_abbrev)
+                            & (df["gene1"] == gene)
+                        ],
+                        df[
+                            (df["disease_abbrev"] == disease_abbrev)
+                            & (df["gene2"] == gene)
+                        ],
+                        df[
+                            (df["disease_abbrev"] == disease_abbrev)
+                            & (df["gene3"] == gene)
+                        ],
+                    ]
                 )
-                filtered_df = df[disease_mask & gene_mask]
+                logger.debug(f"After disease and gene filter: {filtered_df.shape}")
 
-                after_disease_gene = len(filtered_df)
-                logger.debug(f"Rows after disease/gene filter: {after_disease_gene}")
-
-                if after_disease_gene == 0:
-                    logger.debug(f"No matching disease/gene data found in {filename}")
-                    continue
-
-                # Apply clinical and pathogenicity filters
-                clinical_mask = (
-                    filtered_df["status_clinical"] != "clinically unaffected"
+                # Log unique countries before filtering
+                unique_countries_before = filtered_df["country"].unique()
+                logger.debug(
+                    f"Unique countries before clinical filter: {unique_countries_before}"
                 )
-                pathogenicity_mask = (
-                    (filtered_df["pathogenicity1"] != "benign")
+
+                filtered_df = filtered_df[
+                    (filtered_df["status_clinical"] != "clinically unaffected")
+                    & (filtered_df["pathogenicity1"] != "benign")
                     & (filtered_df["pathogenicity2"] != "benign")
                     & (filtered_df["pathogenicity3"] != "benign")
+                ]
+                logger.debug(
+                    f"After clinical and pathogenicity filters: {filtered_df.shape}"
                 )
-                filtered_df = filtered_df[clinical_mask & pathogenicity_mask]
 
-                final_rows = len(filtered_df)
-                logger.debug(f"Final rows after all filters: {final_rows}")
+                # Log unique countries after filtering
+                unique_countries_after = filtered_df["country"].unique()
+                logger.debug(
+                    f"Unique countries after all filters: {unique_countries_after}"
+                )
 
-                if final_rows > 0:
-                    total_count += final_rows
-                    # Verify country column exists and log its content
-                    logger.debug(
-                        f"Country column unique values: {filtered_df['country'].unique().tolist()}"
-                    )
+                if len(filtered_df) > 0:
+                    total_count += len(filtered_df)
 
-                    country_data = filtered_df["country"].value_counts().to_dict()
-                    for c, count in country_data.items():
-                        if pd.notna(c) and c != -99:
-                            country_counts[c] = country_counts.get(c, 0) + count
-                            logger.debug(f"Added {count} patients from country {c}")
+                    # Process country data
+                    for _, row in filtered_df.iterrows():
+                        country = row["country"]
+                        if pd.notna(country) and country != -99 and country != "-99":
+                            country_counts[country] = country_counts.get(country, 0) + 1
                         else:
-                            missing_count += count
-                            logger.debug(
-                                f"Added {count} to missing count (country={c})"
-                            )
+                            missing_count += 1
+
+                    logger.debug(f"Current country counts: {country_counts}")
+                    logger.debug(f"Current missing count: {missing_count}")
 
             except Exception as e:
                 logger.error(
@@ -131,7 +108,7 @@ def _fetch_country_data(
                 continue
 
     logger.info(f"Final country counts: {country_counts}")
-    logger.info(f"Total patients: {total_count}, Missing country data: {missing_count}")
+    logger.info(f"Total count: {total_count}, Missing count: {missing_count}")
     return country_counts, missing_count, total_count
 
 
@@ -150,23 +127,26 @@ def generate_country_pie_chart(
             disease_abbrev, gene, filter_criteria, countries, aao, mutations, directory
         )
 
-        # Prepare pie chart data
-        pie_chart_data = [
-            {"name": k, "y": v, "count": v} for k, v in country_counts.items()
-        ]
+        # Log the raw data
+        logger.debug(f"Raw country counts: {country_counts}")
+        logger.debug(f"Total patients: {total_count}")
+        logger.debug(f"Missing count: {missing_count}")
 
-        if not pie_chart_data:
-            logger.warning("No valid country data found for pie chart")
+        if not country_counts:
+            logger.warning("No country data found")
             return {
                 "chart": {"type": "pie"},
                 "title": {"text": "No Country Data Available"},
-                "subtitle": {
-                    "text": f"No data found for {disease_abbrev} - {gene} with current filters"
-                },
                 "series": [{"data": []}],
             }
 
-        # Sort data by value in descending order
+        # Prepare pie chart data
+        pie_chart_data = [
+            {"name": str(country), "y": count, "count": count}
+            for country, count in country_counts.items()
+        ]
+
+        # Sort data by count in descending order
         pie_chart_data.sort(key=lambda x: x["count"], reverse=True)
 
         # Calculate percentages and assign colors
@@ -179,6 +159,9 @@ def generate_country_pie_chart(
         missing_percentage = (
             (missing_count / total_count * 100) if total_count > 0 else 0
         )
+
+        logger.debug(f"Prepared data points: {len(pie_chart_data)}")
+        logger.debug(f"First few data points: {pie_chart_data[:3]}")
 
         chart_config = {
             "chart": {"type": "pie"},
@@ -215,9 +198,4 @@ def generate_country_pie_chart(
 
     except Exception as e:
         logger.error("Error generating country pie chart", exc_info=True)
-        return {
-            "chart": {"type": "pie"},
-            "title": {"text": "Error Generating Chart"},
-            "subtitle": {"text": "An error occurred while processing the data"},
-            "series": [{"data": []}],
-        }
+        raise

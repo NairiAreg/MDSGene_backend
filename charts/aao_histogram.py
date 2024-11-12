@@ -19,6 +19,8 @@ def _fetch_aao_data(
 ):
     disease_abbrev = disease_abbrev.upper()
     aao_data = []
+    total_patients = 0
+    missing_count = 0
 
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):
@@ -32,66 +34,59 @@ def _fetch_aao_data(
                     f"Processing file: {filename}, Initial DataFrame shape: {df.shape}"
                 )
 
-                # Safely filter based on ensemble_decision
                 if "ensemble_decision" in df.columns:
                     df = df[df["ensemble_decision"] == "IN"]
-                logger.info(f"After ensemble_decision filter: {df.shape}")
 
-                # Only apply the filter if filter_criteria, country, or mutation is provided
                 if (
                     filter_criteria is not None
                     or countries is not None
                     or mutations is not None
                 ):
                     df = apply_filter(df, filter_criteria, aao, countries, mutations)
-                logger.info(f"After apply_filter: {df.shape}")
 
-                # Safely filter based on disease_abbrev and gene
-                disease_mask = (
-                    df["disease_abbrev"] == disease_abbrev
-                    if "disease_abbrev" in df.columns
-                    else pd.Series(True, index=df.index)
-                )
-                gene_mask = (
-                    (df["gene1"] == gene)
-                    | (df["gene2"] == gene)
-                    | (df["gene3"] == gene)
-                )
-                filtered_df = df[disease_mask & gene_mask]
-                logger.info(
-                    f"After disease_abbrev and gene filter: {filtered_df.shape}"
+                filtered_df = pd.concat(
+                    [
+                        df[
+                            (df["disease_abbrev"] == disease_abbrev)
+                            & (df["gene1"] == gene)
+                        ],
+                        df[
+                            (df["disease_abbrev"] == disease_abbrev)
+                            & (df["gene2"] == gene)
+                        ],
+                        df[
+                            (df["disease_abbrev"] == disease_abbrev)
+                            & (df["gene3"] == gene)
+                        ],
+                    ]
                 )
 
-                # Safely apply additional filters
-                status_mask = (
-                    filtered_df["status_clinical"] != "clinically unaffected"
-                    if "status_clinical" in filtered_df.columns
-                    else pd.Series(True, index=filtered_df.index)
-                )
-                pathogenicity_mask = (
-                    (filtered_df["pathogenicity1"] != "benign")
+                filtered_df = filtered_df[
+                    (filtered_df["status_clinical"] != "clinically unaffected")
+                    & (filtered_df["pathogenicity1"] != "benign")
                     & (filtered_df["pathogenicity2"] != "benign")
                     & (filtered_df["pathogenicity3"] != "benign")
-                )
-                aao_mask = (
-                    (filtered_df["aao"].notnull() & (filtered_df["aao"] != -99))
-                    if "aao" in filtered_df.columns
-                    else pd.Series(True, index=filtered_df.index)
-                )
+                ]
 
-                filtered_df = filtered_df[status_mask & pathogenicity_mask & aao_mask]
-                logger.info(f"After additional filters: {filtered_df.shape}")
+                total_patients += len(filtered_df)
 
-                # Collect age at onset data
-                if "aao" in filtered_df.columns:
-                    aao_data.extend(filtered_df["aao"].dropna().tolist())
+                # Count missing data (AAO is either NaN or -99)
+                missing_mask = filtered_df["aao"].isna() | (filtered_df["aao"] == -99)
+                missing_count += missing_mask.sum()
+
+                # Collect valid AAO data
+                valid_aao = filtered_df.loc[~missing_mask, "aao"]
+                aao_data.extend(valid_aao.tolist())
 
             except Exception as e:
                 logger.error(f"Error processing file {filename}: {str(e)}")
                 continue
 
-    logger.info(f"Total aao_data points: {len(aao_data)}")
-    return aao_data
+    logger.info(f"Total patients: {total_patients}")
+    logger.info(f"Missing count: {missing_count}")
+    logger.info(f"Valid AAO data points: {len(aao_data)}")
+
+    return aao_data, total_patients, missing_count
 
 
 def generate_aao_histogram(
@@ -103,12 +98,9 @@ def generate_aao_histogram(
     mutations: str = None,
     directory: str = "excel",
 ):
-    aao_data = _fetch_aao_data(
+    aao_data, total_patients, missing_count = _fetch_aao_data(
         disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
-
-    # Remove any remaining -99 values
-    aao_data = [x for x in aao_data if x != -99]
 
     if not aao_data:
         logger.warning(
@@ -116,10 +108,11 @@ def generate_aao_histogram(
         )
         return None
 
+    # Calculate statistics
     aao_data.sort()
     stats_by_years = describe(aao_data)
 
-    # Check if we have enough data points for percentiles
+    # Calculate percentiles
     if len(aao_data) >= 4:
         percentiles = np.percentile(aao_data, [25, 50, 75])
         hist_aao_25_percent = round(percentiles[0], 2)
@@ -128,9 +121,13 @@ def generate_aao_histogram(
     else:
         hist_aao_25_percent = hist_aao_median = hist_aao_75_percent = None
 
+    # Calculate missing percentage
+    missing_percentage = (
+        (missing_count / total_patients * 100) if total_patients > 0 else 0
+    )
+
     # Group the aao_data into age ranges
     grouped_data = [0] * 10  # Initialize with 10 groups (0-9, 10-19, ..., 90-99)
-
     for age in aao_data:
         if 0 <= age <= 99:
             group_index = int(age // 10)
@@ -143,7 +140,7 @@ def generate_aao_histogram(
         "chart": {"type": "column"},
         "title": {"text": "Distribution of age at onset"},
         "subtitle": {
-            "text": f"Median: {hist_aao_median}; 25th/75th perc.: {hist_aao_25_percent}/{hist_aao_75_percent}; Range: {stats_by_years.minmax[0]:.2f}-{stats_by_years.minmax[1]:.2f} yrs."
+            "text": f"Number of patients with missing data: {missing_count} ({missing_percentage:.2f}%)",
         },
         "xAxis": {
             "categories": [
@@ -176,7 +173,7 @@ def generate_aao_histogram(
         },
         "tooltip": {
             "headerFormat": "{point.key}<br>",
-            "pointFormat": "<b>{point.y}</b>Patients",
+            "pointFormat": "<b>{point.y}</b> Patients",
             "hideDelay": 0,
             "shared": True,
             "useHTML": True,
