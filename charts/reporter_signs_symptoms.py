@@ -125,12 +125,12 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata)
                 "color": "#000080",
                 "dataLabels": {"style": {"color": "white"}},
             },
-            {
-                "name": "Unknown",
-                "data": unknown_data,
-                "color": "#808080",
-                "dataLabels": {"style": {"color": "white"}},
-            },
+            # {
+            #     "name": "Unknown",
+            #     "data": unknown_data,
+            #     "color": "#808080",
+            #     "dataLabels": {"style": {"color": "white"}},
+            # },
         ],
     }
 

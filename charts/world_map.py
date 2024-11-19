@@ -10,7 +10,10 @@ logger = logging.getLogger(__name__)
 
 def process_dataframe(df, disease_abbrev, gene):
     logger.debug(f"Processing dataframe for {disease_abbrev} - {gene}")
-    logger.debug(f"Initial shape: {df.shape}")
+    logger.debug(f"Available columns: {df.columns.tolist()}")
+
+    # Clean up column names - remove any special characters and standardize
+    df.columns = df.columns.str.strip().str.lower().str.replace("[^a-zA-Z0-9]", "")
 
     df = df[df["ensemble_decision"] == "IN"]
     logger.debug(f"After ensemble filter: {df.shape}")
@@ -31,7 +34,6 @@ def process_dataframe(df, disease_abbrev, gene):
     ]
     logger.debug(f"After clinical and pathogenicity filter: {filtered_df.shape}")
 
-    # Log unique countries
     unique_countries = filtered_df["country"].unique()
     logger.debug(f"Unique countries in filtered data: {unique_countries}")
 
