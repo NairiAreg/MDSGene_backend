@@ -10,10 +10,11 @@ logger = logging.getLogger(__name__)
 
 def process_dataframe(df, disease_abbrev, gene):
     logger.debug(f"Processing dataframe for {disease_abbrev} - {gene}")
-    logger.debug(f"Available columns: {df.columns.tolist()}")
+    logger.debug(f"Initial shape: {df.shape}")
 
-    # Clean up column names - remove any special characters and standardize
-    df.columns = df.columns.str.strip().str.lower().str.replace("[^a-zA-Z0-9]", "")
+    # Look for country column - it may be renamed as 'entry'
+    if "country" not in df.columns and "entry" in df.columns:
+        df = df.rename(columns={"entry": "country"})
 
     df = df[df["ensemble_decision"] == "IN"]
     logger.debug(f"After ensemble filter: {df.shape}")
