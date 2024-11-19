@@ -472,63 +472,25 @@ def get_cached_dataframe(file_path):
     global _dataframe_cache
 
     try:
-        # Get the last modification time of the file
         file_mod_time = os.path.getmtime(file_path)
-
-        # Check if the file is in the cache and if it is up to date
         if (
             file_path in _dataframe_cache
             and _dataframe_cache[file_path]["mod_time"] == file_mod_time
         ):
             return _dataframe_cache[file_path]["dataframe"]
 
-        # Determine the Excel engine based on file extension
         _, file_extension = os.path.splitext(file_path)
-        if file_extension.lower() == ".xlsx":
-            engine = "openpyxl"
-        elif file_extension.lower() == ".xls":
-            engine = "xlrd"
-        else:
-            raise ValueError(f"Unsupported file extension: {file_extension}")
+        engine = "openpyxl" if file_extension.lower() == ".xlsx" else "xlrd"
 
-        # Read the Excel file
         df = pd.read_excel(file_path, engine=engine)
 
-        # Store original column names before any transformation
-        original_columns = df.columns.tolist()
-
-        # Convert all headers to lower case
-        df.columns = df.columns.str.lower()
-
-        # Check and fix headers using the expected headers list
-        file_headers = set(df.columns)
-        header_mapping = {}
-        for header in EXPECTED_HEADERS:
-            closest_match = get_close_matches(
-                header.lower(), file_headers, n=1, cutoff=0.6
-            )
-            if closest_match:
-                header_mapping[closest_match[0]] = header.lower()
-            else:
-                # Add missing header as a blank column
-                df[header.lower()] = None
-                logger.debug(f"Adding missing column '{header.lower()}' as blank")
-
-        # Rename the columns based on the header mapping
-        if header_mapping:
-            df.rename(columns=header_mapping, inplace=True)
-
-        # Replace -99 with None (but preserve the original data type)
         for col in df.columns:
             if df[col].dtype in ["int64", "float64"]:
                 df[col] = df[col].replace(-99, np.nan)
             else:
                 df[col] = df[col].replace("-99", None)
 
-        # Store the processed dataframe in cache
         _dataframe_cache[file_path] = {"dataframe": df, "mod_time": file_mod_time}
-
-        logger.debug(f"Successfully loaded and processed file: {file_path}")
         return df
 
     except Exception as e:
