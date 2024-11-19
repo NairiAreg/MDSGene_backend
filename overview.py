@@ -1,10 +1,7 @@
-# Send Mean AAO
-# Ethnicities should be
-# Add hint tooltips
-
 import numpy as np
 import os
 import logging
+import re
 
 import mutation_details
 from utils import get_cached_dataframe, apply_filter, safe_get, extract_year
@@ -156,6 +153,13 @@ def get_unique_mutations(mutations: List[Dict[str, Any]]) -> List[Dict[str, Any]
     return unique_mutations
 
 
+def find_author_year_column(columns):
+    """Find the column that contains both 'author' and 'year' in its name."""
+    pattern = re.compile(r".*author.*year.*|.*year.*author.*", re.IGNORECASE)
+    matching_columns = [col for col in columns if pattern.match(str(col))]
+    return matching_columns[0] if matching_columns else None
+
+
 def get_unique_studies(
     disease_abbrev: str,
     gene: str,
@@ -182,13 +186,10 @@ def get_unique_studies(
             file_path = os.path.join(directory, filename)
             try:
                 df = get_cached_dataframe(file_path)
-
                 print(f"\nProcessing file: {filename}")
                 print(f"Initial DataFrame shape: {df.shape}")
 
                 df = df[df["ensemble_decision"] == "IN"]
-
-                # Convert df["disease_abbrev"] to lowercase and filter by checking if each part is present in the string
                 df = df[
                     df["disease_abbrev"]
                     .str.lower()
@@ -201,22 +202,25 @@ def get_unique_studies(
                 ]
 
                 print(f"DataFrame shape after initial filtering: {df.shape}")
-
                 df = apply_filter(df, filter_criteria, aao, country, mutation)
                 print(f"DataFrame shape after apply_filter: {df.shape}")
+
+                # Find the author/year column
+                author_year_col = find_author_year_column(df.columns)
 
                 for pmid in df["pmid"].unique():
                     try:
                         study_df = df[df["pmid"] == pmid]
-
                         number_of_cases = len(study_df)
                         study_design = safe_get(study_df, "study_design", 0, "Unknown")
                         ethnicity = safe_get(study_df, "ethnicity", 0, -99)
 
-                        if "author, year" in study_df.columns:
-                            author_year = study_df["author, year"].iloc[0]
-                        else:
-                            author_year = "Unknown"
+                        # Use the detected column name or fall back to "Unknown"
+                        author_year = (
+                            study_df[author_year_col].iloc[0]
+                            if author_year_col is not None
+                            else "Unknown"
+                        )
 
                         sex_data = study_df["sex"].value_counts()
                         total_with_sex = sex_data.sum()
@@ -241,8 +245,6 @@ def get_unique_studies(
                         )
 
                         mutations = get_mutations(study_df)
-
-                        # Make mutations unique using the new function
                         unique_mutations = get_unique_mutations(mutations)
 
                         full_mutations = {
@@ -279,7 +281,7 @@ def get_unique_studies(
                             "std_dev_age_at_onset": to_python_type(
                                 std_dev_age_at_onset
                             ),
-                            "mutations": unique_mutations,  # Now this is a list of truly unique structured mutation objects
+                            "mutations": unique_mutations,
                         }
 
                         results.append(result)

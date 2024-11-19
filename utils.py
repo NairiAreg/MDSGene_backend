@@ -484,6 +484,9 @@ def get_cached_dataframe(file_path):
 
         df = pd.read_excel(file_path, engine=engine)
 
+        # Convert all headers to lower case
+        df.columns = df.columns.str.lower()
+
         for col in df.columns:
             if df[col].dtype in ["int64", "float64"]:
                 df[col] = df[col].replace(-99, np.nan)

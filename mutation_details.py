@@ -8,6 +8,7 @@ from const import (
     protein_level_identifier_map,
     cdna_level_identifier_map,
     phosphorylation_activity_map,
+    chromosomes,
 )
 
 
@@ -100,7 +101,7 @@ def get_chromosome(row, i):
             len(_temp) == 2
             and (
                 lambda: _temp[0]
-                in [str(x) for x in const.chromosomes.values()] + ["x", "y", "m", "mt"]
+                in [str(x) for x in chromosomes.values()] + ["x", "y", "m", "mt"]
             )()
         ):
             if _temp[0] == "x":
@@ -198,12 +199,15 @@ def get_data_for_mutation_from_row(mutation_name, row):
             or mutation_name == cdna_identifier
             or mutation_name == gdna_identifier
         ):
+            # Find all evidence columns
+            evidence_columns = [col for col in row.keys() if "evidence" in col.lower()]
 
-            functional_evidence = [
-                handle_value(row.get(f"fun_evidence_pos_{j}", None))
-                for j in range(1, 4)
-            ]
-            functional_evidence = [e for e in functional_evidence if e != "n.a."]
+            # Extract evidence values
+            functional_evidence = []
+            for col in evidence_columns:
+                evidence = row.get(col)
+                if evidence not in [-99, None, "n.a.", "-99"] and not pd.isna(evidence):
+                    functional_evidence.append(str(evidence))
 
             result = {
                 "proteinIdentifier": handle_value(row.get(f"mut{i}_p", None)),
@@ -248,18 +252,20 @@ def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory="excel"):
             file_path = os.path.join(directory, filename)
             try:
                 df = get_cached_dataframe(file_path)
-                df = df[df["ensemble_decision"] == "IN"]
-                df["disease_abbrev"] = df["disease_abbrev"].str.upper()
 
-                filtered_df = df[
-                    (df["disease_abbrev"] == disease_abbrev)
+                # Apply all filters using boolean indexing in one step
+                mask = (
+                    (df["ensemble_decision"] == "IN")
+                    & (df["disease_abbrev"].str.upper() == disease_abbrev)
                     & (
                         (df["gene1"] == gene)
                         | (df["gene2"] == gene)
                         | (df["gene3"] == gene)
                     )
                     & (df["pmid"] == pmid)
-                ]
+                )
+
+                filtered_df = df[mask]
 
                 for _, row in filtered_df.iterrows():
                     mutation_data = get_data_for_mutation_from_row(mut_p, row)
