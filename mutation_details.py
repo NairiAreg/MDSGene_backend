@@ -227,7 +227,7 @@ def get_data_for_mutation_from_row(mutation_name, row):
                 "hg": handle_value(row.get("hg_version", "n.a.")),
                 "geneName": handle_value(row.get(f"gene{i}", None)),
                 "geneLink": f"https://www.ncbi.nlm.nih.gov/gene/?term={handle_value(row.get(f'gene{i}', 'n.a.'))}",
-                "consequence": handle_value(row.get(f"impact{i}", "n.a.")).lower(),
+                "consequence": handle_value(row.get(f"mut{i}_type", "n.a.")).lower(),
                 "pathogenicityScoring": handle_value(
                     row.get(f"pathogenicity{i}", "n.a.")
                 ).lower(),

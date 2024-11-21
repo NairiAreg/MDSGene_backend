@@ -1,99 +1,65 @@
 {
-  "Development in childhood/adolescence": {
-    "development delay": "Development delay",
-    "intellectual disability": "Intellectual disability"
+  "Imaging features": {
+    "saccadic_abnormalities": "Saccadic Abnormalities",
+    "gaze_palsy": "Gaze Palsy"
   },
-  "Imaging features": {},
   "Laboratory results": {
-    "gd blood abnorm": "Gd blood abnorm",
-    "gd bone abnorm": "Gd bone abnorm",
-    "gd hepatosplenomegaly": "Gd hepatosplenomegaly"
+    "gd_blood_abnorm": "Gd Blood Abnorm",
+    "gd_bone_abnorm": "Gd Bone Abnorm",
+    "gd_hepatosplenomegaly": "Gd Hepatosplenomegaly"
   },
-  "Motor ictal": {
-    "tremor_HP:0001337": "Tremor (any or unspecified)",
-    "bradykinesia": "Bradykinesia",
-    "rigidity": "Rigidity",
-    "resting_tremor": "Resting tremor",
-    "depression": "Depression",
-    "dystonia": "Dystonia",
-    "akinesia": "Akinesia",
-    "myoclonus": "Myoclonus"
-  },
-  "Motor interictal": {
-    "motor fluctuations": "Motor fluctuations",
-    "muscle spasm": "Muscle spasm",
-    "spasticity pyramidal signs": "Spasticity pyramidal signs"
-  },
+  "Motor ictal": {},
+  "Motor interictal": {},
   "Motor signs and symptoms": {
-    "ataxia dysdiadochokinesia": "Ataxia dysdiadochokinesia",
-    "dyskinesia": "Dyskinesia",
-    "hypomimia": "Hypomimia",
-    "hypophonia": "Hypophonia",
-    "rigidity": "Rigidity",
-    "tremor": "Tremor",
-    "tremor action": "Tremor action",
-    "tremor dystonic": "Tremor dystonic",
-    "tremor postural": "Tremor postural",
-    "tremor rest": "Tremor rest",
-    "tremor unspecified": "Tremor unspecified",
-    "weakness": "Weakness"
-  },
-  "Non-motor ictal": {
-    "postural_instability": "Postural instability",
-    "anxiety": "Anxiety",
-    "cognitive_decline": "Cognitive decline",
-    "postural_tremor": "Postural tremor",
-    "psychotic": "Psychotic",
-    "sleep_disorder": "Sleep disorder"
-  },
-  "Non-motor interictal": {
-    "constipation": "Constipation",
-    "pain": "Pain",
-    "sleep disorder": "Sleep disorder"
-  },
-  "Non-motor signs and symptoms": {
-    "anosmia": "Anosmia",
-    "apraxia": "Apraxia",
-    "autonomic": "Autonomic",
-    "behavioral abnormalities": "Behavioral abnormalities",
-    "cognitive decline": "Cognitive decline",
-    "diurnal fluctuations": "Diurnal fluctuations",
-    "dysarthria anarthria": "Dysarthria anarthria",
-    "dysphagia": "Dysphagia",
-    "fatigue": "Fatigue",
-    "flexion contraction": "Flexion contraction",
-    "gait difficulties falls": "Gait difficulties falls",
-    "gaze palsy": "Gaze palsy",
-    "hallucinations": "Hallucinations",
-    "hyperreflexia": "Hyperreflexia",
-    "hyposmia": "Hyposmia",
-    "impulsive control disorder": "Impulsive control disorder",
-    "insomnia": "Insomnia",
-    "olfaction": "Olfaction",
+    "bradykinesia": "Bradykinesia",
+    "postural_instability": "Postural Instability",
     "parkinsonism": "Parkinsonism",
-    "primitive reflexes": "Primitive reflexes",
-    "saccadic abnormalities": "Saccadic abnormalities",
-    "seizures": "Seizures",
-    "vertigo": "Vertigo",
-    "weak voice": "Weak voice"
+    "rigidity": "Rigidity",
+    "tremor_hp:0001337": "Tremor",
+    "tremor_action": "Tremor Action",
+    "tremor_postural": "Tremor Postural",
+    "tremor_rest": "Tremor Rest",
+    "tremor_other": "Tremor Other",
+    "dyskinesia": "Dyskinesia",
+    "dystonia": "Dystonia",
+    "ataxia_dysdiadochokinesia": "Ataxia",
+    "spasticity_pyramidal_signs": "Spasticity Pyramidal Signs",
+    "primitive_reflexes": "Primitive Reflexes",
+    "motor_fluctuations": "Motor Fluctuations",
+    "motor": "Motor",
+    "nms_park": "NMS Park"
   },
-  "Other ictal": {},
+  "Non-motor ictal": {},
+  "Non-motor interictal": {},
+  "Non-motor signs and symptoms": {
+    "anxiety": "Anxiety",
+    "depression": "Depression",
+    "psychotic": "Psychotic",
+    "behavioral_abnormalities_hp:nononono7no8": "Behavioral Abnormalities Hp:Nononono7No8",
+    "hallucinations": "Hallucinations",
+    "cognitive_decline": "Cognitive Decline",
+    "sleep_disorder": "Sleep Disorder",
+    "diurnal_fluctuations": "Diurnal Fluctuations",
+    "impulsive_control_disorder": "Impulsive Control Disorder"
+  },
+  "Other ictal": {
+    "seizures": "Seizures"
+  },
   "Other interictal": {},
   "Other signs and symptoms": {
-    "various symptoms": "Various symptoms"
+    "olfaction": "Olfaction",
+    "hypomimia": "Hypomimia",
+    "dysarthria_anarthria": "Dysarthria Anarthria",
+    "dysphagia": "Dysphagia",
+    "autonomic": "Autonomic"
   },
   "Paroxysmal movements": {
-    "rbd": "Rbd"
+    "myoclonus": "Myoclonus"
   },
-  "Therapy": {
-    "sleep benefit": "Sleep benefit"
+  "Therapy": {},
+  "Triggers": {
+    "gait_difficulties_falls": "Gait Difficulties Falls",
+    "rbd": "RBD"
   },
-  "Triggers": {},
-  "Unknown": {
-    "add": "Add",
-    "initial sympt1": "Initial sympt1",
-    "initial sympt2": "Initial sympt2",
-    "initial sympt3": "Initial sympt3",
-    "nms park": "Nms park"
-  }
+  "Unknown": {}
 }

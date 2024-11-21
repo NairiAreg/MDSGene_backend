@@ -33,7 +33,7 @@ def map_symptom_to_category(symptom_name, categories_metadata):
     return "Unknown"
 
 
-def generate_chart_config(category_name, category_symptoms, categories_metadata):
+def generate_chart_config(category_name, category_symptoms, categories_metadata, show_unknown=True):
     categories = [
         categories_metadata.get(category_name, {})
         .get(symptom.lower().replace("_sympt", ""), symptom)
@@ -48,7 +48,30 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata)
     ]
     unknown_data = [
         category_symptoms[symptom]["Unknown"] for symptom in category_symptoms.keys()
+    ] if show_unknown else []
+
+    series = [
+        {
+            "name": "Present",
+            "data": present_data,
+            "color": "#A52A2A",
+            "dataLabels": {"style": {"color": "white"}},
+        },
+        {
+            "name": "Absent",
+            "data": absent_data,
+            "color": "#000080",
+            "dataLabels": {"style": {"color": "white"}},
+        }
     ]
+
+    if show_unknown:
+        series.append({
+            "name": "Unknown",
+            "data": unknown_data,
+            "color": "#808080",
+            "dataLabels": {"style": {"color": "white"}},
+        })
 
     return {
         "chart": {
@@ -112,28 +135,8 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata)
             },
             "bar": {"borderWidth": 0},
         },
-        "series": [
-            {
-                "name": "Present",
-                "data": present_data,
-                "color": "#A52A2A",
-                "dataLabels": {"style": {"color": "white"}},
-            },
-            {
-                "name": "Absent",
-                "data": absent_data,
-                "color": "#000080",
-                "dataLabels": {"style": {"color": "white"}},
-            },
-            # {
-            #     "name": "Unknown",
-            #     "data": unknown_data,
-            #     "color": "#808080",
-            #     "dataLabels": {"style": {"color": "white"}},
-            # },
-        ],
+        "series": series,
     }
-
 
 def fetch_symptom_data(
     disease_abbrev: str,
@@ -207,6 +210,9 @@ def generate_symptoms_chart(
     mutations: str = None,
     directory: str = "excel",
 ):
+    # Проверка на PD и GBA
+    is_pd_gba = disease_abbrev == "PD" and gene == "GBA"
+
     categories_metadata = load_symptom_categories()
 
     symptom_data = fetch_symptom_data(
@@ -228,7 +234,10 @@ def generate_symptoms_chart(
                 {
                     "name": category_name,
                     "chartConfig": generate_chart_config(
-                        category_name, category_symptoms, categories_metadata
+                        category_name,
+                        category_symptoms,
+                        categories_metadata,
+                        show_unknown=not is_pd_gba  # Показываем Unknown только для PD и GBA1
                     ),
                 }
             )
