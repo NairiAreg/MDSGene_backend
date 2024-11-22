@@ -56,12 +56,14 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata,
             "data": present_data,
             "color": "#A52A2A",
             "dataLabels": {"style": {"color": "white"}},
+            "index": 2, # Явно указываем порядок
         },
         {
             "name": "Absent",
             "data": absent_data,
             "color": "#000080",
             "dataLabels": {"style": {"color": "white"}},
+            "index": 1, # Явно указываем порядок
         }
     ]
 
@@ -71,6 +73,7 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata,
             "data": unknown_data,
             "color": "#808080",
             "dataLabels": {"style": {"color": "white"}},
+            "index": 0,  # Явно указываем порядок
         })
 
     return {
@@ -81,7 +84,10 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata,
         "accessibility": {
             "enabled": False,
         },
-        "title": {"text": f"Signs and symptoms in {category_name}"},
+        "title": {"text": category_name},
+        "subtitle": {
+            "text": f"Counts on missing (unreported) signs or symptoms are not displayed.",
+        } if not show_unknown else {},
         "xAxis": {
             "categories": categories,
             "labels": {
@@ -135,6 +141,7 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata,
             },
             "bar": {"borderWidth": 0},
         },
+        "credits": {"enabled": False},
         "series": series,
     }
 
@@ -211,7 +218,7 @@ def generate_symptoms_chart(
     directory: str = "excel",
 ):
     # Проверка на PD и GBA
-    is_pd_gba = disease_abbrev == "PD" and gene == "GBA"
+    is_pd_gba = disease_abbrev == "PARK" and gene == "GBA1"
 
     categories_metadata = load_symptom_categories()
 
@@ -242,5 +249,9 @@ def generate_symptoms_chart(
                 }
             )
 
-    chart_configs.sort(key=lambda x: x["name"])
+    # Создаем словарь с порядковыми номерами из categories_metadata
+    category_order = {category: idx for idx, category in enumerate(categories_metadata.keys())}
+
+    # Используем этот порядок для сортировки
+    chart_configs.sort(key=lambda x: category_order.get(x["name"], float('inf')))
     return chart_configs

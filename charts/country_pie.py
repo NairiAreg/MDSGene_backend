@@ -165,6 +165,7 @@ def generate_country_pie_chart(
                 },
             }
         },
+        "credits": {"enabled": False},
         "series": [{"name": "Country", "colorByPoint": True, "data": pie_chart_data}],
     }
 

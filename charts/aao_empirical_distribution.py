@@ -177,6 +177,7 @@ def generate_aao_empirical_distribution(
             "pointFormat": "<b>{point.x} years</b><br><b>{point.y:.1f}%</b>",
         },
         "plotOptions": {"area": {"marker": {"enabled": False}}},
+        "credits": {"enabled": False},
         "series": [
             {
                 "name": "Age distribution",

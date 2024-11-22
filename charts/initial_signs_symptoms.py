@@ -226,6 +226,7 @@ def generate_initial_signs_symptoms(
         },
         "yAxis": {"min": 0, "title": {"text": "Number of patients"}},
         "plotOptions": {"column": {"dataLabels": {"enabled": True}}},
+        "credits": {"enabled": False},
         "series": [
             {
                 "name": "Patients",

@@ -6,6 +6,7 @@ import json
 import logging
 from difflib import get_close_matches
 import math
+from collections import OrderedDict
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -665,11 +666,12 @@ def load_symptom_categories(directory="properties"):
 
     if os.path.exists(categories_file_path):
         with open(categories_file_path, "r") as file:
-            categories_metadata = json.load(file)
-            # Remove the 'Unknown' category if it exists
+            # Load JSON data into an OrderedDict to preserve order
+            categories_metadata = json.load(file, object_pairs_hook=OrderedDict)
+            # Remove the 'Unknown' category if it exists, preserving order
             categories_metadata.pop("Unknown", None)
     else:
-        categories_metadata = {}
+        categories_metadata = OrderedDict()  # Use OrderedDict for an empty dict too
 
     return categories_metadata
 

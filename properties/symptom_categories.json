@@ -1,15 +1,4 @@
 {
-  "Imaging features": {
-    "saccadic_abnormalities": "Saccadic Abnormalities",
-    "gaze_palsy": "Gaze Palsy"
-  },
-  "Laboratory results": {
-    "gd_blood_abnorm": "Gd Blood Abnorm",
-    "gd_bone_abnorm": "Gd Bone Abnorm",
-    "gd_hepatosplenomegaly": "Gd Hepatosplenomegaly"
-  },
-  "Motor ictal": {},
-  "Motor interictal": {},
   "Motor signs and symptoms": {
     "bradykinesia": "Bradykinesia",
     "postural_instability": "Postural Instability",
@@ -24,13 +13,15 @@
     "dystonia": "Dystonia",
     "ataxia_dysdiadochokinesia": "Ataxia",
     "spasticity_pyramidal_signs": "Spasticity Pyramidal Signs",
-    "primitive_reflexes": "Primitive Reflexes",
     "motor_fluctuations": "Motor Fluctuations",
     "motor": "Motor",
-    "nms_park": "NMS Park"
+    "dysphagia": "Dysphagia",
+    "dysarthria_anarthria": "Dysarthria/Anarthria",
+    "gait_difficulties_falls": "Gait Difficulties Falls",
+    "myoclonus": "Myoclonus",
+    "saccadic_abnormalities": "Saccadic Abnormalities",
+    "gaze_palsy": "Gaze Palsy"
   },
-  "Non-motor ictal": {},
-  "Non-motor interictal": {},
   "Non-motor signs and symptoms": {
     "anxiety": "Anxiety",
     "depression": "Depression",
@@ -40,26 +31,11 @@
     "cognitive_decline": "Cognitive Decline",
     "sleep_disorder": "Sleep Disorder",
     "diurnal_fluctuations": "Diurnal Fluctuations",
-    "impulsive_control_disorder": "Impulsive Control Disorder"
-  },
-  "Other ictal": {
-    "seizures": "Seizures"
-  },
-  "Other interictal": {},
-  "Other signs and symptoms": {
-    "olfaction": "Olfaction",
-    "hypomimia": "Hypomimia",
-    "dysarthria_anarthria": "Dysarthria Anarthria",
-    "dysphagia": "Dysphagia",
-    "autonomic": "Autonomic"
-  },
-  "Paroxysmal movements": {
-    "myoclonus": "Myoclonus"
-  },
-  "Therapy": {},
-  "Triggers": {
-    "gait_difficulties_falls": "Gait Difficulties Falls",
-    "rbd": "RBD"
+    "impulsive_control_disorder": "Impulsive Control Disorder",
+    "hyposmia": "Hyposmia",
+    "olfaction": "Olfaction impairment",
+    "autonomic": "Autonomic",
+    "rbd": "REM Sleep Behavior Disorde"
   },
   "Unknown": {}
 }

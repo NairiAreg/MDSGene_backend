@@ -199,6 +199,7 @@ def generate_ethnicity_pie_chart(
                 },
             }
         },
+        "credits": {"enabled": False},
         "series": [
             {
                 "name": "Ethnicity",

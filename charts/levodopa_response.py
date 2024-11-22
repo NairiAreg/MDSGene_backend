@@ -166,6 +166,7 @@ def generate_levodopa_response(
         "xAxis": {"categories": categories, "title": {"text": "Levodopa response"}},
         "yAxis": {"min": 0, "title": {"text": "Number of patients"}},
         "plotOptions": {"column": {"dataLabels": {"enabled": True}}},
+        "credits": {"enabled": False},
         "series": [
             {"name": "Patients", "data": data, "color": "#AC202D"}  # Dark red color
         ],
