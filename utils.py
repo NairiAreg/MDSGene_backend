@@ -7,6 +7,7 @@ import logging
 from difflib import get_close_matches
 import math
 from collections import OrderedDict
+from typing import List, Dict, Any, Optional
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -695,3 +696,174 @@ def extract_year(author_year):
     if match:
         return int(match.group())
     return 0  # Default to 0 if no year is found
+
+
+def is_valid_mutation(mutation: Dict[str, Any]) -> bool:
+    """
+    Check if a mutation entry has valid data and should be included.
+    """
+    # Check if mutation has a valid name (not NaN, n.a., or -99)
+    if not mutation.get("name") or str(mutation["name"]).lower() in [
+        "nan",
+        "n.a.",
+        "-99",
+        "unknown",
+    ]:
+        return False
+
+    # Check if mutation has valid details
+    if not mutation.get("details"):
+        return False
+
+    # Check if at least one detail entry has valid identifiers
+    for detail in mutation["details"]:
+        identifiers = [
+            detail.get("proteinIdentifier"),
+            detail.get("cdnaIdentifier"),
+            detail.get("gdnaIdentifier"),
+        ]
+        valid_identifiers = [
+            id
+            for id in identifiers
+            if id and str(id).lower() not in ["nan", "n.a.", "-99", "unknown"]
+        ]
+        if valid_identifiers:
+            return True
+
+    return False
+
+
+def clean_mutation_detail(detail: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Clean a single mutation detail entry by removing invalid values.
+    """
+    cleaned = {}
+    for key, value in detail.items():
+        # Handle lists (like positiveFunctionalEvidence)
+        if isinstance(value, list):
+            cleaned[key] = [
+                v
+                for v in value
+                if str(v).lower() not in ["nan", "n.a.", "-99", "unknown"]
+            ]
+            continue
+
+        # Skip invalid values
+        if str(value).lower() in ["nan", "n.a.", "-99", "unknown"]:
+            continue
+
+        # Clean up genotype values
+        if key == "genotype" and str(value).lower() == "n.a.":
+            continue
+
+        # Include valid values
+        cleaned[key] = value
+
+    return cleaned
+
+
+def process_mutations(data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """
+    Process and clean mutation data from a study entry.
+    Returns only valid mutations with cleaned details.
+    """
+    if not data.get("mutations"):
+        return []
+
+    processed_mutations = []
+
+    for mutation in data["mutations"]:
+        if not is_valid_mutation(mutation):
+            continue
+
+        cleaned_mutation = {
+            "type": mutation["type"],
+            "name": mutation["name"],
+            "genotype": mutation.get("genotype"),
+            "pathogenicity": mutation.get("pathogenicity"),
+            "details": [],
+        }
+
+        # Clean and include only valid details
+        for detail in mutation["details"]:
+            cleaned_detail = clean_mutation_detail(detail)
+            if cleaned_detail:
+                cleaned_mutation["details"].append(cleaned_detail)
+
+        # Only include mutation if it has valid details after cleaning
+        if cleaned_mutation["details"]:
+            processed_mutations.append(cleaned_mutation)
+
+    return processed_mutations
+
+
+def process_study_data(studies: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Process full study data, cleaning mutations for each study.
+    """
+    processed_studies = []
+
+    for study in studies:
+        processed_study = study.copy()
+        processed_study["mutations"] = process_mutations(study)
+
+        # Remove full_mutations if all values are invalid
+        if "full_mutations" in processed_study:
+            has_valid_mutation = False
+            for key, value in processed_study["full_mutations"].items():
+                if str(value).lower() not in ["nan", "n.a.", "-99", "unknown"]:
+                    has_valid_mutation = True
+                    break
+            if not has_valid_mutation:
+                del processed_study["full_mutations"]
+
+        processed_studies.append(processed_study)
+
+    return processed_studies
+
+
+def merge_duplicate_mutations(mutations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Merge duplicate mutations in a study, combining their details.
+    """
+    mutation_map = {}
+
+    for mutation in mutations:
+        key = f"{mutation['name']}_{mutation.get('genotype', '')}"
+
+        if key not in mutation_map:
+            mutation_map[key] = mutation
+        else:
+            # Merge details
+            existing_details = set(str(d) for d in mutation_map[key]["details"])
+            new_details = [
+                d for d in mutation["details"] if str(d) not in existing_details
+            ]
+            mutation_map[key]["details"].extend(new_details)
+
+    return list(mutation_map.values())
+
+
+# Usage example:
+def clean_study_mutations(input_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Clean and process mutation data for all studies.
+    """
+    # Process all studies
+    processed_data = process_study_data(input_data)
+
+    # Further clean each study's mutations
+    for study in processed_data:
+        if study.get("mutations"):
+            # Merge duplicates and ensure no invalid values
+            study["mutations"] = merge_duplicate_mutations(study["mutations"])
+
+            # Remove any mutations that ended up empty after cleaning
+            study["mutations"] = [
+                m
+                for m in study["mutations"]
+                if m.get("name")
+                and str(m["name"]).lower() not in ["nan", "n.a.", "-99", "unknown"]
+            ]
+
+    return processed_data

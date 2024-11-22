@@ -4,7 +4,13 @@ import logging
 import re
 
 import mutation_details
-from utils import get_cached_dataframe, apply_filter, safe_get, extract_year
+from utils import (
+    get_cached_dataframe,
+    apply_filter,
+    safe_get,
+    extract_year,
+    clean_study_mutations,
+)
 
 from typing import List, Dict, Any
 
@@ -299,4 +305,6 @@ def get_unique_studies(
 
     results.sort(key=lambda x: extract_year(x["author_year"]), reverse=True)
     print(f"Total number of results: {len(results)}")
-    return results
+    if results:
+        cleaned_results = clean_study_mutations(results)
+        return cleaned_results
