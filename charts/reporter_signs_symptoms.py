@@ -37,7 +37,6 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata,
     categories = [
         categories_metadata.get(category_name, {})
         .get(symptom.lower().replace("_sympt", ""), symptom)
-        .capitalize()
         for symptom in category_symptoms.keys()
     ]
     present_data = [
@@ -56,14 +55,14 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata,
             "data": present_data,
             "color": "#A52A2A",
             "dataLabels": {"style": {"color": "white"}},
-            "index": 2, # Явно указываем порядок
+            "index": 2,
         },
         {
             "name": "Absent",
             "data": absent_data,
             "color": "#000080",
             "dataLabels": {"style": {"color": "white"}},
-            "index": 1, # Явно указываем порядок
+            "index": 1,
         }
     ]
 
@@ -73,7 +72,7 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata,
             "data": unknown_data,
             "color": "#808080",
             "dataLabels": {"style": {"color": "white"}},
-            "index": 0,  # Явно указываем порядок
+            "index": 0,
         })
 
     return {
@@ -86,8 +85,13 @@ def generate_chart_config(category_name, category_symptoms, categories_metadata,
         },
         "title": {"text": category_name},
         "subtitle": {
-            "text": f"Counts on missing (unreported) signs or symptoms are not displayed.",
+            "text": "Counts on missing (unreported) signs or symptoms are not displayed.",
         } if not show_unknown else {},
+        "caption": {
+            "text": "Note: Individual elements of parkinsonism not specified.",
+            "align": "left",
+            "style": {"fontStyle": "italic"}
+        } if category_name == "Motor signs and symptoms" else {},
         "xAxis": {
             "categories": categories,
             "labels": {

@@ -1,7 +1,7 @@
 import json
 from typing import List
 
-from fastapi import FastAPI, Query, HTTPException, Form, File, UploadFile
+from fastapi import FastAPI, Query, HTTPException, Form, File, UploadFile, Response
 from pydantic import BaseModel
 
 import diseases
@@ -31,9 +31,39 @@ from fastapi.responses import JSONResponse
 from cachetools import TTLCache
 from pubmed_search_endpoint import fetch_pubmed_summaries
 from qc.api.files import get_excel_files_list
+from functools import wraps
+import hashlib
 
 # Cache to store PubMed responses, with a 1-hour TTL
 pubmed_cache = TTLCache(maxsize=1000, ttl=3600)
+
+endpoint_cache = TTLCache(maxsize=150000, ttl=2592000)
+
+
+def cache_response(func):
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        cache_key = f"{func.__name__}:{str(args)}:{str(sorted(kwargs.items()))}"
+        cache_key = hashlib.md5(cache_key.encode()).hexdigest()
+
+        if cache_key in endpoint_cache:
+            return endpoint_cache[cache_key]
+
+        try:
+            response = await func(*args, **kwargs)
+
+            # Only cache successful responses (200-299 status codes)
+            if (isinstance(response, Response) and 200 <= response.status_code < 300) or \
+                    (isinstance(response, dict) or isinstance(response, list)):  # Handle direct returns
+                endpoint_cache[cache_key] = response
+
+            return response
+
+        except Exception as e:
+            # Don't cache errors, just propagate them
+            raise e
+
+    return wrapper
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -132,6 +162,7 @@ async def patients_for_publication_endpoint(
 
 
 @app.get("/data_for_mutation")
+@cache_response
 async def data_for_mutation_endpoint(
     disease_abbrev: str,
     gene: str,
@@ -273,6 +304,7 @@ async def generate_world_map_charts_data_endpoint(
 
 
 @app.get("/search_pubmed")
+@cache_response
 async def search_pubmed(pubmed_ids: str):
     try:
         id_list = [int(id.strip()) for id in pubmed_ids.split(",") if id.strip()]

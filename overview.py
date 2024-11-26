@@ -31,11 +31,17 @@ def to_python_type(value):
     return value
 
 
-def get_mutations(df):
+# Изменена функция get_mutations - добавлен параметр gene
+def get_mutations(df, gene):  # <<<< ИЗМЕНЕНИЕ 1: добавлен параметр gene
     mutations = []
     for _, row in df.iterrows():
         patient_mutations = []
         for i in range(1, 4):
+            # ИЗМЕНЕНИЕ 2: добавлена проверка гена
+            mutation_gene = row.get(f'gene{i}')
+            if mutation_gene != gene:
+                continue  # Пропускаем мутации других генов
+
             mut_p = row.get(f"mut{i}_p", -99)
             mut_c = row.get(f"mut{i}_c", -99)
             mut_g = row.get(f"mut{i}_g", -99)
@@ -250,7 +256,8 @@ def get_unique_studies(
                             else None
                         )
 
-                        mutations = get_mutations(study_df)
+                        # ИЗМЕНЕНИЕ 3: передаем параметр gene в функцию get_mutations
+                        mutations = get_mutations(study_df, gene)  # <<<< Добавлен параметр gene
                         unique_mutations = get_unique_mutations(mutations)
 
                         full_mutations = {

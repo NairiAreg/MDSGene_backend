@@ -104,7 +104,7 @@ def generate_mutation_data(country_data):
             {
                 "name": "Other",
                 "y": (other_count / total_mutations) * 100,
-                "color": "#548b90",  # Set color for "Other" slice
+                "color": "#9a9a9a",  # Set color for "Other" slice
             }
         )
 
@@ -263,7 +263,7 @@ def generate_world_map_charts_data(
         if mutation_data:
             # Assign colors to pie slices
             for i, data_point in enumerate(mutation_data):
-                if i < len(CHART_COLORS):
+                if i < len(CHART_COLORS) and not data_point.get("color"):
                     data_point["color"] = CHART_COLORS[i]
 
             charts_data["mutations"][country_name] = {

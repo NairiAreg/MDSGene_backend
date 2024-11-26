@@ -20,13 +20,13 @@ def categorize_levodopa_response(row):
         return "No"
 
     # If levodopa_response is "yes" and response_quantification is -99 or falsy,
-    # it's "Yes, undefined"
+    # it's "Yes, unquantified"
     if levodopa_response == "yes" and (
         response_quantification == "-99"
         or pd.isna(row["response_quantification"])
         or response_quantification == ""
     ):
-        return "Yes, undefined"
+        return "Yes, unquantified"
 
     # For "yes" responses with valid quantification
     if levodopa_response == "yes":
@@ -142,7 +142,7 @@ def generate_levodopa_response(
         "Good",
         "Moderate",
         "Minimal",
-        "Yes, undefined",
+        "Yes, unquantified",
         "No",
         "Not treated",
     ]

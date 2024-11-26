@@ -185,6 +185,9 @@ def generate_initial_signs_symptoms(
     mutations: str = None,
     directory: str = "excel",
 ):
+    # Проверка на PARK и GBA1
+    is_park_gba1 = disease_abbrev == "PARK" and gene == "GBA1"
+
     initial_symptoms, total_patients, patients_with_missing_data = (
         _fetch_initial_symptoms_data(
             disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
@@ -194,9 +197,13 @@ def generate_initial_signs_symptoms(
     # Sort symptoms by count in descending order
     sorted_symptoms = sorted(initial_symptoms.items(), key=lambda x: x[1], reverse=True)
 
-    # Extract data for the result
+    # Extract data for the result, adding * to Parkinson symptom if needed
     histogram_data = [
-        {"symptom": symptom, "count": count} for symptom, count in sorted_symptoms
+        {
+            "symptom": f"{symptom}*" if is_park_gba1 and "parkinson" in symptom.lower() else symptom,
+            "count": count
+        }
+        for symptom, count in sorted_symptoms
     ]
 
     # Calculate missing percentage
@@ -220,6 +227,11 @@ def generate_initial_signs_symptoms(
         "subtitle": {
             "text": f"Number of patients with missing data: {patients_with_missing_data} ({hist_missing_percentage:.2f}%)"
         },
+        "caption": {
+            "text": "Note: Individual elements of parkinsonism not specified.",
+            "align": "left",
+            "style": {"fontStyle": "italic"}
+        } if is_park_gba1 else {},
         "xAxis": {
             "categories": [item["symptom"] for item in histogram_data],
             "title": {"text": "Symptoms"},
