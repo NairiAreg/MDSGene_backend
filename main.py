@@ -18,10 +18,6 @@ from charts.reporter_signs_symptoms import generate_symptoms_chart
 from charts.initial_signs_symptoms import generate_initial_signs_symptoms
 from charts.levodopa_response import generate_levodopa_response
 from charts.world_map import generate_world_map_charts_data
-from qc.api.gene import gene_excel_file, delete_excel_file
-from qc.api.gene.list_genes import get_unique_genes
-from qc.api.gene.update_excel_file import update_excel_file_content
-from qc.api.symptoms import list_symptoms, symptoms_order
 from study_details import get_patients_for_publication
 from mutation_details import get_data_for_mutation
 import logging
@@ -30,7 +26,6 @@ import httpx
 from fastapi.responses import JSONResponse
 from cachetools import TTLCache
 from pubmed_search_endpoint import fetch_pubmed_summaries
-from qc.api.files import get_excel_files_list
 from functools import wraps
 import hashlib
 
@@ -120,6 +115,7 @@ async def disease_genes_endpoint():
 
 
 @app.get("/unique_studies/{disease_abbrev}/{gene}")
+@cache_response
 async def unique_studies_endpoint(
     disease_abbrev: str,
     gene: str,
@@ -647,93 +643,3 @@ Input data:
 #
 #     return json_string
 
-
-@app.get("/api/gene/list_excel_files", response_model=List[str])
-async def get_excel_files():
-    try:
-        # Получаем список файлов с помощью функции из отдельного модуля
-        excel_files = get_excel_files_list()
-
-        return JSONResponse(content=excel_files)
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-@app.get("/api/gene/list_genes", response_model=List[str])
-async def list_genes():
-    try:
-        genes = list(get_unique_genes())
-        #remove empty strings and numbers
-        genes = [gene for gene in genes if isinstance(gene, str) and gene]
-        return JSONResponse(content=genes)
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-
-@app.post("/api/gene/update_excel_file")
-async def update_excel_file(fileId: str = Form(...), newFile: UploadFile = File(...)):
-    if not fileId.endswith(".xlsx"):
-        return JSONResponse(status_code=400, content={"error": "Invalid file extension. Only .xlsx files are allowed."})
-
-    try:
-        await update_excel_file_content(fileId, newFile)
-        return JSONResponse(content={"message": "File updated successfully"})
-    except FileNotFoundError:
-        return JSONResponse(status_code=404, content={"error": "File not found"})
-    except Exception as e:
-        logger.error(f"❌ Error updating file {fileId}: {str(e)}")
-        logger.exception("Detailed error:")
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-
-@app.get("/api/gene/list_symptoms")
-async def web_list_symptoms(gene_id: str):
-    try:
-        symptoms = list_symptoms.get_symptoms_for_gene(gene_id)
-        return JSONResponse(content=symptoms)
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-
-# Определим модель для данных о симптомах, которую клиент отправит на сервер
-class SymptomOrder(BaseModel):
-    geneName: str
-    symptomName: str
-    categoryName: str
-    order: int
-
-
-@app.post("/api/gene/set_symptom_order")
-async def set_symptoms_order(symptoms: List[SymptomOrder]):
-    try:
-        # Здесь должна быть ваша логика обновления порядка симптомов
-        # Предположим, что `update_symptom_order` - это функция, которая обрабатывает обновление в базе данных
-        updated = symptoms_order.update_symptom_order(symptoms)
-
-        if not updated:
-            raise HTTPException(status_code=400, detail="Failed to update symptoms order")
-
-        return {"status": "success", "message": "Symptoms order updated successfully"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/api/gene/add_new_gene")
-async def upload_gene_excel_file(file: UploadFile = File(...)):
-    if not file.filename:
-        raise HTTPException(status_code=400, detail="No selected file")
-
-    column_names = gene_excel_file.save_file(file)
-
-    return JSONResponse(content={
-        "message": "File uploaded successfully",
-        "columns": column_names
-    })
-
-@app.delete("/api/gene/delete_excel_file")
-async def web_delete_excel_file(file_id : str):
-    logger.debug(f"Received file_id: {file_id}")
-    file_path = f"excel/{file_id}"
-    if delete_excel_file.delete(file_path):
-        return {"message": "File deleted successfully"}
-    else:
-        raise HTTPException(status_code=404, detail="File not found")
