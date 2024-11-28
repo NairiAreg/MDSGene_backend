@@ -550,14 +550,22 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
 
         if comments_pat_column:
             if filter_criteria == 8:
-                comments_condition = df[comments_pat_column].str.contains(
-                    "compound heterozygous mutation", case=False, na=False
+                comments_condition = (
+                    df[comments_pat_column]
+                    .astype(str)
+                    .str.contains(
+                        "compound heterozygous mutation", case=False, na=False
+                    )
                 )
             else:  # filter_criteria == 9
-                comments_condition = df[comments_pat_column].str.contains(
-                    "compound heterozygous mutation|homozygous mutation",
-                    case=False,
-                    na=False,
+                comments_condition = (
+                    df[comments_pat_column]
+                    .astype(str)
+                    .str.contains(
+                        "compound heterozygous mutation|homozygous mutation",
+                        case=False,
+                        na=False,
+                    )
                 )
 
             condition = genotype_condition | comments_condition
@@ -592,11 +600,11 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
     if mutation:
         mutation_list = [m.strip().lower() for m in mutation.split(",")]
 
-        # Pathogenicity filter
+        # Convert pathogenicity columns to string before applying string operations
         pathogenicity_condition = (
-            df["pathogenicity1"].str.lower().isin(mutation_list)
-            | df["pathogenicity2"].str.lower().isin(mutation_list)
-            | df["pathogenicity3"].str.lower().isin(mutation_list)
+            df["pathogenicity1"].astype(str).str.lower().isin(mutation_list)
+            | df["pathogenicity2"].astype(str).str.lower().isin(mutation_list)
+            | df["pathogenicity3"].astype(str).str.lower().isin(mutation_list)
         )
 
         # Mutation filter
