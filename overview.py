@@ -32,72 +32,44 @@ def to_python_type(value):
 
 
 # Изменена функция get_mutations - добавлен параметр gene
-def get_mutations(df, gene):  # <<<< ИЗМЕНЕНИЕ 1: добавлен параметр gene
+def get_mutations(df, gene):
     mutations = []
     for _, row in df.iterrows():
         patient_mutations = []
         for i in range(1, 4):
-            # ИЗМЕНЕНИЕ 2: добавлена проверка гена
-            mutation_gene = row.get(f'gene{i}')
-            if mutation_gene != gene:
-                continue  # Пропускаем мутации других генов
-
             mut_p = row.get(f"mut{i}_p", -99)
             mut_c = row.get(f"mut{i}_c", -99)
             mut_g = row.get(f"mut{i}_g", -99)
             genotype = row.get(f"mut{i}_genotype", -99)
             pathogenicity = row.get(f"pathogenicity{i}", -99)
 
-            if mut_p != -99 and mut_p is not None:
-                mutation_name = mut_p
-            elif mut_c != -99 and mut_c is not None:
-                mutation_name = mut_c
-            elif mut_g != -99 and mut_g is not None:
-                mutation_name = mut_g
-            else:
-                continue  # Skip if no valid mutation found
-
-            patient_mutations.append((mutation_name, genotype, pathogenicity))
-
-        # Process mutations for this patient
-        if len(patient_mutations) == 0:
-            mutations.append(
-                {
-                    "type": "single",
-                    "name": "n.a.",
-                    "genotype": "n.a.",
-                    "pathogenicity": "n.a.",
-                }
+            mutation_name = next(
+                (mut for mut in (mut_p, mut_c, mut_g) if mut not in (-99, None)), None
             )
-        elif len(patient_mutations) == 2 and all(
+
+            if mutation_name:
+                patient_mutations.append((mutation_name, genotype, pathogenicity))
+
+        if len(patient_mutations) == 2 and all(
             m[1] == "het" for m in patient_mutations
         ):
-            # Compound heterozygous
             mutations.append(
                 {
                     "type": "compound_het",
                     "mutations": [
                         {
-                            "name": patient_mutations[0][0],
+                            "name": m[0],
                             "genotype": "het",
-                            "pathogenicity": patient_mutations[0][2],
+                            "pathogenicity": m[2],
                             "details": mutation_details.get_data_for_mutation_from_row(
-                                patient_mutations[0][0], row
+                                m[0], row
                             ),
-                        },
-                        {
-                            "name": patient_mutations[1][0],
-                            "genotype": "het",
-                            "pathogenicity": patient_mutations[1][2],
-                            "details": mutation_details.get_data_for_mutation_from_row(
-                                patient_mutations[1][0], row
-                            ),
-                        },
+                        }
+                        for m in patient_mutations
                     ],
                 }
             )
         else:
-            # Single mutations or non-compound het
             for mutation, genotype, pathogenicity in patient_mutations:
                 mutations.append(
                     {
@@ -113,16 +85,7 @@ def get_mutations(df, gene):  # <<<< ИЗМЕНЕНИЕ 1: добавлен па
                     }
                 )
 
-    # Remove duplicates while preserving order
-    unique_mutations = []
-    seen = set()
-    for m in mutations:
-        m_key = str(m)  # Convert the dict to a string for hashing
-        if m_key not in seen:
-            unique_mutations.append(m)
-            seen.add(m_key)
-
-    return unique_mutations
+    return get_unique_mutations(mutations)
 
 
 def mutation_key(mutation: Dict[str, Any]) -> tuple:
@@ -257,7 +220,9 @@ def get_unique_studies(
                         )
 
                         # ИЗМЕНЕНИЕ 3: передаем параметр gene в функцию get_mutations
-                        mutations = get_mutations(study_df, gene)  # <<<< Добавлен параметр gene
+                        mutations = get_mutations(
+                            study_df, gene
+                        )  # <<<< Добавлен параметр gene
                         unique_mutations = get_unique_mutations(mutations)
 
                         full_mutations = {
