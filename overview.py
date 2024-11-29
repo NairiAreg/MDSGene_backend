@@ -8,8 +8,7 @@ from utils import (
     get_cached_dataframe,
     apply_filter,
     safe_get,
-    extract_year,
-    clean_study_mutations,
+    extract_year
 )
 
 from typing import List, Dict, Any
@@ -32,60 +31,81 @@ def to_python_type(value):
 
 
 # Изменена функция get_mutations - добавлен параметр gene
-def get_mutations(df, gene):
+def get_mutations(df, gene):  # <<<< ИЗМЕНЕНИЕ 1: добавлен параметр gene
     mutations = []
+
     for _, row in df.iterrows():
+        # Инициализируем списки для каждого пациента
         patient_mutations = []
+        het_mutations = []  # Важно: объявляем список здесь!
+
         for i in range(1, 4):
+            # ИЗМЕНЕНИЕ 2: добавлена проверка гена мутации
+            mutation_gene = row.get(f'gene{i}')
+            if mutation_gene != gene:
+                continue  # Пропускаем мутации других генов
+
             mut_p = row.get(f"mut{i}_p", -99)
             mut_c = row.get(f"mut{i}_c", -99)
             mut_g = row.get(f"mut{i}_g", -99)
             genotype = row.get(f"mut{i}_genotype", -99)
             pathogenicity = row.get(f"pathogenicity{i}", -99)
 
-            mutation_name = next(
-                (mut for mut in (mut_p, mut_c, mut_g) if mut not in (-99, None)), None
-            )
+            if mut_p != -99 and mut_p is not None:
+                mutation_name = mut_p
+            elif mut_c != -99 and mut_c is not None:
+                mutation_name = mut_c
+            elif mut_g != -99 and mut_g is not None:
+                mutation_name = mut_g
+            else:
+                continue  # Skip if no valid mutation found
 
-            if mutation_name:
-                patient_mutations.append((mutation_name, genotype, pathogenicity))
+            # Если это het мутация, добавляем в специальный список
+            if genotype == "het":
+                het_mutations.append({
+                    "name": mutation_name,
+                    "genotype": genotype,
+                    "pathogenicity": pathogenicity,
+                    "details": mutation_details.get_data_for_mutation_from_row(mutation_name, row)
+                })
+            else:
+                # Не-het мутации добавляем как обычно
+                patient_mutations.append({
+                    "type": "single",
+                    "name": mutation_name,
+                    "genotype": genotype if genotype in ["hom", "het","comp_het"] else "n.a.",
+                    "pathogenicity": pathogenicity if pathogenicity != -99 else "n.a.",
+                    "details": mutation_details.get_data_for_mutation_from_row(mutation_name, row)
+                })
 
-        if len(patient_mutations) == 2 and all(
-            m[1] == "het" for m in patient_mutations
-        ):
-            mutations.append(
-                {
+        # Проверяем het мутации для compound heterozygous
+        if len(het_mutations) > 1:
+            # Создаем compound heterozygous запись
+            patient_mutations.append({
                     "type": "compound_het",
                     "mutations": [
                         {
-                            "name": m[0],
-                            "genotype": "het",
-                            "pathogenicity": m[2],
-                            "details": mutation_details.get_data_for_mutation_from_row(
-                                m[0], row
-                            ),
-                        }
-                        for m in patient_mutations
-                    ],
-                }
-            )
-        else:
-            for mutation, genotype, pathogenicity in patient_mutations:
-                mutations.append(
-                    {
+                        "name": mut["name"],
+                        "genotype": "comp_het",
+                        "pathogenicity": mut["pathogenicity"],
+                        "details": mut["details"]
+                    } for mut in het_mutations
+                ]
+            })
+        elif len(het_mutations) == 1:
+            # Если только одна het мутация, добавляем как обычную
+            patient_mutations.append({
                         "type": "single",
-                        "name": mutation,
-                        "genotype": genotype if genotype in ["hom", "het"] else "n.a.",
-                        "pathogenicity": (
-                            pathogenicity if pathogenicity != -99 else "n.a."
-                        ),
-                        "details": mutation_details.get_data_for_mutation_from_row(
-                            mutation, row
-                        ),
-                    }
-                )
+                "name": het_mutations[0]["name"],
+                "genotype": "het",
+                "pathogenicity": het_mutations[0]["pathogenicity"],
+                "details": het_mutations[0]["details"]
+            })
 
-    return get_unique_mutations(mutations)
+        # Добавляем все мутации пациента в общий список
+        mutations.extend(patient_mutations)
+
+    return mutations
 
 
 def mutation_key(mutation: Dict[str, Any]) -> tuple:
@@ -220,9 +240,7 @@ def get_unique_studies(
                         )
 
                         # ИЗМЕНЕНИЕ 3: передаем параметр gene в функцию get_mutations
-                        mutations = get_mutations(
-                            study_df, gene
-                        )  # <<<< Добавлен параметр gene
+                        mutations = get_mutations(study_df, gene)  # <<<< Добавлен параметр gene
                         unique_mutations = get_unique_mutations(mutations)
 
                         full_mutations = {
@@ -277,6 +295,7 @@ def get_unique_studies(
 
     results.sort(key=lambda x: extract_year(x["author_year"]), reverse=True)
     print(f"Total number of results: {len(results)}")
-    if results:
-        cleaned_results = clean_study_mutations(results)
-        return cleaned_results
+    return results
+    # if results:
+    #     cleaned_results = clean_study_mutations(results)
+    #     return cleaned_results
