@@ -526,6 +526,61 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
         f"Applying filter with criteria: {filter_criteria}, aao: {aao}, country: {country}, mutation: {mutation}"
     )
 
+    # Helper function to identify compound heterozygous cases
+    def has_compound_het(row):
+        genes = []
+        mutations = []
+        genotypes = []
+
+        # First pass: collect all valid mutations for each gene
+        for i in range(1, 4):
+            gene = row[f"gene{i}"]
+            mut = row[f"mut{i}_p"]  # Using protein level mutation
+            genotype = row[f"mut{i}_genotype"]
+
+            # Only consider valid entries
+            if (
+                gene not in ["-99", None]
+                and mut not in ["-99", None]
+                and genotype not in ["-99", None]
+            ):
+                genes.append(gene)
+                mutations.append(mut)
+                genotypes.append(genotype)
+
+        # Second pass: check for compound het cases
+        for i in range(len(genes)):
+            current_gene = genes[i]
+            # Skip if we've already processed this gene
+            if current_gene == "-99":
+                continue
+
+            # If this mutation is explicitly marked as comp_het, check if there's another mutation in the same gene
+            if genotypes[i] == "comp_het":
+                # Look for another mutation in the same gene
+                for j in range(len(genes)):
+                    if i != j and genes[j] == current_gene:
+                        return True
+                # If we didn't find another mutation in the same gene, ignore this comp_het marking
+                continue
+
+            # For het mutations, look for other hets in the same gene
+            if genotypes[i] == "het":
+                current_mutation = mutations[i]
+                # Look for other mutations in the same gene
+                for j in range(i + 1, len(genes)):
+                    if (
+                        genes[j] == current_gene
+                        and genotypes[j] == "het"
+                        and mutations[j] != current_mutation
+                    ):
+                        return True
+
+            # Mark this gene as processed
+            genes[i] = "-99"
+
+        return False
+
     if filter_criteria == 1:
         df = df[df["index_pat"] == "yes"]
     elif filter_criteria == 2 and aao is not None:
@@ -550,103 +605,66 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
             | (df["mut3_genotype"] == "het")
         )
 
-        # Function to check if a row has multiple het mutations in the same gene
-        def has_compound_het(row):
-            genes = []
-            mutations = []
-
-            # Check each gene-mutation pair
-            for i in range(1, 4):
-                gene = row[f"gene{i}"]
-                mut = row[f"mut{i}_p"]  # Using protein level mutation
-                genotype = row[f"mut{i}_genotype"]
-
-                if gene != "-99" and mut != "-99" and genotype == "het":
-                    if gene in genes:
-                        # If we've seen this gene before with a different mutation,
-                        # it's a compound het
-                        prev_idx = genes.index(gene)
-                        if mutations[prev_idx] != mut:
-                            return True
-                    else:
-                        genes.append(gene)
-                        mutations.append(mut)
-            return False
-
         # Filter out compound hets
         df = df[het_condition & ~df.apply(has_compound_het, axis=1)]
 
-    elif filter_criteria == 8 or filter_criteria == 9:
-        if filter_criteria == 8:
-            genotype_condition = (
-                (df["mut1_genotype"] == "comp_het")
-                | (df["mut2_genotype"] == "comp_het")
-                | (df["mut3_genotype"] == "comp_het")
+    elif filter_criteria == 8:
+        # Include both explicitly marked compound hets and implicit ones
+        # Check comments first
+        comments_pat_column = next(
+            (col for col in df.columns if col.lower() == "comments_pat"), None
+        )
+
+        if comments_pat_column:
+            comments_condition = (
+                df[comments_pat_column]
+                .astype(str)
+                .str.contains("compound heterozygous mutation", case=False, na=False)
             )
-        else:  # filter_criteria == 9
-            genotype_condition = (
-                df["mut1_genotype"].isin(["hom", "comp_het"])
-                | df["mut2_genotype"].isin(["hom", "comp_het"])
-                | df["mut3_genotype"].isin(["hom", "comp_het"])
-            )
+        else:
+            comments_condition = pd.Series(False, index=df.index)
+
+        # Combine explicit genotype condition and implicit compound het detection
+        df = df[comments_condition | df.apply(has_compound_het, axis=1)]
+    elif filter_criteria == 9:
+
+        def has_hom_or_comp_het(row):
+            # Check for homozygous mutations
+            for i in range(1, 4):
+                if row[f"mut{i}_genotype"] == "hom":
+                    return True
+            # Check for compound het
+            return has_compound_het(row)
 
         comments_pat_column = next(
             (col for col in df.columns if col.lower() == "comments_pat"), None
         )
 
         if comments_pat_column:
-            if filter_criteria == 8:
-                comments_condition = (
-                    df[comments_pat_column]
-                    .astype(str)
-                    .str.contains(
-                        "compound heterozygous mutation", case=False, na=False
-                    )
+            comments_condition = (
+                df[comments_pat_column]
+                .astype(str)
+                .str.contains(
+                    "compound heterozygous mutation|homozygous mutation",
+                    case=False,
+                    na=False,
                 )
-            else:  # filter_criteria == 9
-                comments_condition = (
-                    df[comments_pat_column]
-                    .astype(str)
-                    .str.contains(
-                        "compound heterozygous mutation|homozygous mutation",
-                        case=False,
-                        na=False,
-                    )
-                )
-
-            condition = genotype_condition | comments_condition
-            logger.info(
-                f"Filtering using 'comments_pat' column (actual name: {comments_pat_column}) for criteria {filter_criteria}"
             )
         else:
-            condition = genotype_condition
-            logger.warning(
-                f"'comments_pat' column not found in the DataFrame for criteria {filter_criteria}. Available columns: %s",
-                df.columns.tolist(),
-            )
-            logger.warning(
-                f"Filtering based on genotype only for criteria {filter_criteria}."
-            )
+            comments_condition = pd.Series(False, index=df.index)
 
-        df = df[condition]
+        df = df[comments_condition | df.apply(has_hom_or_comp_het, axis=1)]
 
     if country:
-        # Use the keys of COUNTRIES dictionary instead of country_map
         valid_country_codes = set(COUNTRIES.keys())
-
-        # Split the comma-separated string into a list
         country_list = [c.strip().upper() for c in country.split(",")]
         valid_countries = [c for c in country_list if c in valid_country_codes]
 
         if valid_countries:
             df = df[df["country"].isin(valid_countries)]
-        else:
-            logger.warning(f"No valid countries found in the provided list: {country}")
 
     if mutation:
         mutation_list = [m.strip().lower() for m in mutation.split(",")]
-
-        # Pathogenicity filter
         pathogenicity_condition = (
             df["pathogenicity1"].fillna("").astype(str).str.lower().isin(mutation_list)
             | df["pathogenicity2"]
@@ -661,7 +679,6 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
             .isin(mutation_list)
         )
 
-        # Mutation filter
         mutation_columns = [
             "mut1_p",
             "mut2_p",
@@ -681,14 +698,7 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
                     df[col].astype(str).str.lower().isin(mutation_list)
                 )
 
-        # Combine pathogenicity and mutation conditions
-        combined_condition = pathogenicity_condition | mutation_condition
-
-        df = df[combined_condition]
-        logger.info(f"Filtered based on pathogenicity and mutations: {mutation_list}")
-
-    else:
-        print("No mutation filter applied.")
+        df = df[pathogenicity_condition | mutation_condition]
 
     return df
 
