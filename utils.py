@@ -543,11 +543,39 @@ def apply_filter(df, filter_criteria, aao, country: str, mutation: str):
             | (df["mut3_genotype"] == "hom")
         ]
     elif filter_criteria == 7:
-        df = df[
+        # First, create mask for rows with heterozygous mutations
+        het_condition = (
             (df["mut1_genotype"] == "het")
             | (df["mut2_genotype"] == "het")
             | (df["mut3_genotype"] == "het")
-        ]
+        )
+
+        # Function to check if a row has multiple het mutations in the same gene
+        def has_compound_het(row):
+            genes = []
+            mutations = []
+
+            # Check each gene-mutation pair
+            for i in range(1, 4):
+                gene = row[f"gene{i}"]
+                mut = row[f"mut{i}_p"]  # Using protein level mutation
+                genotype = row[f"mut{i}_genotype"]
+
+                if gene != "-99" and mut != "-99" and genotype == "het":
+                    if gene in genes:
+                        # If we've seen this gene before with a different mutation,
+                        # it's a compound het
+                        prev_idx = genes.index(gene)
+                        if mutations[prev_idx] != mut:
+                            return True
+                    else:
+                        genes.append(gene)
+                        mutations.append(mut)
+            return False
+
+        # Filter out compound hets
+        df = df[het_condition & ~df.apply(has_compound_het, axis=1)]
+
     elif filter_criteria == 8 or filter_criteria == 9:
         if filter_criteria == 8:
             genotype_condition = (
