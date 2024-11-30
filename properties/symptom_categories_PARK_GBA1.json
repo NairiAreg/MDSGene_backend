@@ -1,0 +1,41 @@
+{
+  "Motor signs and symptoms": {
+    "bradykinesia": "Bradykinesia",
+    "postural_instability": "Postural instability",
+    "parkinsonism": "Parkinsonism*****",
+    "rigidity": "Rigidity",
+    "tremor_hp:0001337": "Tremor",
+    "tremor_action": "Tremor action",
+    "tremor_postural": "Tremor postural",
+    "tremor_rest": "Tremor rest",
+    "tremor_other": "Tremor other",
+    "dyskinesia": "Dyskinesia",
+    "dystonia": "Dystonia",
+    "ataxia_dysdiadochokinesia": "Ataxia",
+    "spasticity_pyramidal_signs": "Spasticity pyramidal signs",
+    "motor_fluctuations": "Motor fluctuations",
+    "motor": "Motor",
+    "dysphagia": "Dysphagia",
+    "dysarthria_anarthria": "Dysarthria/Anarthria",
+    "gait_difficulties_falls": "Gait difficulties falls",
+    "myoclonus": "Myoclonus",
+    "saccadic_abnormalities": "Saccadic abnormalities",
+    "gaze_palsy": "Gaze palsy"
+  },
+  "Non-motor signs and symptoms": {
+    "anxiety": "Anxiety",
+    "depression": "Depression",
+    "psychotic": "Psychotic",
+    "behavioral_abnormalities_hp:nononono7no8": "Behavioral abnormalities",
+    "hallucinations": "Hallucinations",
+    "cognitive_decline": "Cognitive decline",
+    "sleep_disorder": "Sleep disorder",
+    "diurnal_fluctuations": "Diurnal fluctuations",
+    "impulsive_control_disorder": "Impulse control disorder",
+    "hyposmia": "Hyposmia",
+    "olfaction": "Olfaction impairment",
+    "autonomic": "Autonomic",
+    "rbd": "REM sleep behavior disorder"
+  },
+  "Unknown": {}
+}

@@ -1,3 +1,5 @@
+from fileinput import filename
+
 import pandas as pd
 import numpy as np
 import os
@@ -739,9 +741,15 @@ def safe_get(df, column, index, default=None):
 
 
 # Define the function to load the categories metadata
-def load_symptom_categories(directory="properties"):
-    # Construct the full path to the categories metadata file
-    categories_file_path = os.path.join(directory, "symptom_categories.json")
+def load_symptom_categories(directory="properties", disease_abbrev=None, gene=None):
+    # Construct filename with disease and gene postfix if provided
+    base_filename = "symptom_categories"
+    if disease_abbrev and gene:
+        filename = f"{base_filename}_{disease_abbrev.upper()}_{gene.upper()}.json"
+    else:
+        filename = f"{base_filename}.json"    # Construct the full path to the categories metadata file
+
+    categories_file_path = os.path.join(directory, filename)
 
     if os.path.exists(categories_file_path):
         with open(categories_file_path, "r") as file:

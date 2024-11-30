@@ -1,0 +1,43 @@
+{
+  "Development in childhood/adolescence": {},
+  "Imaging features": {},
+  "Laboratory results": {},
+  "Motor ictal": {},
+  "Motor interictal": {},
+  "Motor signs and symptoms": {
+    "parkinsonism": "Parkinsonism",
+    "tremor_rest": "Tremor Rest",
+    "bradykinesia": "Bradykinesia",
+    "tremor_dystonic": "Tremor Dystonic",
+    "tremor_action": "Tremor Action",
+    "atypical_park": "Atypical Park",
+    "dystonia": "Dystonia",
+    "rigidity": "Rigidity",
+    "tremor_hp:0001337": "Tremor Hp:0001337",
+    "dyskinesia": "Dyskinesia",
+    "motor_fluctuations": "Motor Fluctuations"
+  },
+  "Non-motor ictal": {},
+  "Non-motor interictal": {},
+  "Non-motor signs and symptoms": {
+    "cognitive_decline": "Cognitive Decline",
+    "anxiety": "Anxiety",
+    "olfaction": "Olfaction",
+    "depression": "Depression",
+    "psychotic": "Psychotic",
+    "sleep_disorder": "Sleep Disorder",
+    "sleep_benefit": "Sleep Benefit",
+    "nms_park": "Nms Park",
+    "diurnal_fluctuations": "Diurnal Fluctuations",
+    "autonomic": "Autonomic",
+    "hyperreflexia": "Hyperreflexia",
+    "postural_instability": "Postural Instability"
+  },
+  "Other ictal": {},
+  "Other interictal": {},
+  "Other signs and symptoms": {},
+  "Paroxysmal movements": {},
+  "Therapy": {},
+  "Triggers": {},
+  "Unknown": {}
+}

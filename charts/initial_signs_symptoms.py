@@ -8,13 +8,13 @@ from utils import get_cached_dataframe, apply_filter
 logger = logging.getLogger(__name__)
 
 
-def load_symptom_categories(directory="excel", disease_abbrev=None, gene=None):
+def load_symptom_categories(directory="properties", disease_abbrev=None, gene=None):
     """Load and flatten the symptom categories from JSON"""
     try:
         # Construct filename with disease and gene postfix if provided
         base_filename = "symptom_categories"
         if disease_abbrev and gene:
-            filename = f"{base_filename}_{disease_abbrev.lower()}_{gene.lower()}.json"
+            filename = f"{base_filename}_{disease_abbrev.upper()}_{gene.upper()}.json"
         else:
             filename = f"{base_filename}.json"
 
@@ -97,7 +97,7 @@ def _fetch_initial_symptoms_data(
     patients_with_missing_data = 0
 
     # Load symptom categories mapping with disease and gene
-    symptom_mapping = load_symptom_categories(directory, disease_abbrev, gene)
+    symptom_mapping = load_symptom_categories("properties", disease_abbrev, gene)
 
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):

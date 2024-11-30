@@ -224,7 +224,7 @@ def generate_symptoms_chart(
     # Проверка на PD и GBA
     is_pd_gba = disease_abbrev == "PARK" and gene == "GBA1"
 
-    categories_metadata = load_symptom_categories()
+    categories_metadata = load_symptom_categories("properties", disease_abbrev, gene)
 
     symptom_data = fetch_symptom_data(
         disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
