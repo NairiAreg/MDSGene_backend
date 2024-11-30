@@ -284,6 +284,7 @@ async def reporter_signs_symptoms_endpoint(
 
 
 @app.get("/world_map")
+@cache_response
 async def generate_world_map_charts_data_endpoint(
     disease_abbrev: str,
     gene: str,

@@ -489,29 +489,35 @@ def get_cached_dataframe(file_path):
         # Convert all headers to lower case and strip whitespace
         df.columns = df.columns.str.lower().str.strip()
 
+        # Сначала обработаем PMID отдельно
+        if 'pmid' in df.columns:
+            df['pmid'] = df['pmid'].astype(str).str.strip().str.replace(r"\s+", " ")
+            df['pmid'] = df['pmid'].replace("-99", None)
+
         for col in df.columns:
-            try:
-                # Сначала преобразуем в строку и очистим от пробелов
-                df[col] = df[col].astype(str).str.strip().str.replace(r"\s+", " ")
+            if col != 'pmid':  # Пропускаем PMID
+                try:
+                    # Сначала преобразуем в строку и очистим от пробелов
+                    df[col] = df[col].astype(str).str.strip().str.replace(r"\s+", " ")
 
-                # Попробуем преобразовать обратно в числовой тип
-                df[col] = pd.to_numeric(df[col], errors="raise")
+                    # Попробуем преобразовать обратно в числовой тип
+                    df[col] = pd.to_numeric(df[col], errors="raise")
 
-                # Если все значения целые, преобразуем в int
-                if (
-                    df[col].dtype == "float64"
-                    and df[col].notna().all()
-                    and (df[col] % 1 == 0).all()
-                ):
-                    df[col] = df[col].astype("int64")
+                    # Если все значения целые, преобразуем в int
+                    if (
+                        df[col].dtype == "float64"
+                        and df[col].notna().all()
+                        and (df[col] % 1 == 0).all()
+                    ):
+                        df[col] = df[col].astype("int64")
 
-                # Заменяем -99 на np.nan для числовых колонок
-                if df[col].dtype in ["int64", "float64"]:
-                    df[col] = df[col].replace(-99, np.nan)
-            except (ValueError, TypeError):
-                # Если не получилось преобразовать в число, оставляем как строку
-                # и заменяем "-99" на None
-                df[col] = df[col].replace("-99", None)
+                    # Заменяем -99 на np.nan для числовых колонок
+                    if df[col].dtype in ["int64", "float64"]:
+                        df[col] = df[col].replace(-99, np.nan)
+                except (ValueError, TypeError):
+                    # Если не получилось преобразовать в число, оставляем как строку
+                    # и заменяем "-99" на None
+                    df[col] = df[col].replace("-99", None)
 
         _dataframe_cache[file_path] = {"dataframe": df, "mod_time": file_mod_time}
         return df

@@ -242,7 +242,6 @@ def get_data_for_mutation_from_row(mutation_name, row):
 def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory="excel"):
     results = []
     disease_abbrev = disease_abbrev.upper()
-    pmid = int(pmid)
 
     for filename in os.listdir(directory):
         if filename.startswith(".~") or filename.startswith("~$"):

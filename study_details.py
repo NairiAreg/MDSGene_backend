@@ -87,7 +87,6 @@ def get_patients_for_publication(
 ):
     results = []
     disease_abbrev = disease_abbrev.upper()
-    pmid = int(pmid)
     logger.debug(f"Searching for disease: {disease_abbrev}, gene: {gene}, pmid: {pmid}")
 
     for filename in os.listdir(directory):
