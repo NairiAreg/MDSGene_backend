@@ -15,6 +15,10 @@ def categorize_levodopa_response(row):
     if levodopa_response == "-99" or pd.isna(row["levodopa_response"]):
         return None
 
+    # If levodopa_response is "not treated", return "Not treated"
+    if levodopa_response == "not treated":
+        return "Not treated"
+
     # If levodopa_response is "no", return "No"
     if levodopa_response == "no":
         return "No"

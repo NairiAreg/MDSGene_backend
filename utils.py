@@ -481,6 +481,11 @@ def get_cached_dataframe(file_path):
         ):
             return _dataframe_cache[file_path]["dataframe"]
 
+        # Извлекаем список генов из имени файла (до первого минуса)
+        base_filename = os.path.basename(file_path)
+        genes_part = base_filename.split('-')[0]  # берем часть до первого минуса
+        valid_genes = [g.upper() for g in genes_part.split('_')]  # разбиваем по подчеркиваниям
+
         _, file_extension = os.path.splitext(file_path)
         engine = "openpyxl" if file_extension.lower() == ".xlsx" else "xlrd"
 
@@ -488,6 +493,30 @@ def get_cached_dataframe(file_path):
 
         # Convert all headers to lower case and strip whitespace
         df.columns = df.columns.str.lower().str.strip()
+
+        # Если есть гены для фильтрации, применяем фильтрацию
+        if valid_genes:
+            # Проверяем каждый ген отдельно
+            for i in range(1, 4):
+                gene_col = f'gene{i}'
+                if gene_col in df.columns:
+                    # Создаем маску для строк, где ген не соответствует списку
+                    gene_mask = ~df[gene_col].fillna('').str.upper().isin(valid_genes)
+
+                    # Определяем связанные колонки только для текущего гена
+                    related_columns = [
+                    f'gene{i}', f'physical_location{i}', f'reference_allele{i}',
+                    f'observed_allele{i}', f'mut{i}_g', f'mut{i}_c', f'mut{i}_p',
+                    f'mut{i}_alias_original', f'mut{i}_alias', f'mut{i}_genotype',
+                        f'mut{i}_type', f'pathogenicity{i}', f'CADD_{i}',
+                        f'gnomad{i} v2.1.1', f'gnomad{i} v4.0.0'
+                ]
+                    # Фильтруем только существующие колонки
+                    existing_columns = [col for col in related_columns if col in df.columns]
+
+                    # Заменяем значения на -99 только для несовпадающих генов
+                    if existing_columns:
+                        df.loc[gene_mask, existing_columns] = '-99'
 
         # Сначала обработаем PMID отдельно
         if 'pmid' in df.columns:
