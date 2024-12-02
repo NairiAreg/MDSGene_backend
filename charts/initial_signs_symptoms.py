@@ -213,7 +213,7 @@ def generate_initial_signs_symptoms(
     # Extract data for the result, adding * to Parkinson symptom if needed
     histogram_data = [
         {
-            "symptom": f"{symptom}*" if is_park_gba1 and "parkinson" in symptom.lower() else symptom,
+            "symptom": symptom,
             "count": count
         }
         for symptom, count in sorted_symptoms
