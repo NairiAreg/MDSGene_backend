@@ -500,8 +500,8 @@ def get_cached_dataframe(file_path):
             for i in range(1, 4):
                 gene_col = f'gene{i}'
                 if gene_col in df.columns:
-                    # Создаем маску для строк, где ген не соответствует списку
-                    gene_mask = ~df[gene_col].fillna('').str.upper().isin(valid_genes)
+                    # Преобразуем значения в строки перед применением str.upper()
+                    gene_mask = ~df[gene_col].astype(str).fillna('').str.upper().isin(valid_genes)
 
                     # Определяем связанные колонки только для текущего гена
                     related_columns = [
@@ -514,9 +514,12 @@ def get_cached_dataframe(file_path):
                     # Фильтруем только существующие колонки
                     existing_columns = [col for col in related_columns if col in df.columns]
 
-                    # Заменяем значения на -99 только для несовпадающих генов
-                    if existing_columns:
-                        df.loc[gene_mask, existing_columns] = '-99'
+                    # Заменяем значения с учетом типа данных
+                    for col in existing_columns:
+                        if df[col].dtype in ['int64', 'float64']:
+                            df.loc[gene_mask, col] = -99
+                        else:
+                            df.loc[gene_mask, col] = '-99'
 
         # Сначала обработаем PMID отдельно
         if 'pmid' in df.columns:
