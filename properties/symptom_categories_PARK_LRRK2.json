@@ -24,14 +24,14 @@
   "Non-motor ictal": {},
   "Non-motor interictal": {},
   "Non-motor signs and symptoms": {
-    "non_motor_symptoms": "Non-motor symptoms",
-    "olfaction_symptoms": "Olfaction symptoms",
+    "nms_park": "Non-motor symptoms",
+    "olfaction": "Olfaction symptoms",
     "depression": "Depression",
     "anxiety": "Anxiety",
-    "psychotic_symptoms": "Psychotic symptoms",
+    "psychotic": "Psychotic symptoms",
     "sleep_disorder": "Sleep disorder",
     "cognitive_decline": "Cognitive decline",
-    "autonomic_symptoms": "Autonomic symptoms",
+    "autonomic": "Autonomic symptoms",
     "atypical_park": "Atypical parkinsonism symptoms"
   },
   "Other ictal": {},

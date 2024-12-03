@@ -230,7 +230,7 @@ def get_data_for_mutation_from_row(mutation_name, row):
                 "consequence": handle_value(row.get(f"mut{i}_type", "n.a.")).lower(),
                 "pathogenicityScoring": handle_value(
                     row.get(f"pathogenicity{i}", "n.a.")
-                ).lower(),
+                ).lower().replace("vus", "VUS"),
                 "caddScore": handle_value(row.get(f"cadd_{i}", "n.a.")),
                 "phosphorylationActivity": phosphorylation_activity_map.get(mutation_name) or "n.a.",
                 "positiveFunctionalEvidence": functional_evidence,
