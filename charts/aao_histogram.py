@@ -34,8 +34,8 @@ def _fetch_aao_data(
                     f"Processing file: {filename}, Initial DataFrame shape: {df.shape}"
                 )
 
-                if "ensemble_decision" in df.columns:
-                    df = df[df["ensemble_decision"] == "IN"]
+                if "mdsgene_decision" in df.columns:
+                    df = df[df["mdsgene_decision"] == "IN"]
 
                 if (
                     filter_criteria is not None

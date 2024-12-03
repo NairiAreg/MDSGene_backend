@@ -39,8 +39,8 @@ def _fetch_country_data(
                 df.columns = [col.lower() for col in df.columns]
 
                 # Basic filtering
-                if "ensemble_decision" in df.columns:
-                    df = df[df["ensemble_decision"] == "IN"]
+                if "mdsgene_decision" in df.columns:
+                    df = df[df["mdsgene_decision"] == "IN"]
                 logger.debug(f"After ensemble decision filter: {len(df)} rows")
 
                 # Apply user filters

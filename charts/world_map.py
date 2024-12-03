@@ -16,7 +16,7 @@ def process_dataframe(df, disease_abbrev, gene):
     if "country" not in df.columns and "entry" in df.columns:
         df = df.rename(columns={"entry": "country"})
 
-    df = df[df["ensemble_decision"] == "IN"]
+    df = df[df["mdsgene_decision"] == "IN"]
     logger.debug(f"After ensemble filter: {df.shape}")
 
     filtered_df = pd.concat(

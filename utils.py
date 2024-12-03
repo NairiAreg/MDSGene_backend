@@ -133,7 +133,7 @@ EXPECTED_HEADERS = {
     "fun_evidence_pos_1",
     "fun_evidence_pos_2",
     "fun_evidence_pos_3",
-    "ensemble_decision",
+    "mdsgene_decision",
     "entry",
     "comment",
 }

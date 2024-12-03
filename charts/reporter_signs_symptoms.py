@@ -169,7 +169,7 @@ def fetch_symptom_data(
             file_path = os.path.join(directory, filename)
             try:
                 df = get_cached_dataframe(file_path)
-                df = df[df["ensemble_decision"] == "IN"]
+                df = df[df["mdsgene_decision"] == "IN"]
 
                 if (
                     filter_criteria is not None

@@ -36,7 +36,7 @@ def get_unique_disease_abbrev(directory='excel'):
 
             df = get_cached_dataframe(file_path)
 
-            filtered_df = df[df['ensemble_decision'] == 'IN']
+            filtered_df = df[df['mdsgene_decision'] == 'IN']
 
             # Convert disease_abbrev to uppercase before adding to the set
             disease_abbrev_set.update(filtered_df['disease_abbrev'].str.upper())
@@ -55,8 +55,8 @@ def get_disease_and_genes(directory='excel'):
             # Read the Excel file using the cache function
             df = get_cached_dataframe(file_path)
 
-            # Filter the rows where 'ensemble_decision' is 'IN'
-            filtered_df = df[df['ensemble_decision'] == 'IN']
+            # Filter the rows where 'mdsgene_decision' is 'IN'
+            filtered_df = df[df['mdsgene_decision'] == 'IN']
 
             # Iterate through each row in the filtered DataFrame
             for _, row in filtered_df.iterrows():

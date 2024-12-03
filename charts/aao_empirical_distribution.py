@@ -32,10 +32,10 @@ def _fetch_aao_data(
                     f"Processing file: {filename}, Initial DataFrame shape: {df.shape}"
                 )
 
-                # Safely filter based on ensemble_decision
-                if "ensemble_decision" in df.columns:
-                    df = df[df["ensemble_decision"] == "IN"]
-                logger.info(f"After ensemble_decision filter: {df.shape}")
+                # Safely filter based on mdsgene_decision
+                if "mdsgene_decision" in df.columns:
+                    df = df[df["mdsgene_decision"] == "IN"]
+                logger.info(f"After mdsgene_decision filter: {df.shape}")
 
                 # Only apply the filter if filter_criteria, country, or mutation is provided
                 if (

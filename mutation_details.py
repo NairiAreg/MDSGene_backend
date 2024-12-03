@@ -255,7 +255,7 @@ def get_data_for_mutation(disease_abbrev, gene, pmid, mut_p, directory="excel"):
 
                 # Apply all filters using boolean indexing in one step
                 mask = (
-                    (df["ensemble_decision"] == "IN")
+                    (df["mdsgene_decision"] == "IN")
                     & (df["disease_abbrev"].str.upper() == disease_abbrev)
                     & (
                         (df["gene1"] == gene)

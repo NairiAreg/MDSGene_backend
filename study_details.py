@@ -105,8 +105,8 @@ def get_patients_for_publication(
             logger.debug(f"Dataframe shape after loading: {df.shape}")
             logger.debug(f"Available columns: {df.columns.tolist()}")
 
-            if "ensemble_decision" in df.columns:
-                df = df[df["ensemble_decision"] == "IN"]
+            if "mdsgene_decision" in df.columns:
+                df = df[df["mdsgene_decision"] == "IN"]
                 logger.debug(
                     f"Dataframe shape after ensemble decision filter: {df.shape}"
                 )

@@ -184,7 +184,7 @@ def get_unique_studies(
                 print(f"\nProcessing file: {filename}")
                 print(f"Initial DataFrame shape: {df.shape}")
 
-                df = df[df["ensemble_decision"] == "IN"]
+                df = df[df["mdsgene_decision"] == "IN"]
                 df = df[
                     df["disease_abbrev"]
                     .str.lower()
