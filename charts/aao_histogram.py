@@ -59,7 +59,7 @@ def _fetch_aao_data(
                             & (df["gene3"] == gene)
                         ],
                     ]
-                )
+                ).drop_duplicates()
 
                 filtered_df = filtered_df[
                     (filtered_df["status_clinical"] != "clinically unaffected")

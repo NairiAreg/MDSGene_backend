@@ -131,7 +131,7 @@ def _fetch_initial_symptoms_data(
                             & (df["gene3"] == gene)
                         ],
                     ]
-                )
+                ).drop_duplicates()
 
                 filtered_df = filtered_df[
                     (filtered_df["status_clinical"] != "clinically unaffected")
@@ -236,7 +236,7 @@ def generate_initial_signs_symptoms(
         "accessibility": {
             "enabled": False,
         },
-        "title": {"text": "Initial Signs and Symptoms Histogram"},
+        "title": {"text": "Initial Signs and Symptoms"},
         "subtitle": {
             "text": f"Number of patients with missing data: {patients_with_missing_data} ({hist_missing_percentage:.2f}%)"
         },

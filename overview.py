@@ -50,6 +50,8 @@ def get_mutations(df, gene):  # <<<< ИЗМЕНЕНИЕ 1: добавлен па
             mut_g = row.get(f"mut{i}_g", -99)
             genotype = row.get(f"mut{i}_genotype", -99)
             pathogenicity = row.get(f"pathogenicity{i}", -99)
+            if pathogenicity and pathogenicity.lower() == "benign":
+                continue  # Пропускаем доброкачественные мутации
 
             if mut_p != -99 and mut_p is not None:
                 mutation_name = mut_p
