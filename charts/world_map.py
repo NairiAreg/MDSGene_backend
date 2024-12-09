@@ -24,7 +24,7 @@ def process_dataframe(df, disease_abbrev, gene):
             df[(df["disease_abbrev"] == disease_abbrev) & (df[f"gene{i}"] == gene)]
             for i in range(1, 4)
         ]
-    )
+    ).drop_duplicates()
     logger.debug(f"After gene filter: {filtered_df.shape}")
 
     filtered_df = filtered_df[

@@ -79,12 +79,12 @@ def _fetch_country_data(
                 total_count += len(filtered_df)
 
                 # Process country data
-                country_data = filtered_df["country"].value_counts().to_dict()
+                country_data = filtered_df["country"].value_counts(dropna=False).to_dict()
                 logger.debug(f"Country data from file: {country_data}")
 
                 for c, count in country_data.items():
-                    # Ensure the country value is valid
-                    if pd.notna(c) and c != -99 and c != "-99":
+                    # Проверяем только на null/nan значения, так как -99 уже заменены
+                    if pd.notna(c):
                         country_counts[c] = country_counts.get(c, 0) + count
                         logger.debug(f"Added {count} patients from country {c}")
                     else:
