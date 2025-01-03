@@ -1,0 +1,127 @@
+{
+  "Development in childhood/adolescence": {
+    "developmental_delay_hp:0001263": "Developmental Delay Hp:0001263",
+    "motor_developmental_delay_hp:0001270": "Motor Developmental Delay Hp:0001270"
+  },
+  "Imaging features": {
+    "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272"
+  },
+  "Laboratory results": {},
+  "Motor ictal": {
+    "dystonia_ictal": "Dystonia Ictal",
+    "rigidity_ictal": "Rigidity Ictal",
+    "spasticity_ictal": "Spasticity Ictal",
+    "hypertonia_ictal": "Hypertonia Ictal",
+    "choreoathetosis_ictal": "Choreoathetosis Ictal",
+    "muscle_cramps_ictal": "Muscle Cramps Ictal",
+    "neuromyotonia_ictal": "Neuromyotonia Ictal",
+    "myokymia_ictal": "Myokymia Ictal",
+    "tremor_ictal": "Tremor Ictal",
+    "ataxia_ictal": "Ataxia Ictal",
+    "gait_ataxia_ictal": "Gait Ataxia Ictal",
+    "limb_ataxia_ictal": "Limb Ataxia Ictal",
+    "hemiplegia_ictal": "Hemiplegia Ictal"
+  },
+  "Motor interictal": {
+    "dystonia_interictal": "Dystonia Interictal",
+    "rigidity_interictal": "Rigidity Interictal",
+    "spasticity_interictal": "Spasticity Interictal",
+    "hypertonia_interictal": "Hypertonia Interictal",
+    "choreoathetosis_interictal": "Choreoathetosis Interictal",
+    "muscle_cramps_interictal": "Muscle Cramps Interictal",
+    "neuromyotonia_interictal": "Neuromyotonia Interictal",
+    "myokymia_interictal": "Myokymia Interictal",
+    "tremor_interictal": "Tremor Interictal",
+    "ataxia_interictal": "Ataxia Interictal",
+    "gait_ataxia_interictal": "Gait Ataxia Interictal",
+    "limb_ataxia_interictal": "Limb Ataxia Interictal",
+    "hemiplegia_interictal": "Hemiplegia Interictal"
+  },
+  "Motor signs and symptoms": {
+    "muscle_weakness_hp:0003324": "Muscle Weakness Hp:0003324",
+    "muscular_hypotonia_hp:0001252": "Muscular Hypotonia Hp:0001252",
+    "dystonia_hp:0001332": "Dystonia Hp:0001332",
+    "spasticity_hp:0001257": "Spasticity Hp:0001257",
+    "tremor_hp:0001337": "Tremor Hp:0001337"
+  },
+  "Non-motor ictal": {
+    "cognitive_impairment_ictal": "Cognitive Impairment Ictal",
+    "headache_ictal": "Headache Ictal",
+    "nausea_ictal": "Nausea Ictal",
+    "vomiting_ictal": "Vomiting Ictal",
+    "diplopia_ictal": "Diplopia Ictal",
+    "vertigo_ictal": "Vertigo Ictal",
+    "tinnitus_ictal": "Tinnitus Ictal",
+    "visual_blurring_ictal": "Visual Blurring Ictal",
+    "migraine_ictal": "Migraine Ictal"
+  },
+  "Non-motor interictal": {
+    "cognitive_impairment_interictal": "Cognitive Impairment Interictal",
+    "headache_interictal": "Headache Interictal",
+    "nausea_interictal": "Nausea Interictal",
+    "vomiting_interictal": "Vomiting Interictal",
+    "diplopia_interictal": "Diplopia Interictal",
+    "vertigo_interictal": "Vertigo Interictal",
+    "tinnitus_interictal": "Tinnitus Interictal",
+    "visual_blurring_interictal": "Visual Blurring Interictal",
+    "migraine_interictal": "Migraine Interictal"
+  },
+  "Non-motor signs and symptoms": {
+    "cognitive_impairment_hp:0100543": "Cognitive Impairment Hp:0100543",
+    "headache_hp:0002315": "Headache Hp:0002315",
+    "nausea_hp:0002018": "Nausea Hp:0002018",
+    "vomiting_hp:0002013": "Vomiting Hp:0002013",
+    "diplopia_hp:0000651": "Diplopia Hp:0000651",
+    "vertigo_hp:0002321": "Vertigo Hp:0002321",
+    "tinnitus_hp:0000360": "Tinnitus Hp:0000360",
+    "visual_blurring_hp:0000622": "Visual Blurring Hp:0000622",
+    "migraine_hp:0002076": "Migraine Hp:0002076"
+  },
+  "Other ictal": {
+    "seizures_ictal": "Seizures Ictal",
+    "depression_ictal": "Depression Ictal",
+    "fatigue_ictal": "Fatigue Ictal"
+  },
+  "Other interictal": {
+    "seizures_interictal": "Seizures Interictal",
+    "depression_interictal": "Depression Interictal",
+    "fatigue_interictal": "Fatigue Interictal"
+  },
+  "Other signs and symptoms": {
+    "depression_hp:0000716": "Depression Hp:0000716",
+    "fatigue_hp:0012378": "Fatigue Hp:0012378",
+    "apraxia_hp:0002186": "Apraxia Hp:0002186"
+  },
+  "Paroxysmal movements": {
+    "choreoathetosis_hp:0001266": "Choreoathetosis Hp:0001266",
+    "myokymia_hp:0002411": "Myokymia Hp:0002411",
+    "square_wave_jerks_hp:0025402": "Square Wave Jerks Hp:0025402",
+    "neuromyotonia": "Neuromyotonia"
+  },
+  "Therapy": {},
+  "Triggers": {
+    "acute_illness_trigger": "Acute Illness Trigger",
+    "fatigue_trigger": "Fatigue Trigger",
+    "heat_trigger": "Heat Trigger",
+    "emotional_stress_trigger": "Emotional Stress Trigger",
+    "pregnancy_or_hormonal_change_trigger": "Pregnancy Or Hormonal Change Trigger",
+    "physical_stress_trigger": "Physical Stress Trigger",
+    "sudden_movement_trigger": "Sudden Movement Trigger",
+    "caffeine_trigger": "Caffeine Trigger",
+    "alcohol_trigger": "Alcohol Trigger",
+    "sensitivity_to_alcohol": "Sensitivity To Alcohol"
+  },
+  "Unknown": {
+    "coma_hp:0001259": "Coma Hp:0001259",
+    "aao_other": "Aao Other",
+    "other": "Other",
+    "decreased_level_of_consciousness_hp:0007185": "Decreased Level Of Consciousness Hp:0007185",
+    "extensor_plantar_response_hp:0003487": "Extensor Plantar Response Hp:0003487",
+    "slow_saccades_hp:0000514": "Slow Saccades Hp:0000514",
+    "saccadic_smooth_pursuit_hp:0001152": "Saccadic Smooth Pursuit Hp:0001152",
+    "impaired_vision_hp:0000505": "Impaired Vision Hp:0000505",
+    "hyperhidrosis_hp:0000975": "Hyperhidrosis Hp:0000975",
+    "muscle_cramps": "Muscle Cramps",
+    "tonic_upgaze": "Tonic Upgaze"
+  }
+}
