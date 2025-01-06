@@ -1,0 +1,13 @@
+{
+    "author_year": "y",
+    "aao_movement_disorder": "y",
+    "aao_other_sympt": "n",
+    "gnomad": "n",
+    "depression_ictal": "n",
+    "depression_interictal": "n",
+    "valporic_acid_response": "n",
+    "phenytoin_response": "n",
+    "other_drug_response": "n",
+    "points_cadd_score1": "n",
+    "points_cadd_score2": "n"
+}

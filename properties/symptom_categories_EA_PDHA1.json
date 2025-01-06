@@ -1,0 +1,110 @@
+{
+  "Development in childhood/adolescence": {
+    "global_development_delay_hp:0001263": "Global Development Delay Hp:0001263",
+    "delayed_motor_skills_hp:0002194": "Delayed Motor Skills Hp:0002194",
+    "intellectual_disability_hp:0001249": "Intellectual Disability Hp:0001249",
+    "delayed_cognitive_dev": "Delayed Cognitive Dev"
+  },
+  "Imaging features": {
+    "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272",
+    "mri_brain_abnormality": "Mri Brain Abnormality"
+  },
+  "Laboratory results": {
+    "high_blood_lactate_ictal": "High Blood Lactate Ictal",
+    "high_blood_lactate_interictal": "High Blood Lactate Interictal",
+    "high_csf_lactate": "High Csf Lactate"
+  },
+  "Motor ictal": {
+    "gait_ataxia_ictal": "Gait Ataxia Ictal",
+    "ataxia_ictal": "Ataxia Ictal",
+    "spasticity_ictal": "Spasticity Ictal",
+    "hemiplegia_ictal": "Hemiplegia Ictal",
+    "hypertonia_ictal": "Hypertonia Ictal",
+    "dystonia_ictal": "Dystonia Ictal",
+    "muscular_hypotonia_ictal": "Muscular Hypotonia Ictal",
+    "seizures_ictal": "Seizures Ictal"
+  },
+  "Motor interictal": {
+    "gait_ataxia_interictal": "Gait Ataxia Interictal",
+    "ataxia_interictal": "Ataxia Interictal",
+    "spasticity_interictal": "Spasticity Interictal",
+    "hemiplegia_interictal": "Hemiplegia Interictal",
+    "hypertonia_interictal": "Hypertonia Interictal",
+    "dystonia_interictal": "Dystonia Interictal",
+    "muscular_hypotonia_interictal": "Muscular Hypotonia Interictal",
+    "tremor_interictal": "Tremor Interictal",
+    "seizures_interictal": "Seizures Interictal",
+    "muscle_weakness_interictal": "Muscle Weakness Interictal",
+    "limb_ataxia_interictal": "Limb Ataxia Interictal",
+    "choreoathetosis_interictal": "Choreoathetosis Interictal",
+    "tetraparesis_interictal": "Tetraparesis Interictal",
+    "areflexia_interictal": "Areflexia Interictal"
+  },
+  "Motor signs and symptoms": {
+    "rigidity_hp:0002063": "Rigidity Hp:0002063",
+    "ataxia": "Ataxia",
+    "choreoathetosis_hp:0001266": "Choreoathetosis Hp:0001266",
+    "spasticity_hp:0001257": "Spasticity Hp:0001257",
+    "hypertonia_hp:0001276": "Hypertonia Hp:0001276",
+    "tremor_hp:0001337": "Tremor Hp:0001337",
+    "dystonia_hp:0001332": "Dystonia Hp:0001332",
+    "muscular_hypotonia_hp:0001252": "Muscular Hypotonia Hp:0001252",
+    "muscle_weakness_hp:0003324": "Muscle Weakness Hp:0003324",
+    "limb_ataxia_hp:0002070": "Limb Ataxia Hp:0002070",
+    "tetraparesis_hp:0030182": "Tetraparesis Hp:0030182",
+    "chorea_hp:0002072": "Chorea Hp:0002072",
+    "areflexia_hp:0001284": "Areflexia Hp:0001284"
+  },
+  "Non-motor ictal": {
+    "vomiting_ictal": "Vomiting Ictal",
+    "headache_ictal": "Headache Ictal",
+    "cognitive_impairment_ictal": "Cognitive Impairment Ictal",
+    "dysarthria_ictal": "Dysarthria Ictal"
+  },
+  "Non-motor interictal": {
+    "fatigue_interictal": "Fatigue Interictal",
+    "headache_interictal": "Headache Interictal",
+    "cognitive_impairment_interictal": "Cognitive Impairment Interictal",
+    "ptosis_interictal": "Ptosis Interictal",
+    "dysarthria_interictal": "Dysarthria Interictal"
+  },
+  "Non-motor signs and symptoms": {
+    "fatigue": "Fatigue",
+    "nausea_hp:0002018": "Nausea Hp:0002018",
+    "visual_disturbance": "Visual Disturbance",
+    "headache_hp:0002315": "Headache Hp:0002315",
+    "migraine_hp:0002076": "Migraine Hp:0002076",
+    "vertigo_hp:0002321": "Vertigo Hp:0002321",
+    "dysphagia": "Dysphagia",
+    "visual_blurring_hp:0000622": "Visual Blurring Hp:0000622",
+    "tinnitus_hp:0000360": "Tinnitus Hp:0000360",
+    "depression_hp:0000716": "Depression Hp:0000716",
+    "respiratory_distress": "Respiratory Distress"
+  },
+  "Other ictal": {
+    "hypertonia_ictal": "Hypertonia Ictal",
+    "dystonia_ictal": "Dystonia Ictal",
+    "muscle_weakness_ictal": "Muscle Weakness Ictal"
+  },
+  "Other interictal": {
+    "ptosis_ictal": "Ptosis Ictal",
+    "hemiplegia_interictal": "Hemiplegia Interictal"
+  },
+  "Other signs and symptoms": {
+    "facial_dysmorphism_hp:0001999": "Facial Dysmorphism Hp:0001999",
+    "microcephaly_hp:0000252": "Microcephaly Hp:0000252",
+    "short_stature_hp:0004322": "Short Stature Hp:0004322",
+    "osteopenia_hp:0000938": "Osteopenia Hp:0000938",
+    "encephalopathy_hp:0001298": "Encephalopathy Hp:0001298",
+    "abnormality_of_skeletal_morphology_hp:0011842": "Abnormality Of Skeletal Morphology Hp:0011842",
+    "axonal_neuropathy_hp:0003477": "Axonal Neuropathy Hp:0003477",
+    "tonic_upgaze": "Tonic Upgaze",
+    "aao_other": "Aao Other"
+  },
+  "Paroxysmal movements": {},
+  "Therapy": {},
+  "Triggers": {},
+  "Unknown": {
+    "other": "Other"
+  }
+}
