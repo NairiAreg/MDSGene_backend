@@ -1,0 +1,57 @@
+{
+  "Development in childhood/adolescence": {},
+  "Imaging features": {
+    "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272"
+  },
+  "Laboratory results": {},
+  "Motor ictal": {},
+  "Motor interictal": {},
+  "Motor signs and symptoms": {
+    "spasticity_hp:0001257": "Spasticity Hp:0001257",
+    "rigidity_hp:0002063": "Rigidity Hp:0002063",
+    "ataxia_hp:0001251": "Ataxia Hp:0001251",
+    "hemiplegia_hp:0002301": "Hemiplegia Hp:0002301",
+    "myokymia_hp:0002411": "Myokymia Hp:0002411",
+    "muscle_weakness_hp:0003324": "Muscle Weakness Hp:0003324",
+    "choreoathetosis_hp:0001266": "Choreoathetosis Hp:0001266",
+    "hypermetric_saccade_hp:0007338": "Hypermetric Saccade Hp:0007338",
+    "jerking_hp:0001336": "Jerking Hp:0001336",
+    "tremor_hp:0001337": "Tremor Hp:0001337"
+  },
+  "Non-motor ictal": {},
+  "Non-motor interictal": {},
+  "Non-motor signs and symptoms": {
+    "nausea_hp:0002018": "Nausea Hp:0002018",
+    "vomiting_hp:0002013": "Vomiting Hp:0002013",
+    "headache_hp:0002315": "Headache Hp:0002315",
+    "migraine_hp:0002076": "Migraine Hp:0002076",
+    "photophobia_hp:0000613": "Photophobia Hp:0000613",
+    "phonophobia_hp:0002183": "Phonophobia Hp:0002183",
+    "fatigue_hp:0012378": "Fatigue Hp:0012378",
+    "tinnitus_hp:0000360": "Tinnitus Hp:0000360",
+    "visual_blurring_hp:0000622": "Visual Blurring Hp:0000622",
+    "dizziness_hp:0002321": "Dizziness Hp:0002321",
+    "vertigo_hp:0002321": "Vertigo Hp:0002321",
+    "depression_hp:0000716": "Depression Hp:0000716",
+    "aphasia_hp:0002381": "Aphasia Hp:0002381"
+  },
+  "Other ictal": {},
+  "Other interictal": {},
+  "Other signs and symptoms": {
+    "nystagmus_hp:0000639": "Nystagmus Hp:0000639",
+    "tonic_upgaze": "Tonic Upgaze",
+    "neuromyotonia": "Neuromyotonia",
+    "dystonia_hp:0007325": "Dystonia Hp:0007325"
+  },
+  "Paroxysmal movements": {},
+  "Therapy": {},
+  "Triggers": {},
+  "Unknown": {
+    "other": "Other",
+    "diplopia_hp:0000651": "Diplopia Hp:0000651",
+    "gait_ataxia_hp:0002066": "Gait Ataxia Hp:0002066",
+    "limb_ataxia_hp:0002070": "Limb Ataxia Hp:0002070",
+    "seizures_hp:0001250": "Seizures Hp:0001250",
+    "generalized_hyperreflexia_hp:0007034": "Generalized Hyperreflexia Hp:0007034"
+  }
+}

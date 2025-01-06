@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import re
 import logging
 from utils import get_cached_dataframe, apply_filter, load_symptom_categories
 
@@ -7,10 +8,13 @@ logger = logging.getLogger(__name__)
 
 
 def get_symptom_columns(df):
+    # Регулярное выражение для поиска столбцов, заканчивающихся на _sympt или _hp:xxxxx
+    symptom_pattern = re.compile(r'(_sympt|_hp:\d+)$', re.IGNORECASE)
+
     return [
         col
         for col in df.columns
-        if col.endswith("_sympt") and not col.startswith("initial_")
+        if symptom_pattern.search(col) and not col.startswith("initial_")
     ]
 
 
