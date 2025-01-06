@@ -196,6 +196,10 @@ def generate_ethnicity_pie_chart(
                 "dataLabels": {
                     "enabled": True,
                     "format": "<b>{point.name}</b>: {point.percentage:.1f} %",
+                    "style": {
+                        "fontSize": "14px",  # Установите размер шрифта
+                        "color": "#333333"  # Цвет текста
+                    }
                 },
             }
         },

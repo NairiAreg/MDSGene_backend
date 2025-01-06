@@ -1,0 +1,109 @@
+{
+  "Development in childhood/adolescence": {
+    "episodic_ataxia_hp:0002131": "Episodic Ataxia Hp:0002131",
+    "gait_ataxia_hp:0002066": "Gait Ataxia Hp:0002066",
+    "limb_ataxia_hp:0002070": "Limb Ataxia Hp:0002070"
+  },
+  "Imaging features": {
+    "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272"
+  },
+  "Laboratory results": {},
+  "Motor ictal": {
+    "gait_ataxia_ictal": "Gait Ataxia Ictal",
+    "ataxia_ictal": "Ataxia Ictal",
+    "spasticity_ictal": "Spasticity Ictal",
+    "limb_ataxia_ictal": "Limb Ataxia Ictal",
+    "hypertonia_ictal": "Hypertonia Ictal",
+    "dystonia_ictal": "Dystonia Ictal",
+    "myokymia_ictal": "Myokymia Ictal",
+    "rigidity_ictal": "Rigidity Ictal",
+    "skeletal_muscle_hypertrophy_ictal": "Skeletal Muscle Hypertrophy Ictal",
+    "neuromyotonia_ictal": "Neuromyotonia Ictal",
+    "muscle_cramps_ictal": "Muscle Cramps Ictal",
+    "tremor_ictal": "Tremor Ictal",
+    "hand_twitching": "Hand Twitching"
+  },
+  "Motor interictal": {
+    "gait_ataxia_interictal": "Gait Ataxia Interictal",
+    "ataxia_interictal": "Ataxia Interictal",
+    "spasticity_interictal": "Spasticity Interictal",
+    "limb_ataxia_interictal": "Limb Ataxia Interictal",
+    "hypertonia_interictal": "Hypertonia Interictal",
+    "dystonia_interictal": "Dystonia Interictal",
+    "myokymia_interictal": "Myokymia Interictal",
+    "rigidity_interictal": "Rigidity Interictal",
+    "skeletal_muscle_hypertrophy_interictal": "Skeletal Muscle Hypertrophy Interictal",
+    "neuromyotonia_interictal": "Neuromyotonia Interictal",
+    "muscle_cramps_interictal": "Muscle Cramps Interictal",
+    "tremor_interictal": "Tremor Interictal"
+  },
+  "Motor signs and symptoms": {
+    "ataxia": "Ataxia",
+    "choreoathetosis_hp:0001266": "Choreoathetosis Hp:0001266",
+    "spasticity_hp:0001257": "Spasticity Hp:0001257",
+    "hypertonia_hp:0001276": "Hypertonia Hp:0001276",
+    "muscle_stiffness_hp:0003552": "Muscle Stiffness Hp:0003552",
+    "leg_rigidity": "Leg Rigidity",
+    "muscle_weakness_hp:0003324": "Muscle Weakness Hp:0003324",
+    "rigidity_hp:0002063": "Rigidity Hp:0002063",
+    "dystonia _hp:0001332": "Dystonia  Hp:0001332",
+    "muscle_spasms_hp:0002487": "Muscle Spasms Hp:0002487"
+  },
+  "Non-motor ictal": {
+    "visual_blurring_ictal": "Visual Blurring Ictal",
+    "dizziness_ictal": "Dizziness Ictal",
+    "nausea_ictal": "Nausea Ictal",
+    "vomiting_ictal": "Vomiting Ictal",
+    "migraine_ictal": "Migraine Ictal",
+    "vertigo_ictal": "Vertigo Ictal",
+    "depression_ictal": "Depression Ictal",
+    "tinnitus_ictal": "Tinnitus Ictal",
+    "diploplia_ictal": "Diploplia Ictal",
+    "headache_ictal": "Headache Ictal",
+    "respiratory_distress_ictal": "Respiratory Distress Ictal"
+  },
+  "Non-motor interictal": {
+    "visual_blurring_interictal": "Visual Blurring Interictal",
+    "dizziness_interictal": "Dizziness Interictal",
+    "nausea_interictal": "Nausea Interictal",
+    "vomiting_interictal": "Vomiting Interictal",
+    "migraine_interictal": "Migraine Interictal",
+    "vertigo_interictal": "Vertigo Interictal",
+    "depression_interictal": "Depression Interictal",
+    "tinnitus_interictal": "Tinnitus Interictal",
+    "diploplia_interictal": "Diploplia Interictal",
+    "headache_interictal": "Headache Interictal",
+    "fatigue_interictal": "Fatigue Interictal",
+    "respiratory_distress_interictal": "Respiratory Distress Interictal"
+  },
+  "Non-motor signs and symptoms": {
+    "visual_disturbance": "Visual Disturbance",
+    "fatigue_hp:0012378": "Fatigue Hp:0012378",
+    "subdomain_cognitive_impairment": "Subdomain Cognitive Impairment",
+    "cognitive_impairment_hp:0100543": "Cognitive Impairment Hp:0100543",
+    "nystagmus_hp:0000639": "Nystagmus Hp:0000639",
+    "dizziness_hp:0002321": "Dizziness Hp:0002321",
+    "vomiting_hp:0002013": "Vomiting Hp:0002013"
+  },
+  "Other ictal": {
+    "tonic_upgaze_ictal": "Tonic Upgaze Ictal",
+    "upper_motor_neuron_dysfunction_ictal": "Upper Motor Neuron Dysfunction Ictal"
+  },
+  "Other interictal": {
+    "tonic_upgaze_interictal": "Tonic Upgaze Interictal",
+    "upper_motor_neuron_dysfunction_interictal": "Upper Motor Neuron Dysfunction Interictal"
+  },
+  "Other signs and symptoms": {
+    "nystagmus_interictal": "Nystagmus Interictal",
+    "cerebellar_ataxia_hp:0001251": "Cerebellar Ataxia Hp:0001251",
+    "seizures_hp:0001250": "Seizures Hp:0001250",
+    "slurred_speech_hp:0001350": "Slurred Speech Hp:0001350"
+  },
+  "Paroxysmal movements": {},
+  "Therapy": {},
+  "Triggers": {},
+  "Unknown": {
+    "other": "Other",
+    "muscle_stiffness_hp:0003552.1": "Muscle Stiffness Hp:0003552.1"
+  }
+}
