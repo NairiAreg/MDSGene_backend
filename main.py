@@ -8,7 +8,6 @@ import const
 import diseases
 import overview
 from fastapi.middleware.cors import CORSMiddleware
-import symptom_predictor as sp
 from fastapi.openapi.utils import get_openapi
 
 import utils
@@ -39,15 +38,6 @@ pubmed_cache = TTLCache(maxsize=1000, ttl=3600)
 
 endpoint_cache = TTLCache(maxsize=150000, ttl=2592000)
 
-MODEL_PATH = "Model/RF_model.pkl"
-SYMPTOM_CATEGORIES_FILES = [
-    'properties/symptom_categories_EA_CACNA1A.json',
-    'properties/symptom_categories_EA_KCNA1.json',
-    'properties/symptom_categories_EA_PDHA1.json',
-    'properties/symptom_categories_EA_SLC1A3.json',
-    'properties/symptom_categories_PARK_GBA1.json',
-    'properties/symptom_categories_PARK_LRRK2.json'
-]
 
 def cache_response(func):
     @wraps(func)
@@ -358,63 +348,461 @@ async def search_pubmed(pubmed_ids: str):
     return JSONResponse(content={"result": ordered_results})
 
 
-class PredictionRequest(BaseModel):
-    one_subject: list
+def load_symptom_categories(file_paths):
+    all_symptoms = {}
 
-class SymptomSubmission(BaseModel):
-    age: int
-    symptoms: List[str]
+    for file_path in file_paths:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+            for category, symptoms in data.items():
+                if category not in all_symptoms:
+                    all_symptoms[category] = []
+                for symptom_key in symptoms.keys():
+                    all_symptoms[category].append(symptom_key)
 
+    # Удаляем дубли и сортируем симптомы в каждой категории
+    all_symptoms_cleaned = {category: sorted(list(set(symptoms))) for category, symptoms in all_symptoms.items()}
+    return all_symptoms_cleaned
+
+# Endpoint to get the full content of the categories metadata file
 @app.get("/symptom_categories")
 async def get_categories_metadata(
     directory: str = Query(
-        "excel",
-        description="Directory where categories metadata is stored"
+        "excel", description="Directory where categories metadata is stored"
     ),
     categories_filename: str = Query(
         "symptom_categories.json",
         description="Filename of the categories metadata file",
     ),
 ):
+    # Load the categories metadata
+    # Пример использования
+    file_paths = [
+        'properties/symptom_categories_EA_CACNA1A.json',
+        'properties/symptom_categories_EA_KCNA1.json',
+        'properties/symptom_categories_EA_PDHA1.json',
+        'properties/symptom_categories_EA_SLC1A3.json',
+        'properties/symptom_categories_PARK_GBA1.json',
+        'properties/symptom_categories_PARK_LRRK2.json'
+    ]
+
+    categories_metadata = load_symptom_categories(file_paths)
+    # categories = {
+    #     "Movement Disorders": [
+    #         "tremor_rest_sympt",
+    #         "bradykinesia_sympt",
+    #         "rigidity_sympt",
+    #         "postural_instability_sympt",
+    #         "dystonia_sympt",
+    #         "dyskinesia_sympt",
+    #         "ataxia_dysdiadochokinesia_sympt",
+    #     ],
+    #     "Cognitive and Behavioral Symptoms": [
+    #         "cognitive_decline_sympt",
+    #         "impulsive_control_disorder_sympt",
+    #         "anxiety_sympt",
+    #         "depression_sympt",
+    #         "psychotic_sympt",
+    #         "intellectual_disability_sympt",
+    #     ],
+    #     "Autonomic Symptoms": [
+    #         "autonomic_sympt",
+    #         "dysphagia_sympt",
+    #         "olfaction_sympt",
+    #         "hypomimia_sympt",
+    #     ],
+    #     "Sleep Disorders": ["rbd_sympt", "myoclonus_sympt"],
+    #     "Neurological Signs": [
+    #         "primitive_reflexes_sympt",
+    #         "spasticity_pyramidal_signs_sympt",
+    #         "gaze_palsy_sympt",
+    #         "saccadic_abnormalities_sympt",
+    #     ],
+    #     "Motor Complications": [
+    #         "motor_fluctuations_sympt",
+    #         "gait_difficulties_falls_sympt",
+    #         "dysarthria_anarthria_sympt",
+    #     ],
+    #     "Developmental and Seizure Disorders": [
+    #         "development_delay_sympt",
+    #         "seizures_sympt",
+    #     ],
+    # }
+    # return categories
+    return categories_metadata
+
+
+def RF_load_and_predict(model_path, one_subject):
     """
-    Endpoint для получения категорий симптомов
+    Function to load a trained Random Forest model and make a prediction on a single subject.
+
+    Parameters:
+        model_path (str): Path to the saved trained model.
+        one_subject (numpy array): Feature array of a single subject to predict.
+
+    Returns:
+        prediction (int): Predicted class for the input subject.
     """
-    return sp.load_symptom_categories(SYMPTOM_CATEGORIES_FILES)
+    # Load the trained model
+    clf = joblib.load(model_path)
+
+    # Ensure the input is in the correct shape for prediction
+    one_subject = np.array(one_subject).reshape(1, -1)
+
+    # Make the prediction
+    prediction = clf.predict(one_subject)[0]
+
+    return prediction
+
+class PredictionRequest(BaseModel):
+    one_subject: list
 
 @app.post("/predict")
 async def predict(request: PredictionRequest):
-    """
-    Endpoint для получения предсказания на основе массива признаков
-    """
     try:
-        prediction = sp.RF_load_and_predict(MODEL_PATH, request.one_subject)
-        prediction_result = sp.get_prediction_result(prediction)
-        return {"prediction": prediction_result}
+        model_path = "Model/RF_model.pkl"
+        prediction = RF_load_and_predict(model_path, request.one_subject)
+        return {"prediction": prediction}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+# List of all features (used during model training)
+ALL_FEATURES = [
+"ethnicity",
+"country",
+"sex",
+"aao",
+"duration",
+"age_dx",
+"ataxia_sympt",
+"ataxia_ictal_sympt",
+"ataxia_interictal_sympt",
+"limb_ataxia_hp:0002070",
+"limb_ataxia_ictal_sympt",
+"limb_ataxia_interictal_sympt",
+"gait_ataxia_hp:0002066",
+"gait_ataxia_ictal_sympt",
+"gait_ataxia_interictal_sympt",
+"vertigo_hp:0002321",
+"vertigo_ictal_sympt",
+"vertigo_interictal_sympt",
+"nausea_hp:0002018",
+"nausea_ictal_sympt",
+"nausea_interictal_sympt",
+"dysarthria_hp:0001260",
+"dysarthria_ictal_sympt",
+"dysarthria_interictal_sympt",
+"diplopia_hp:0000651",
+"diploplia_ictal_sympt",
+"diploplia_interictal_sympt",
+"tinnitus_hp:0000360",
+"tinnitus_ictal_sympt",
+"tinnitus_interictal_sympt",
+"dystonia_hp:0001332",
+"dystonia_ictal_sympt",
+"dystonia_interictal_sympt",
+"hemiplegia_hp:0002301",
+"hemiplegia_ictal_sympt",
+"hemiplegia_interictal_sympt",
+"headache_hp:0002315",
+"headache_ictal_sympt",
+"headache_interictal_sympt",
+"migraine_hp:0002076",
+"migraine_ictal_sympt",
+"migraine_interictal_sympt",
+"nystagmus_hp:0000639",
+"nystagmus_ictal_sympt",
+"nystagmus_interictal_sympt",
+"muscle_weakness_hp:0003324",
+"muscle_weakness_ictal_sympt",
+"muscle_weakness_interictal_sympt",
+"fatigue_hp:0012378",
+"fatigue_ictal_sympt",
+"fatigue_interictal_sympt",
+"tonic_upgaze_sympt",
+"tonic_upgaze_ictal_sympt",
+"tonic_upgaze_interictal_sympt",
+"cognitive_impairment_hp:0100543",
+"cognitive_impairment_ictal_sympt",
+"cognitive_impairment_interictal_sympt",
+"subdomain_cognitive_impairment_sympt",
+"myokymia_hp:0002411",
+"myokymia_ictal_sympt",
+"myokymia_interictal_sympt",
+"neuromyotonia_ictal_sympt",
+"neuromyotonia_interictal_sympt",
+"choreoathetosis_hp:0001266",
+"choreoathetosis_ictal_sympt",
+"choreoathetosis_interictal_sympt",
+"visual_blurring_hp:0000622",
+"visual_blurring_ictal_sympt",
+"visual_blurring_interictal_sympt",
+"cerebellar_atrophy_hp:0001272",
+"depression_hp:0000716",
+"depression_ictal_sympt",
+"depression_interictal_sympt",
+"rigidity_hp:0002063",
+"rigidity_ictal_sympt",
+"rigidity_interictal_sympt",
+"vomiting_hp:0002013",
+"vomiting_ictal_sympt",
+"vomiting_interictal_sympt",
+"seizures_hp:0001250",
+"seizures_ictal_sympt",
+"seizures_interictal_sympt",
+"tremor_hp:0001337",
+"tremor_ictal_sympt",
+"tremor_interictal_sympt",
+"spasticity_hp:0001257",
+"spasticity_ictal_sympt",
+"spasticity_interictal_sympt",
+"muscular_hypotonia_hp:0001252",
+"muscular_hypotonia_ictal_sympt",
+"muscular_hypotonia_interictal_sympt",
+"hypertonia_hp:0001276",
+"hypertonia_ictal_sympt",
+"hypertonia_interictal_sympt",
+"muscle_cramps_sympt",
+"muscle_cramps_ictal_sympt",
+"muscle_cramps_interictal_sympt",
+"upper_motor_neuron_dysfunction_hp:0002493",
+"upper_motor_neuron_dysfunction_ictal_sympt",
+"upper_motor_neuron_dysfunction_interictal_sympt",
+"muscle_stiffness_hp:0003552",
+"muscle_stiffness_hp:0003552_sympt",
+"muscle_stiffness_hp:0003552_sympt.1",
+"dizziness_hp:0002321",
+"dizziness_ictal_sympt",
+"dizziness_interictal_sympt",
+"skeletal_muscle_hypertrophy_hp:0003712",
+"skeletal_muscle_hypertrophy_ictal_sympt",
+"skeletal_muscle_hypertrophy_interictal_sympt",
+"respiratory_distress_hp:0002098",
+"respiratory_distress_ictal_sympt",
+"respiratory_distress_interictal_sympt",
+"episodic_ataxia_hp:0002131",
+"muscle_spasms_hp:0002487",
+"cerebellar_ataxia_hp:0001251",
+"hand_twitching_sympt",
+"slurred_speech_hp:0001350",
+"visual_disturbance_sympt",
+"leg_rigidity_sympt",
+"other_sympt",
+"ataxia_hp:0001251",
+"dystonia_hp:0007325",
+"neuromyotonia_sympt",
+"hypermetric_saccade_hp:0007338",
+"aphasia_hp:0002381",
+"jerking_hp:0001336",
+"generalized_hyperreflexia_hp:0007034",
+"photophobia_hp:0000613",
+"phonophobia_hp:0002183",
+"aao_other_sympt",
+"fatigue_sympt",
+"high_blood_lactate_ictal_sympt",
+"high_blood_lactate_interictal_sympt",
+"high_csf_lactate_sympt",
+"encephalopathy_hp:0001298",
+"respiratory_distress_sympt",
+"global_development_delay_hp:0001263",
+"delayed_motor_skills_hp:0002194",
+"delayed_cognitive_dev_sympt",
+"axonal_neuropathy_hp:0003477",
+"microcephaly_hp:0000252",
+"ptosis_hp:0000508",
+"ptosis_ictal_sympt",
+"ptosis_interictal_sympt",
+"dysphagia_sympt",
+"tetraparesis_hp:0030182",
+"tetraparesis_interictal_sympt",
+"areflexia_hp:0001284",
+"areflexia_interictal_sympt",
+"abnormality_of_skeletal_morphology_hp:0011842",
+"osteopenia_hp:0000938",
+"short_stature_hp:0004322",
+"chorea_hp:0002072",
+"intellectual_disability_hp:0001249",
+"facial_dysmorphism_hp:0001999",
+"mri_brain_abnormality_sympt",
+"ophthalmoplegia_hp:0000602",
+"ataxia_hp:0002131",
+"diplopia_ictal_sympt",
+"diplopia_interictal_sympt",
+"hyperhidrosis_hp:0000975",
+"dysmetric_saccades_hp:0000641",
+"ophthalmoparesis_hp:0000597",
+"developmental_delay_hp:0001263",
+"extensor_plantar_response_hp:0003487",
+"motor_developmental_delay_hp:0001270",
+"saccadic_smooth_pursuit_hp:0001152",
+"slow_saccades_hp:0000514",
+"square_wave_jerks_hp:0025402",
+"episodic_fever_hp:0001954",
+"impaired_vision_hp:0000505",
+"decreased_level_of_consciousness_hp:0007185",
+"sensory_impairment_hp:0003474",
+"coma_hp:0001259",
+"sensitivity_to_alcohol_sympt",
+"apraxia_hp:0002186",
+"emotional_stress_trigger_sympt",
+"physical_stress_trigger_sympt",
+"heat_trigger_sympt",
+"acute_illness_trigger_sympt",
+"fatigue_trigger_sympt",
+"pregnancy_or_hormonal_change_trigger_sympt",
+"sudden_movement_trigger_sympt",
+"caffeine_trigger_sympt",
+"alcohol_trigger_sympt",
+"motor_sympt",
+"parkinsonism_sympt",
+"nms_park_sympt",
+"olfaction_sympt",
+"bradykinesia_sympt",
+"tremor_rest_sympt",
+"tremor_action_sympt",
+"tremor_postural_sympt",
+"tremor_dystonic_sympt",
+"rigidity_sympt",
+"postural_instability_sympt",
+"dyskinesia_sympt",
+"dystonia_sympt",
+"hyperreflexia_sympt",
+"diurnal_fluctuations_sympt",
+"sleep_benefit_sympt",
+"motor_fluctuations_sympt",
+"depression_sympt",
+"anxiety_sympt",
+"psychotic_sympt",
+"sleep_disorder_sympt",
+"cognitive_decline_sympt",
+"autonomic_sympt",
+"atypical_park_sympt",
+"gd_hepatosplenomegaly_sympt",
+"gd_blood_abnorm_sympt",
+"gd_bone_abnorm_sympt",
+"development_delay_sympt",
+"tremor_other_sympt",
+"gait_difficulties_falls_sympt",
+"spasticity_pyramidal_signs_sympt",
+"primitive_reflexes_sympt",
+"seizures_sympt",
+"myoclonus_sympt",
+"gaze_palsy_sympt",
+"saccadic_abnormalities_sympt",
+"ataxia_dysdiadochokinesia_sympt",
+"hypomimia_sympt",
+"dysarthria_anarthria_sympt",
+"rbd_sympt",
+"impulsive_control_disorder_sympt",
+"hallucinations_sympt",
+"intellectual_disability_sympt",
+"tremor_unspecified_sympt",
+"levodopa_induced_dyskinesia_sympt",
+"levodopa_induced_dystonia_sympt"]
+
+
+# Default value for missing symptoms
+DEFAULT_VALUE = 0
+
+# Function to group age into categories (aao_to_value)
+def group_age(age: int) -> int:
+    if age == -99 or age <= 0:
+        return 2
+    if age <= 10:
+        return 1
+    if age <= 20:
+        return 3
+    if age <= 30:
+        return 4
+    if age <= 40:
+        return 5
+    if age <= 50:
+        return 6
+    if age <= 60:
+        return 7
+    if age <= 70:
+        return 8
+    if age <= 80:
+        return 9
+    if age <= 90:
+        return 10
+    return 11
+
+# Function to generate the full feature array
+def generate_full_feature_array(input_data: Dict[str, int], all_features: List[str], default_value: int) -> List[int]:
+    feature_array = [default_value] * len(all_features)
+
+    for feature, value in input_data.items():
+        normalized_feature = feature.replace(" ", "_")  # Replace spaces with underscores
+
+        # Match feature by prefix in all_features
+        matching_indices = [i for i, f in enumerate(all_features) if f.startswith(normalized_feature)]
+
+        for index in matching_indices:
+            feature_array[index] = value
+
+    return feature_array
+
+# Pydantic model for incoming data
+class SymptomSubmission(BaseModel):
+    age: int
+    symptoms: List[str]
+
 @app.post("/submit_symptoms")
 async def submit_symptoms(data: SymptomSubmission):
-    """
-    Endpoint для отправки симптомов и получения предсказания
-    """
-    try:
-        return sp.process_symptoms_submission(data.dict(), MODEL_PATH)
-    except Exception as e:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Error processing symptoms: {str(e)}"
-        )
+    # Convert incoming data to a dictionary
+    input_data = {"age": group_age(data.age)}  # Group age into categories
 
-# Эндпоинт для получения рекомендаций по диагнозу на основе симптомов
+    for symptom in data.symptoms:
+        normalized_symptom = symptom.replace(" ", "_")  # Normalize symptom names
+        input_data[normalized_symptom] = 1  # Mark selected symptoms with 1
+
+    # Generate the full feature array
+    full_feature_array = generate_full_feature_array(input_data, ALL_FEATURES, DEFAULT_VALUE)
+
+    model_path = "Model/RF_model.pkl"
+    prediction = RF_load_and_predict(model_path, full_feature_array)
+
+    if prediction == 1:
+        prediction = "CACNA1A"
+    elif prediction == 2:
+        prediction = "LRRK2"
+    elif prediction == 3:
+        prediction = "KCNA1"
+    elif prediction == 4:
+        prediction = "PDHA1"
+    elif prediction == 5:
+        prediction = "SLC1A3"
+    elif prediction == 6:
+        prediction = "GBA1"
+    else:
+        prediction = "Unknown"
+    return {
+        "message": "Predicted diagnosis based on symptoms submitted is " + prediction,
+        "full_feature_array": full_feature_array,
+        "prediction": prediction
+    }
+
+
 @app.get("/symptoms_for_diagnosis")
 async def symptoms_for_diagnosis_endpoint(
     aao: float = Query(None, description="Age at onset"),
     symptoms: List[str] = Query(None, description="List of selected symptoms"),
 ):
-    """
-    Endpoint для получения списка возможных заболеваний на основе возраста и симптомов
-    """
+    # Получить список заболеваний и соответствующих симптомов из модуля diseases
+    matching_diseases = diseases.get_matching_diseases(aao=aao, symptoms=symptoms)
+
+    logger.debug(f"Number of matching diseases: {len(matching_diseases)}")
+
+    return matching_diseases
+
+
+@app.get("/symptoms_for_diagnosis")
+async def symptoms_for_diagnosis_endpoint(
+    aao: float = Query(None, description="Age at onset"),
+    symptoms: List[str] = Query(None, description="List of selected symptoms"),
+):
+    # Пример данных, которые могут быть возвращены (на основании изображения)
     matching_diseases = [
         {
             "diagnosis": "DYT/PARK-GLB1",
@@ -427,19 +815,113 @@ async def symptoms_for_diagnosis_endpoint(
             },
             "reported_mutations": "p.Ile51Thr: hom c.1068+1G>T + p.Arg201His: comp. het., p.Ile51Asn: comp. het.",
         },
-        # ... остальные заболевания
+        {
+            "diagnosis": "DYT/PARK-PTS",
+            "n_cases": 64,
+            "aao": "Median: 0.0 (Q1: 0.0 - Q3: 0.0)",
+            "signs_and_symptoms": {
+                "selected_and_previously_reported": "Abnormal central motor function (81%)",
+                "previously_reported_but_not_selected": "Cognitive impairment (78%), Global developmental delay (75%), Intellectual developmental disorder (70%)",
+                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
+            },
+            "reported_mutations": "p.Ile114Val: hom p.Asp136Val + p.Thr67Met: comp. het., p.Val57del + p.Lys29_Ser32del: comp. het.",
+        },
+        {
+            "diagnosis": "DYT/PARK-PLA2G6",
+            "n_cases": 115,
+            "aao": "Median: 7.0 (Q1: 2.0 - Q3: 24.0)",
+            "signs_and_symptoms": {
+                "selected_and_previously_reported": "Abnormal central motor function (81%)",
+                "previously_reported_but_not_selected": "Pyramidal sign (77%), Cerebellar atrophy (69%), MRI brain other abnormalities sympt (59%)",
+                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
+            },
+            "reported_mutations": "p.Ala80Thr: hom p.Val691del: hom p.Arg37* + p.Ser774Ile: comp. het.",
+        },
+        {
+            "diagnosis": "PARK-SYNJ1",
+            "n_cases": 17,
+            "aao": "Median: 22.0 (Q1: 16.0 - Q3: 28.0)",
+            "signs_and_symptoms": {
+                "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (24%)",
+                "previously_reported_but_not_selected": "Bradykinesia (82%), Tremor (64%), Hyperreflexia (29%)",
+                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
+            },
+            "reported_mutations": "p.Arg258Gln: hom p.Arg459Pro: hom",
+        },
+        {
+            "diagnosis": "PARK-ATP13A2",
+            "n_cases": 36,
+            "aao": "Median: 14.5 (Q1: 12.0 - Q3: 17.0)",
+            "signs_and_symptoms": {
+                "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (86%)",
+                "previously_reported_but_not_selected": "Parkinsonism (100%), Bradykinesia (92%), Hypertonia (86%)",
+                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
+            },
+            "reported_mutations": "p.Gly797Asp: hom p.Gly509Arg: hom",
+        },
+        {
+            "diagnosis": "PARK-CP",
+            "n_cases": 26,
+            "aao": "Median: 50.5 (Q1: 48.0 - Q3: 53.0)",
+            "signs_and_symptoms": {
+                "selected_and_previously_reported": "Abnormal central motor function (69%)",
+                "previously_reported_but_not_selected": "Hypotonia on physical examination (81%), Spastic paraplegia (50%), Diabetes mellitus (39%)",
+                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
+            },
+            "reported_mutations": "p.Trp283Ser: hom c.1864+1G>C: n.a.",
+        },
+        {
+            "diagnosis": "PARK-DCTN1",
+            "n_cases": 46,
+            "aao": "Median: 49.0 (Q1: 46.0 - Q3: 54.0)",
+            "signs_and_symptoms": {
+                "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (100%)",
+                "previously_reported_but_not_selected": "Bradykinesia (87%), Resting tremor (58%)",
+                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
+            },
+            "reported_mutations": "p.Gly174Arg: het p.Ser76Thr: het",
+        },
     ]
 
+    # Перечень заболеваний, по которым не было записано никаких выбранных признаков и симптомов
     no_matching_diseases = [
         "PARK-LRRK2",
         "PARK-SNCA",
-        # ... остальные заболевания без совпадений
+        "PARK-PINK1",
+        "PARK-VPS35",
+        "PARK-TOR1A",
+        "DYT-KMT2B",
+        "DYT-GNAL",
+        "DYT-THAP1",
+        "DYT-ANO3",
+        "PARK-DNKQ",
+        "PARK-RFXOX",
+        "DYT/PARK-SLC30A10",
+        "DYT/PARK-TAF1",
+        "DYT/PARK-QDPR",
+        "DYT/PARK-SLC6A3",
+        "HSP-REEP1",
+        "DYT-PRKRA",
+        "DYT/PARK-GCH1",
+        "DYT-HPCA",
+        "PARK-VPS13C",
+        "DYT/PARK-TH",
+        "DYT-KCTD17",
+        "DYT-SGCE",
+        "DYT/PARK-SPR",
+        "HSP-ATL1",
+        "HSP-SPAST",
     ]
 
-    return {
+    logger.debug(f"Number of matching diseases: {len(matching_diseases)}")
+
+    response = {
         "matching_diseases": matching_diseases,
         "no_matching_diseases": no_matching_diseases,
     }
+
+    return response
+
 
 @app.post("/ai_prompt")
 async def run_ollama_endpoint(prompt: str):
@@ -524,4 +1006,3 @@ Input data:
 #     json_string = text[start:end].strip()
 #
 #     return json_string
-
