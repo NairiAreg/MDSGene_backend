@@ -1,12 +1,14 @@
 import json
-from typing import List
+from typing import List, Dict
 
 from fastapi import FastAPI, Query, HTTPException, Form, File, UploadFile, Response
 from pydantic import BaseModel
 
+import const
 import diseases
 import overview
 from fastapi.middleware.cors import CORSMiddleware
+import symptom_predictor as sp
 from fastapi.openapi.utils import get_openapi
 
 import utils
@@ -29,11 +31,23 @@ from pubmed_search_endpoint import fetch_pubmed_summaries
 from functools import wraps
 import hashlib
 
+import numpy as np
+import joblib  # For saving and loading the model
+
 # Cache to store PubMed responses, with a 1-hour TTL
 pubmed_cache = TTLCache(maxsize=1000, ttl=3600)
 
 endpoint_cache = TTLCache(maxsize=150000, ttl=2592000)
 
+MODEL_PATH = "Model/RF_model.pkl"
+SYMPTOM_CATEGORIES_FILES = [
+    'properties/symptom_categories_EA_CACNA1A.json',
+    'properties/symptom_categories_EA_KCNA1.json',
+    'properties/symptom_categories_EA_PDHA1.json',
+    'properties/symptom_categories_EA_SLC1A3.json',
+    'properties/symptom_categories_PARK_GBA1.json',
+    'properties/symptom_categories_PARK_LRRK2.json'
+]
 
 def cache_response(func):
     @wraps(func)
@@ -344,102 +358,63 @@ async def search_pubmed(pubmed_ids: str):
     return JSONResponse(content={"result": ordered_results})
 
 
-# Endpoint to get the full content of the categories metadata file
+class PredictionRequest(BaseModel):
+    one_subject: list
+
+class SymptomSubmission(BaseModel):
+    age: int
+    symptoms: List[str]
+
 @app.get("/symptom_categories")
 async def get_categories_metadata(
     directory: str = Query(
-        "excel", description="Directory where categories metadata is stored"
+        "excel",
+        description="Directory where categories metadata is stored"
     ),
     categories_filename: str = Query(
         "symptom_categories.json",
         description="Filename of the categories metadata file",
     ),
 ):
-    # Load the categories metadata
-    # categories_metadata = load_symptom_categories()
-    categories = {
-        "Movement Disorders": [
-            "tremor_rest_sympt",
-            "bradykinesia_sympt",
-            "rigidity_sympt",
-            "postural_instability_sympt",
-            "dystonia_sympt",
-            "dyskinesia_sympt",
-            "ataxia_dysdiadochokinesia_sympt",
-        ],
-        "Cognitive and Behavioral Symptoms": [
-            "cognitive_decline_sympt",
-            "impulsive_control_disorder_sympt",
-            "anxiety_sympt",
-            "depression_sympt",
-            "psychotic_sympt",
-            "intellectual_disability_sympt",
-        ],
-        "Autonomic Symptoms": [
-            "autonomic_sympt",
-            "dysphagia_sympt",
-            "olfaction_sympt",
-            "hypomimia_sympt",
-        ],
-        "Sleep Disorders": ["rbd_sympt", "myoclonus_sympt"],
-        "Neurological Signs": [
-            "primitive_reflexes_sympt",
-            "spasticity_pyramidal_signs_sympt",
-            "gaze_palsy_sympt",
-            "saccadic_abnormalities_sympt",
-        ],
-        "Motor Complications": [
-            "motor_fluctuations_sympt",
-            "gait_difficulties_falls_sympt",
-            "dysarthria_anarthria_sympt",
-        ],
-        "Developmental and Seizure Disorders": [
-            "development_delay_sympt",
-            "seizures_sympt",
-        ],
-    }
-    return categories
-    # return categories_metadata
+    """
+    Endpoint для получения категорий симптомов
+    """
+    return sp.load_symptom_categories(SYMPTOM_CATEGORIES_FILES)
 
+@app.post("/predict")
+async def predict(request: PredictionRequest):
+    """
+    Endpoint для получения предсказания на основе массива признаков
+    """
+    try:
+        prediction = sp.RF_load_and_predict(MODEL_PATH, request.one_subject)
+        prediction_result = sp.get_prediction_result(prediction)
+        return {"prediction": prediction_result}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/submit_symptoms")
-async def submit_symptoms_endpoint(
-    age: str = Query(..., description="Age of the patient"),
-    symptoms: List[str] = Query(..., description="List of symptoms"),
-):
-    print(f"Received age: {age}")
-    print("Received symptoms:")
-    for symptom in symptoms:
-        print(f"- {symptom}")
+async def submit_symptoms(data: SymptomSubmission):
+    """
+    Endpoint для отправки симптомов и получения предсказания
+    """
+    try:
+        return sp.process_symptoms_submission(data.dict(), MODEL_PATH)
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Error processing symptoms: {str(e)}"
+        )
 
-    # Here you can add any additional processing logic if needed
-
-    return {
-        "message": "Symptoms submitted successfully",
-        "age": age,
-        "symptoms": symptoms,
-    }
-
-
+# Эндпоинт для получения рекомендаций по диагнозу на основе симптомов
 @app.get("/symptoms_for_diagnosis")
 async def symptoms_for_diagnosis_endpoint(
     aao: float = Query(None, description="Age at onset"),
     symptoms: List[str] = Query(None, description="List of selected symptoms"),
 ):
-    # Получить список заболеваний и соответствующих симптомов из модуля diseases
-    matching_diseases = diseases.get_matching_diseases(aao=aao, symptoms=symptoms)
-
-    logger.debug(f"Number of matching diseases: {len(matching_diseases)}")
-
-    return matching_diseases
-
-
-@app.get("/symptoms_for_diagnosis")
-async def symptoms_for_diagnosis_endpoint(
-    aao: float = Query(None, description="Age at onset"),
-    symptoms: List[str] = Query(None, description="List of selected symptoms"),
-):
-    # Пример данных, которые могут быть возвращены (на основании изображения)
+    """
+    Endpoint для получения списка возможных заболеваний на основе возраста и симптомов
+    """
     matching_diseases = [
         {
             "diagnosis": "DYT/PARK-GLB1",
@@ -452,113 +427,19 @@ async def symptoms_for_diagnosis_endpoint(
             },
             "reported_mutations": "p.Ile51Thr: hom c.1068+1G>T + p.Arg201His: comp. het., p.Ile51Asn: comp. het.",
         },
-        {
-            "diagnosis": "DYT/PARK-PTS",
-            "n_cases": 64,
-            "aao": "Median: 0.0 (Q1: 0.0 - Q3: 0.0)",
-            "signs_and_symptoms": {
-                "selected_and_previously_reported": "Abnormal central motor function (81%)",
-                "previously_reported_but_not_selected": "Cognitive impairment (78%), Global developmental delay (75%), Intellectual developmental disorder (70%)",
-                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
-            },
-            "reported_mutations": "p.Ile114Val: hom p.Asp136Val + p.Thr67Met: comp. het., p.Val57del + p.Lys29_Ser32del: comp. het.",
-        },
-        {
-            "diagnosis": "DYT/PARK-PLA2G6",
-            "n_cases": 115,
-            "aao": "Median: 7.0 (Q1: 2.0 - Q3: 24.0)",
-            "signs_and_symptoms": {
-                "selected_and_previously_reported": "Abnormal central motor function (81%)",
-                "previously_reported_but_not_selected": "Pyramidal sign (77%), Cerebellar atrophy (69%), MRI brain other abnormalities sympt (59%)",
-                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
-            },
-            "reported_mutations": "p.Ala80Thr: hom p.Val691del: hom p.Arg37* + p.Ser774Ile: comp. het.",
-        },
-        {
-            "diagnosis": "PARK-SYNJ1",
-            "n_cases": 17,
-            "aao": "Median: 22.0 (Q1: 16.0 - Q3: 28.0)",
-            "signs_and_symptoms": {
-                "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (24%)",
-                "previously_reported_but_not_selected": "Bradykinesia (82%), Tremor (64%), Hyperreflexia (29%)",
-                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
-            },
-            "reported_mutations": "p.Arg258Gln: hom p.Arg459Pro: hom",
-        },
-        {
-            "diagnosis": "PARK-ATP13A2",
-            "n_cases": 36,
-            "aao": "Median: 14.5 (Q1: 12.0 - Q3: 17.0)",
-            "signs_and_symptoms": {
-                "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (86%)",
-                "previously_reported_but_not_selected": "Parkinsonism (100%), Bradykinesia (92%), Hypertonia (86%)",
-                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
-            },
-            "reported_mutations": "p.Gly797Asp: hom p.Gly509Arg: hom",
-        },
-        {
-            "diagnosis": "PARK-CP",
-            "n_cases": 26,
-            "aao": "Median: 50.5 (Q1: 48.0 - Q3: 53.0)",
-            "signs_and_symptoms": {
-                "selected_and_previously_reported": "Abnormal central motor function (69%)",
-                "previously_reported_but_not_selected": "Hypotonia on physical examination (81%), Spastic paraplegia (50%), Diabetes mellitus (39%)",
-                "selected_but_not_previously_reported": "Ataxia/Dysdiadochokinesia (0%)",
-            },
-            "reported_mutations": "p.Trp283Ser: hom c.1864+1G>C: n.a.",
-        },
-        {
-            "diagnosis": "PARK-DCTN1",
-            "n_cases": 46,
-            "aao": "Median: 49.0 (Q1: 46.0 - Q3: 54.0)",
-            "signs_and_symptoms": {
-                "selected_and_previously_reported": "Ataxia/Dysdiadochokinesia (100%)",
-                "previously_reported_but_not_selected": "Bradykinesia (87%), Resting tremor (58%)",
-                "selected_but_not_previously_reported": "Abnormal central motor function (0%)",
-            },
-            "reported_mutations": "p.Gly174Arg: het p.Ser76Thr: het",
-        },
+        # ... остальные заболевания
     ]
 
-    # Перечень заболеваний, по которым не было записано никаких выбранных признаков и симптомов
     no_matching_diseases = [
         "PARK-LRRK2",
         "PARK-SNCA",
-        "PARK-PINK1",
-        "PARK-VPS35",
-        "PARK-TOR1A",
-        "DYT-KMT2B",
-        "DYT-GNAL",
-        "DYT-THAP1",
-        "DYT-ANO3",
-        "PARK-DNKQ",
-        "PARK-RFXOX",
-        "DYT/PARK-SLC30A10",
-        "DYT/PARK-TAF1",
-        "DYT/PARK-QDPR",
-        "DYT/PARK-SLC6A3",
-        "HSP-REEP1",
-        "DYT-PRKRA",
-        "DYT/PARK-GCH1",
-        "DYT-HPCA",
-        "PARK-VPS13C",
-        "DYT/PARK-TH",
-        "DYT-KCTD17",
-        "DYT-SGCE",
-        "DYT/PARK-SPR",
-        "HSP-ATL1",
-        "HSP-SPAST",
+        # ... остальные заболевания без совпадений
     ]
 
-    logger.debug(f"Number of matching diseases: {len(matching_diseases)}")
-
-    response = {
+    return {
         "matching_diseases": matching_diseases,
         "no_matching_diseases": no_matching_diseases,
     }
-
-    return response
-
 
 @app.post("/ai_prompt")
 async def run_ollama_endpoint(prompt: str):

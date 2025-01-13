@@ -1,0 +1,32 @@
+{
+    "pmid": [
+        "pmid",
+        "pubmed_id",
+        "pubmedid"
+    ],
+    "author_year": [
+        "author_year",
+        "author, year",
+        "authors_year",
+        "author and year"
+    ],
+    "individual_id": [
+        "individual_id",
+        "patient_id",
+        "subject_id",
+        "id"
+    ],
+    "family_id": [
+        "family_id",
+        "fam_id",
+        "family",
+        "family number"
+    ],
+    "gene1": [
+        "gene1",
+        "gene_1",
+        "first_gene",
+        "gene.1"
+    ]
+    // Добавьте другие маппинги по необходимости
+}

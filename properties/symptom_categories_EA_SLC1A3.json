@@ -10,6 +10,7 @@
     "spasticity_hp:0001257": "Spasticity Hp:0001257",
     "rigidity_hp:0002063": "Rigidity Hp:0002063",
     "ataxia_hp:0001251": "Ataxia Hp:0001251",
+    "dysarthria_hp:0001260": "Dysarthria Hp:0001260",
     "hemiplegia_hp:0002301": "Hemiplegia Hp:0002301",
     "myokymia_hp:0002411": "Myokymia Hp:0002411",
     "muscle_weakness_hp:0003324": "Muscle Weakness Hp:0003324",
@@ -32,6 +33,7 @@
     "visual_blurring_hp:0000622": "Visual Blurring Hp:0000622",
     "dizziness_hp:0002321": "Dizziness Hp:0002321",
     "vertigo_hp:0002321": "Vertigo Hp:0002321",
+    "cognitive_impairment_hp:0100543": "Cognitive Impairment Hp:0100543",
     "depression_hp:0000716": "Depression Hp:0000716",
     "aphasia_hp:0002381": "Aphasia Hp:0002381"
   },
