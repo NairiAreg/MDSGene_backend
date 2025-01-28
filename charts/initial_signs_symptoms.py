@@ -164,7 +164,9 @@ def _fetch_initial_symptoms_data(
                     if column in filtered_df.columns:
                         # Only count symptoms that are not null and not -99
                         valid_symptoms = filtered_df[
-                            (~filtered_df[column].isna()) & (filtered_df[column] != -99)
+                            (~filtered_df[column].isna())  # исключаем числовые NaN
+                            & (filtered_df[column].astype(str).str.lower() != 'nan')  # исключаем строковые 'nan'
+                            & (filtered_df[column] != -99)  # исключаем -99
                         ][column]
 
                         symptom_counts = valid_symptoms.value_counts().to_dict()

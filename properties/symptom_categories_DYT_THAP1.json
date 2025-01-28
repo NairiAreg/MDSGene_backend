@@ -1,0 +1,87 @@
+{
+  "Development in childhood/adolescence": {
+    "delayed_speech_and_language_development_hp:0000750": "Delayed Speech And Language Development Hp:0000750",
+    "global_developmental_delay_hp:0001263": "Global Developmental Delay Hp:0001263",
+    "mild_global_developmental_delay_hp:0011342": "Mild Global Developmental Delay Hp:0011342",
+    "moderate_global_developmental_delay_hp:0011343": "Moderate Global Developmental Delay Hp:0011343",
+    "motor_delay_hp:0001270": "Motor Delay Hp:0001270",
+    "profound_global_developmental_delay_hp:0012736": "Profound Global Developmental Delay Hp:0012736",
+    "severe_global_developmental_delay_hp:0011344": "Severe Global Developmental Delay Hp:0011344"
+  },
+  "Imaging features": {},
+  "Laboratory results": {},
+  "Motor ictal": {},
+  "Motor interictal": {},
+  "Motor signs and symptoms": {
+    "action_tremor_hp:0002345": "Action Tremor Hp:0002345",
+    "anarthria_hp:0002425": "Anarthria Hp:0002425",
+    "axial_dystonia_hp:0002530": "Axial Dystonia Hp:0002530",
+    "blepharospasm": "Blepharospasm",
+    "bradykinesia_hp:0002067": "Bradykinesia Hp:0002067",
+    "cervical_dystonia_hp:0000473": "Cervical Dystonia Hp:0000473",
+    "craniofacial_dystonia_hp:0012179": "Craniofacial Dystonia Hp:0012179",
+    "dysarthria_hp:0001260": "Dysarthria Hp:0001260",
+    "dysphonia_hp:0001618": "Dysphonia Hp:0001618",
+    "dyst_action": "Dyst Action",
+    "dyst_arm": "Dyst Arm",
+    "dyst_foot": "Dyst Foot",
+    "dyst_hand": "Dyst Hand",
+    "dyst_jaw": "Dyst Jaw",
+    "dyst_leg": "Dyst Leg",
+    "dyst_lower_face": "Dyst Lower Face",
+    "dyst_tongue": "Dyst Tongue",
+    "dystonic_tremor_hp:0030185": "Dystonic Tremor Hp:0030185",
+    "dystonia_hp:0001332": "Dystonia Hp:0001332",
+    "focal_dystonia_hp:0004373": "Focal Dystonia Hp:0004373",
+    "generalized_dystonia_hp:0007325": "Generalized Dystonia Hp:0007325",
+    "head_tremor_hp:0002346": "Head Tremor Hp:0002346",
+    "hyperreflexia_hp:0001347": "Hyperreflexia Hp:0001347",
+    "laryngeal_dystonia_hp:0012049": "Laryngeal Dystonia Hp:0012049",
+    "limb_dystonia_hp:0002451": "Limb Dystonia Hp:0002451",
+    "limb_tremor_hp:0200085": "Limb Tremor Hp:0200085",
+    "mirror": "Mirror",
+    "motor_fluctuations": "Motor Fluctuations",
+    "muscular_hypotonia_hp:0001252": "Muscular Hypotonia Hp:0001252",
+    "postural_instability_hp:0002172": "Postural Instability Hp:0002172",
+    "postural_tremor_hp:0002174": "Postural Tremor Hp:0002174",
+    "resting_tremor_hp:0002322": "Resting Tremor Hp:0002322",
+    "retrocollis_hp:0002544": "Retrocollis Hp:0002544",
+    "rigidity_hp:0002063": "Rigidity Hp:0002063",
+    "segmental_multifocal_dystonia": "Segmental Multifocal Dystonia",
+    "spasticity_hp:0001257": "Spasticity Hp:0001257",
+    "torticollis_hp:0000473": "Torticollis Hp:0000473",
+    "tremor_hp:0001337": "Tremor Hp:0001337"
+  },
+  "Non-motor ictal": {},
+  "Non-motor interictal": {},
+  "Non-motor signs and symptoms": {
+    "anxiety_hp:0000739": "Anxiety Hp:0000739",
+    "autonomic": "Autonomic",
+    "cognitive_impairment_hp:0100543": "Cognitive Impairment Hp:0100543",
+    "depression_hp:0000716": "Depression Hp:0000716",
+    "diurnal_fluctuations": "Diurnal Fluctuations",
+    "psychosis_hp:0000709": "Psychosis Hp:0000709",
+    "sleep_disorder": "Sleep Disorder"
+  },
+  "Other ictal": {
+    "seizures_hp:0001250": "Seizures Hp:0001250"
+  },
+  "Other interictal": {},
+  "Other signs and symptoms": {
+    "dysmorphic_features": "Dysmorphic Features",
+    "microcephaly_hp:0000252": "Microcephaly Hp:0000252",
+    "short_stature_hp:0004322": "Short Stature Hp:0004322"
+  },
+  "Paroxysmal movements": {
+    "dyskinesia_hp:0100660": "Dyskinesia Hp:0100660",
+    "myoclonus_hp:0001336": "Myoclonus Hp:0001336",
+    "parkinsonism_hp:0001300": "Parkinsonism Hp:0001300"
+  },
+  "Therapy": {
+    "alc_response": "Alc Response",
+    "allev_maneuvers": "Allev Maneuvers",
+    "sleep_benefit": "Sleep Benefit"
+  },
+  "Triggers": {},
+  "Unknown": {}
+}
