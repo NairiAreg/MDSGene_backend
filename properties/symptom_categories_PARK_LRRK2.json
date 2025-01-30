@@ -19,7 +19,8 @@
     "hyperreflexia": "Hyperreflexia",
     "diurnal_fluctuations": "Diurnal fluctuations",
     "sleep_benefit": "Sleep benefit",
-    "motor_fluctuations": "Motor fluctuations"
+    "motor_fluctuations": "Motor fluctuations",
+    "atypical_park": "Atypical parkinsonian signs"
   },
   "Non-motor ictal": {},
   "Non-motor interictal": {},
@@ -31,8 +32,7 @@
     "psychotic": "Psychotic symptoms",
     "sleep_disorder": "Sleep disorder",
     "cognitive_decline": "Cognitive decline",
-    "autonomic": "Autonomic symptoms",
-    "atypical_park": "Atypical parkinsonism symptoms"
+    "autonomic": "Autonomic symptoms"
   },
   "Other ictal": {},
   "Other interictal": {},
