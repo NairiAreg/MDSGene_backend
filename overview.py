@@ -31,81 +31,74 @@ def to_python_type(value):
 
 
 # Изменена функция get_mutations - добавлен параметр gene
-def get_mutations(df, gene):  # <<<< ИЗМЕНЕНИЕ 1: добавлен параметр gene
+def get_mutations(df, gene):
     mutations = []
 
-    for _, row in df.iterrows():
-        # Инициализируем списки для каждого пациента
-        patient_mutations = []
-        het_mutations = []  # Важно: объявляем список здесь!
+    # Добавляем внешний цикл по типам мутаций
+    for mutation_type in ['p', 'c', 'g']:
+        for _, row in df.iterrows():
+            # Инициализируем списки для каждого пациента
+            patient_mutations = []
+            het_mutations = []  # Важно: объявляем список здесь!
 
-        for i in range(1, 4):
-            # ИЗМЕНЕНИЕ 2: добавлена проверка гена мутации
-            mutation_gene = row.get(f'gene{i}')
-            if mutation_gene != gene:
-                continue  # Пропускаем мутации других генов
+            for i in range(1, 4):
+                # ИЗМЕНЕНИЕ 2: добавлена проверка гена мутации
+                mutation_gene = row.get(f'gene{i}')
+                if mutation_gene != gene:
+                    continue
 
-            mut_p = row.get(f"mut{i}_p", -99)
-            mut_c = row.get(f"mut{i}_c", -99)
-            mut_g = row.get(f"mut{i}_g", -99)
-            genotype = row.get(f"mut{i}_genotype", -99)
-            pathogenicity = row.get(f"pathogenicity{i}", -99)
-            if pathogenicity and pathogenicity.lower() == "benign":
-                continue  # Пропускаем доброкачественные мутации
+                genotype = row.get(f"mut{i}_genotype", -99)
+                pathogenicity = row.get(f"pathogenicity{i}", -99)
+                if pathogenicity and pathogenicity.lower() == "benign":
+                    continue
 
-            if mut_p != -99 and mut_p is not None:
-                mutation_name = mut_p
-            elif mut_c != -99 and mut_c is not None:
-                mutation_name = mut_c
-            elif mut_g != -99 and mut_g is not None:
-                mutation_name = mut_g
-            else:
-                continue  # Skip if no valid mutation found
+                # Получаем мутацию нужного типа
+                mutation_name = row.get(f"mut{i}_{mutation_type}", -99)
 
-            # Если это het мутация, добавляем в специальный список
-            if genotype == "het":
-                het_mutations.append({
-                    "name": mutation_name,
-                    "genotype": genotype,
-                    "pathogenicity": pathogenicity,
-                    "details": mutation_details.get_data_for_mutation_from_row(mutation_name, row)
-                })
-            else:
-                # Не-het мутации добавляем как обычно
+                # Если это het мутация, добавляем в специальный список
+                if genotype == "het":
+                    het_mutations.append({
+                        "name": mutation_name,
+                        "genotype": genotype,
+                        "pathogenicity": pathogenicity,
+                        "details": mutation_details.get_data_for_mutation_from_row(mutation_name, row)
+                    })
+                else:
+                    # Не-het мутации добавляем как обычно
+                    patient_mutations.append({
+                        "type": "single",
+                        "name": mutation_name,
+                        "genotype": genotype if genotype in ["hom", "het", "comp_het"] else "n.a.",
+                        "pathogenicity": pathogenicity if pathogenicity != -99 else "n.a.",
+                        "details": mutation_details.get_data_for_mutation_from_row(mutation_name, row)
+                    })
+
+            # Проверяем het мутации для compound heterozygous
+            if len(het_mutations) > 1:
+                # Создаем compound heterozygous запись
                 patient_mutations.append({
-                    "type": "single",
-                    "name": mutation_name,
-                    "genotype": genotype if genotype in ["hom", "het","comp_het"] else "n.a.",
-                    "pathogenicity": pathogenicity if pathogenicity != -99 else "n.a.",
-                    "details": mutation_details.get_data_for_mutation_from_row(mutation_name, row)
-                })
-
-        # Проверяем het мутации для compound heterozygous
-        if len(het_mutations) > 1:
-            # Создаем compound heterozygous запись
-            patient_mutations.append({
                     "type": "compound_het",
                     "mutations": [
                         {
-                        "name": mut["name"],
-                        "genotype": "comp_het",
-                        "pathogenicity": mut["pathogenicity"],
-                        "details": mut["details"]
-                    } for mut in het_mutations
-                ]
-            })
-        elif len(het_mutations) == 1:
-            # Если только одна het мутация, добавляем как обычную
-            patient_mutations.append({
-                        "type": "single",
-                "name": het_mutations[0]["name"],
-                "genotype": "het",
-                "pathogenicity": het_mutations[0]["pathogenicity"],
-                "details": het_mutations[0]["details"]
-            })
+                            "name": mut["name"],
+                            "genotype": "comp_het",
+                            "pathogenicity": mut["pathogenicity"],
+                            "details": mut["details"]
+                        } for mut in het_mutations
+                    ]
+                })
+            elif len(het_mutations) == 1:
+                # Если только одна het мутация, добавляем как обычную
+                patient_mutations.append({
+                    "type": "single",
+                    "name": het_mutations[0]["name"],
+                    "genotype": "het",
+                    "pathogenicity": het_mutations[0]["pathogenicity"],
+                    "details": het_mutations[0]["details"]
+                })
 
-        # Добавляем все мутации пациента в общий список
-        mutations.extend(patient_mutations)
+            # Добавляем все мутации пациента в общий список
+            mutations.extend(patient_mutations)
 
     return mutations
 

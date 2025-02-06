@@ -24,26 +24,23 @@ def safe_handle_list(value_list):
 
 
 def get_mutations_for_patient(row):
-    patient_mutations = []
-    for i in range(1, 4):
-        mut_p = row.get(f"mut{i}_p", -99)
-        mut_c = row.get(f"mut{i}_c", -99)
-        genotype = row.get(f"mut{i}_genotype", -99)
+    all_mutations = []
 
-        if mut_p not in [-99, None, "-99"] and not pd.isna(mut_p):
-            mutation_name = mut_p
-        elif mut_c not in [-99, None, "-99"] and not pd.isna(mut_c):
-            mutation_name = mut_c
-        else:
-            continue
+    # Внешний цикл по типам мутаций
+    for mutation_type in ['p', 'c', 'g']:
+        patient_mutations = []
 
-        patient_mutations.append((mutation_name, genotype))
+        for i in range(1, 4):
+            mutation_name = row.get(f"mut{i}_{mutation_type}", -99)
+            genotype = row.get(f"mut{i}_genotype", -99)
 
-    if len(patient_mutations) == 0:
-        return [{"type": "single", "name": "n.a.", "genotype": "n.a."}]
-    elif len(patient_mutations) == 2 and all(m[1] == "het" for m in patient_mutations):
-        return [
-            {
+            if mutation_name not in [-99, None, "-99"] and not pd.isna(mutation_name):
+                patient_mutations.append((mutation_name, genotype))
+
+        if len(patient_mutations) == 0:
+            continue  # Пропускаем пустые мутации для данного типа
+        elif len(patient_mutations) == 2 and all(m[1] == "het" for m in patient_mutations):
+            all_mutations.append({
                 "type": "compound_het",
                 "mutations": [
                     {
@@ -61,18 +58,23 @@ def get_mutations_for_patient(row):
                         ),
                     },
                 ],
-            }
-        ]
-    else:
-        return [
-            {
-                "type": "single",
-                "name": handle_value(mutation),
-                "genotype": genotype if genotype in ["hom", "het","comp_het"] else "n.a.",
-                "details": get_data_for_mutation_from_row(mutation, row),
-            }
-            for mutation, genotype in patient_mutations
-        ]
+            })
+        else:
+            all_mutations.extend([
+                {
+                    "type": "single",
+                    "name": handle_value(mutation),
+                    "genotype": genotype if genotype in ["hom", "het", "comp_het"] else "n.a.",
+                    "details": get_data_for_mutation_from_row(mutation, row),
+                }
+                for mutation, genotype in patient_mutations
+            ])
+
+    # Если нет мутаций ни одного типа, возвращаем n.a.
+    if not all_mutations:
+        return [{"type": "single", "name": "n.a.", "genotype": "n.a."}]
+
+    return all_mutations
 
 
 def get_patients_for_publication(
