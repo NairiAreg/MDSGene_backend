@@ -387,49 +387,95 @@ async def get_categories_metadata(
     ]
 
     categories_metadata = load_symptom_categories(file_paths)
-    # categories = {
-    #     "Movement Disorders": [
-    #         "tremor_rest_sympt",
-    #         "bradykinesia_sympt",
-    #         "rigidity_sympt",
-    #         "postural_instability_sympt",
-    #         "dystonia_sympt",
-    #         "dyskinesia_sympt",
-    #         "ataxia_dysdiadochokinesia_sympt",
-    #     ],
-    #     "Cognitive and Behavioral Symptoms": [
-    #         "cognitive_decline_sympt",
-    #         "impulsive_control_disorder_sympt",
-    #         "anxiety_sympt",
-    #         "depression_sympt",
-    #         "psychotic_sympt",
-    #         "intellectual_disability_sympt",
-    #     ],
-    #     "Autonomic Symptoms": [
-    #         "autonomic_sympt",
-    #         "dysphagia_sympt",
-    #         "olfaction_sympt",
-    #         "hypomimia_sympt",
-    #     ],
-    #     "Sleep Disorders": ["rbd_sympt", "myoclonus_sympt"],
-    #     "Neurological Signs": [
-    #         "primitive_reflexes_sympt",
-    #         "spasticity_pyramidal_signs_sympt",
-    #         "gaze_palsy_sympt",
-    #         "saccadic_abnormalities_sympt",
-    #     ],
-    #     "Motor Complications": [
-    #         "motor_fluctuations_sympt",
-    #         "gait_difficulties_falls_sympt",
-    #         "dysarthria_anarthria_sympt",
-    #     ],
-    #     "Developmental and Seizure Disorders": [
-    #         "development_delay_sympt",
-    #         "seizures_sympt",
-    #     ],
-    # }
-    # return categories
-    return categories_metadata
+    categories = {
+        "Motor Signs and Symptoms": [
+            "ataxia_sympt",
+            "ataxia_ictal_sympt",
+            "ataxia_interictal_sympt",
+            "limb_ataxia_hp:0002070",
+            "limb_ataxia_ictal_sympt",
+            "limb_ataxia_interictal_sympt",
+            "gait_ataxia_hp:0002066",
+            "gait_ataxia_ictal_sympt",
+            "gait_ataxia_interictal_sympt",
+            "dystonia_hp:0001332",
+            "dystonia_ictal_sympt",
+            "dystonia_interictal_sympt",
+            "hemiplegia_hp:0002301",
+            "hemiplegia_ictal_sympt",
+            "hemiplegia_interictal_sympt",
+            "muscle_weakness_hp:0003324",
+            "muscle_weakness_ictal_sympt",
+            "muscle_weakness_interictal_sympt",
+            "tonic_upgaze_sympt",
+            "tonic_upgaze_ictal_sympt",
+            "tonic_upgaze_interictal_sympt",
+            "choreoathetosis_hp:0001266",
+            "choreoathetosis_ictal_sympt",
+            "choreoathetosis_interictal_sympt",
+            "rigidity_hp:0002063",
+            "rigidity_ictal_sympt",
+            "rigidity_interictal_sympt",
+            "spasticity_hp:0001257",
+            "spasticity_ictal_sympt",
+            "spasticity_interictal_sympt",
+            "muscular_hypotonia_hp:0001252",
+            "muscular_hypotonia_ictal_sympt",
+            "muscular_hypotonia_interictal_sympt",
+            "hypertonia_hp:0001276",
+            "hypertonia_ictal_sympt",
+            "hypertonia_interictal_sympt",
+            "muscle_cramps_sympt",
+            "muscle_cramps_ictal_sympt",
+            "muscle_cramps_interictal_sympt"
+        ],
+        "Non-Motor Signs and Symptoms": [
+            "cognitive_impairment_hp:0100543",
+            "cognitive_impairment_ictal_sympt",
+            "cognitive_impairment_interictal_sympt",
+            "depression_hp:0000716",
+            "depression_ictal_sympt",
+            "depression_interictal_sympt",
+            "anxiety_sympt",
+            "psychotic_sympt",
+            "sleep_disorder_sympt"
+        ],
+        "Paroxysmal Movements": [
+            "tremor_hp:0001337",
+            "tremor_ictal_sympt",
+            "tremor_interictal_sympt",
+            "seizures_hp:0001250",
+            "seizures_ictal_sympt",
+            "seizures_interictal_sympt",
+            "dystonia_sympt",
+            "dyskinesia_sympt",
+            "myoclonus_sympt"
+        ],
+        "Triggers": [
+            "sensitivity_to_alcohol_sympt",
+            "emotional_stress_trigger_sympt",
+            "physical_stress_trigger_sympt",
+            "heat_trigger_sympt",
+            "acute_illness_trigger_sympt",
+            "fatigue_trigger_sympt",
+            "pregnancy_or_hormonal_change_trigger_sympt",
+            "sudden_movement_trigger_sympt",
+            "caffeine_trigger_sympt",
+            "alcohol_trigger_sympt"
+        ],
+        "Respiratory Symptoms": [
+            "respiratory_distress_hp:0002098",
+            "respiratory_distress_ictal_sympt",
+            "respiratory_distress_interictal_sympt",
+            "respiratory_distress_sympt"
+        ],
+        "Sleep-Related Symptoms": [
+            "rbd_sympt",
+            "sleep_benefit_sympt"
+        ]
+    }
+    return categories
+    # return categories_metadata
 
 
 def RF_load_and_predict(model_path, one_subject):
@@ -780,6 +826,7 @@ async def submit_symptoms(data: SymptomSubmission):
     return {
         "message": "Predicted diagnosis based on symptoms submitted is " + prediction,
         "full_feature_array": full_feature_array,
+        "all_features": ALL_FEATURES,
         "prediction": prediction
     }
 
