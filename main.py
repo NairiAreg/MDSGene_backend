@@ -776,7 +776,11 @@ def group_age(age: int) -> int:
 
 # Function to generate the full feature array
 def generate_full_feature_array(input_data: Dict[str, int], all_features: List[str], default_value: int) -> List[int]:
-    feature_array = [default_value] * len(all_features)
+    n = len(all_features)
+    # Первые 5 элементов - default_value, остальные - 3
+    feature_array = [default_value] * min(5, n) + [3] * max(0, n - 5)
+    #
+    # feature_array = [default_value] * len(all_features)
 
     for feature, value in input_data.items():
         normalized_feature = feature.replace(" ", "_")  # Replace spaces with underscores

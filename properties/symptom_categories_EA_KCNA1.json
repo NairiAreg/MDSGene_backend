@@ -1,11 +1,11 @@
 {
   "Development in childhood/adolescence": {
-    "episodic_ataxia_hp:0002131": "Episodic Ataxia Hp:0002131",
     "gait_ataxia_hp:0002066": "Gait Ataxia Hp:0002066",
-    "limb_ataxia_hp:0002070": "Limb Ataxia Hp:0002070"
+    "episodic_ataxia_hp:0002131": "Episodic Ataxia Hp:0002131"
   },
   "Imaging features": {
-    "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272"
+    "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272",
+    "limb_ataxia_hp:000207011": "Limb Ataxia Hp:0002070"
   },
   "Laboratory results": {},
   "Motor ictal": {
@@ -103,7 +103,7 @@
   "Therapy": {},
   "Triggers": {},
   "Unknown": {
-    "other": "Other",
-    "muscle_stiffness_hp:0003552.1": "Muscle Stiffness Hp:0003552.1"
+    "muscle_stiffness_hp:0003552.1": "Muscle Stiffness Hp:0003552.1",
+    "other": "Other"
   }
 }

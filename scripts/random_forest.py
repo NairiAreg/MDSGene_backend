@@ -163,7 +163,7 @@ def train_random_forest(data_array, model_save_path='random_forest_model.pkl'):
     X = np.delete(data_array, 0, axis=1)  # Remove first column (target)
     y = data_array[:, 0]  # First column is target
 
-    # Initialize and train Random Forest
+    # Initialize and train Random Forest with balanced class weights
     rf_model = RandomForestClassifier(
         n_estimators=150,
         criterion='gini',
@@ -180,7 +180,7 @@ def train_random_forest(data_array, model_save_path='random_forest_model.pkl'):
         random_state=42,
         verbose=0,
         warm_start=False,
-        class_weight=None
+        class_weight='balanced'  # Изменено здесь для обработки несбалансированных данных
     )
 
     # Fit the model
@@ -195,8 +195,8 @@ def train_random_forest(data_array, model_save_path='random_forest_model.pkl'):
 
 def main():
     # Set paths
-    EXCEL_PATH = r'../Data/ZUSM.xlsx'  # Update this path
-    MODEL_SAVE_PATH = r'../Model/RF_model.pkl'  # Update this path
+    EXCEL_PATH = r'Data/ZUSM.xlsx'  # Update this path
+    MODEL_SAVE_PATH = r'Model/RF_model.pkl'  # Update this path
 
     # Define feature columns to use
     # First column (index 1) should be the target variable (gene)

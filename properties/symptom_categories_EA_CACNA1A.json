@@ -1,17 +1,8 @@
 {
-  "Development in childhood/adolescence": {
-    "developmental_delay_hp:0001263": "Developmental Delay Hp:0001263",
-    "motor_developmental_delay_hp:0001270": "Motor Developmental Delay Hp:0001270"
-  },
-  "Imaging features": {
-    "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272"
-  },
-  "Laboratory results": {},
   "Motor ictal": {
     "dystonia_ictal": "Dystonia Ictal",
-    "rigidity_ictal": "Rigidity Ictal",
-    "spasticity_ictal": "Spasticity Ictal",
     "hypertonia_ictal": "Hypertonia Ictal",
+    "rigidity_ictal": "Rigidity Ictal",
     "choreoathetosis_ictal": "Choreoathetosis Ictal",
     "muscle_cramps_ictal": "Muscle Cramps Ictal",
     "neuromyotonia_ictal": "Neuromyotonia Ictal",
@@ -23,7 +14,6 @@
     "hemiplegia_ictal": "Hemiplegia Ictal"
   },
   "Motor interictal": {
-    "dystonia_interictal": "Dystonia Interictal",
     "rigidity_interictal": "Rigidity Interictal",
     "spasticity_interictal": "Spasticity Interictal",
     "hypertonia_interictal": "Hypertonia Interictal",
@@ -35,7 +25,9 @@
     "ataxia_interictal": "Ataxia Interictal",
     "gait_ataxia_interictal": "Gait Ataxia Interictal",
     "limb_ataxia_interictal": "Limb Ataxia Interictal",
-    "hemiplegia_interictal": "Hemiplegia Interictal"
+    "hemiplegia_interictal": "Hemiplegia Interictal",
+    "dystonia_interictal": "Dystonia Interictal",
+    "spasticity_ictal": "Spasticity Ictal"
   },
   "Motor signs and symptoms": {
     "muscle_weakness_hp:0003324": "Muscle Weakness Hp:0003324",
@@ -44,7 +36,7 @@
     "spasticity_hp:0001257": "Spasticity Hp:0001257",
     "tremor_hp:0001337": "Tremor Hp:0001337"
   },
-  "Non-motor ictal": {
+  "Non-motor ictal2": {
     "cognitive_impairment_ictal": "Cognitive Impairment Ictal",
     "headache_ictal": "Headache Ictal",
     "nausea_ictal": "Nausea Ictal",
@@ -112,16 +104,23 @@
     "sensitivity_to_alcohol": "Sensitivity To Alcohol"
   },
   "Unknown": {
-    "coma_hp:0001259": "Coma Hp:0001259",
-    "aao_other": "Aao Other",
     "other": "Other",
     "decreased_level_of_consciousness_hp:0007185": "Decreased Level Of Consciousness Hp:0007185",
     "extensor_plantar_response_hp:0003487": "Extensor Plantar Response Hp:0003487",
-    "slow_saccades_hp:0000514": "Slow Saccades Hp:0000514",
     "saccadic_smooth_pursuit_hp:0001152": "Saccadic Smooth Pursuit Hp:0001152",
     "impaired_vision_hp:0000505": "Impaired Vision Hp:0000505",
-    "hyperhidrosis_hp:0000975": "Hyperhidrosis Hp:0000975",
     "muscle_cramps": "Muscle Cramps",
-    "tonic_upgaze": "Tonic Upgaze"
-  }
+    "tonic_upgaze": "Tonic Upgaze",
+    "hyperhidrosis_hp:0000975": "Hyperhidrosis Hp:0000975",
+    "slow_saccades_hp:0000514": "Slow Saccades Hp:0000514",
+    "coma_hp:0001259": "Coma Hp:0001259",
+    "aao_other": "Aao Other"
+  },
+  "Development in childhood/adolescence1": {
+    "developmental_delay_hp:0001267": "Developmental Delay Hp:0001263",
+    "motor_developmental_delay_hp:000127": "Motor Developmental Delay Hp:0001270",
+    "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272"
+  },
+  "Imaging features1": {},
+  "Laboratory results1": {}
 }

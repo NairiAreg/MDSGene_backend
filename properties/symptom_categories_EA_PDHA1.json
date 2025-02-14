@@ -1,9 +1,9 @@
 {
   "Development in childhood/adolescence": {
-    "global_development_delay_hp:0001263": "Global Development Delay Hp:0001263",
+    "delayed_cognitive_dev": "Delayed Cognitive Dev",
     "delayed_motor_skills_hp:0002194": "Delayed Motor Skills Hp:0002194",
-    "intellectual_disability_hp:0001249": "Intellectual Disability Hp:0001249",
-    "delayed_cognitive_dev": "Delayed Cognitive Dev"
+    "global_development_delay_hp:0001263": "Global Development Delay Hp:0001263",
+    "intellectual_disability_hp:0001249": "Intellectual Disability Hp:0001249"
   },
   "Imaging features": {
     "cerebellar_atrophy_hp:0001272": "Cerebellar Atrophy Hp:0001272",
