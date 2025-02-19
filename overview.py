@@ -55,6 +55,10 @@ def get_mutations(df, gene):
                 # Получаем мутацию нужного типа
                 mutation_name = row.get(f"mut{i}_{mutation_type}", -99)
 
+                # Пропускать мутацию если имя не определено (проверка на -99, None, строку "-99" или nan)
+                if mutation_name in [-99, None, "-99"] or (isinstance(mutation_name, float) and np.isnan(mutation_name)):
+                    continue
+
                 # Если это het мутация, добавляем в специальный список
                 if genotype == "het":
                     het_mutations.append({
@@ -68,7 +72,7 @@ def get_mutations(df, gene):
                     patient_mutations.append({
                         "type": "single",
                         "name": mutation_name,
-                        "genotype": genotype if genotype in ["hom", "het", "comp_het"] else "n.a.",
+                        "genotype": genotype if genotype in ["hom", "het", "comp_het", "hemi"] else "n.a.",
                         "pathogenicity": pathogenicity if pathogenicity != -99 else "n.a.",
                         "details": mutation_details.get_data_for_mutation_from_row(mutation_name, row)
                     })

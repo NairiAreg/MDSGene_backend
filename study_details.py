@@ -64,7 +64,7 @@ def get_mutations_for_patient(row):
                 {
                     "type": "single",
                     "name": handle_value(mutation),
-                    "genotype": genotype if genotype in ["hom", "het", "comp_het"] else "n.a.",
+                    "genotype": genotype if genotype in ["hom", "het", "comp_het", "hemi"] else "n.a.",
                     "details": get_data_for_mutation_from_row(mutation, row),
                 }
                 for mutation, genotype in patient_mutations
