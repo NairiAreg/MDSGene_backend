@@ -472,6 +472,10 @@ phosphorylation_activity_map = {
     "p.Thr2494Ile": {
         "Mean": "0,44 ± 0,19",
         "Interpretation": "reduced"
+    },
+    "p.Phe1700Leu": {
+        "Mean": "3,9 ± 1,3",
+        "Interpretation": "strongly activating"
     }
 }
 
