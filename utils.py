@@ -812,3 +812,281 @@ def extract_year(author_year):
     if match:
         return int(match.group())
     return 0  # Default to 0 if no year is found
+
+
+def fetch_trigger_data(
+    genes,
+    filter_criteria=None,
+    aao=None,
+    countries=None,
+    mutations=None,
+    directory="excel",
+):
+    """
+    Fetch trigger data for the specified genes,
+    counting each raw category *and* missing entries.
+    """
+    trigger_data = {}
+
+    # Define trigger columns for each gene (as per spec) citeturn1file0
+    trigger_columns = {
+        "CACNA1A": [
+            "trigger",
+        ],
+        "KCNA1": [
+            "trigger",
+        ],
+        "PDHA1": [
+            "trigger",
+        ],
+        "SLC1A3": [
+            "trigger",
+        ],
+    }
+
+    # Initialize
+    for gene in genes:
+        trigger_data[gene] = {}
+        for trig in trigger_columns.get(gene, []):
+            trigger_data[gene][trig] = {}
+
+    # Iterate Excel files
+    for fname in os.listdir(directory):
+        if fname.startswith((".~", "~$")):
+            continue
+        if not fname.lower().endswith(('.xlsx', '.xls')):
+            continue
+        if not any(g.upper() in fname.upper() for g in genes):
+            continue
+
+        fp = os.path.join(directory, fname)
+        try:
+            df = get_cached_dataframe(fp)
+            if 'mdsgene_decision' in df.columns:
+                df = df[df['mdsgene_decision'] == 'IN']
+            if filter_criteria or countries or mutations:
+                df = apply_filter(df, filter_criteria, aao, countries, mutations)
+
+            for gene in genes:
+                if gene.upper() not in fname.upper():
+                    continue
+                for trig in trigger_columns.get(gene, []):
+                    if trig not in df.columns:
+                        continue
+
+                    # 1) Count missing (“NaN” or “-99”)
+                    miss = df[trig].isna().sum() + (df[trig].astype(str) == "-99").sum()
+                    trigger_data[gene][trig]["Missing"] = (
+                        trigger_data[gene][trig].get("Missing", 0) + int(miss)
+                    )
+
+                    # 2) Count every other raw category
+                    vals = df[trig].dropna().astype(str)
+                    for v in vals:
+                        v = v.strip()
+                        if not v or v == "-99":
+                            continue
+                        trigger_data[gene][trig][v] = trigger_data[gene][trig].get(v, 0) + int(1)
+        except Exception as e:
+            logger.error(f"Error fetching triggers from {fname}: {e}")
+            continue
+
+    return trigger_data
+
+def fetch_duration_data(
+    genes,
+    filter_criteria=None,
+    aao=None,
+    countries=None,
+    mutations=None,
+    directory="excel",
+):
+    """
+    Fetch duration data for the specified genes as raw strings.
+
+    Parameters:
+    - genes: List of genes to include
+    - filter_criteria, aao, countries, mutations: Filtering parameters
+    - directory: Directory containing Excel files
+
+    Returns:
+    - Dictionary with duration data for each gene: {'GENE': {'shortest': [str,...], 'longest': [str,...], 'shortest_отсутствует': [str,...], 'longest_отсутствует': [str,...]}}
+    """
+    duration_data = {gene: {"shortest": [], "longest": [], "shortest_отсутствует": [], "longest_отсутствует": []} for gene in genes}
+
+    for filename in os.listdir(directory):
+        if filename.startswith(".~") or filename.startswith("~$"):
+            continue
+        if not (filename.endswith(".xlsx") or filename.endswith(".xls")):
+            continue
+        if not any(gene.upper() in filename.upper() for gene in genes):
+            continue
+
+        file_path = os.path.join(directory, filename)
+        try:
+            df = get_cached_dataframe(file_path)
+            if "mdsgene_decision" in df.columns:
+                df = df[df["mdsgene_decision"] == "IN"]
+            if filter_criteria or countries or mutations:
+                df = apply_filter(df, filter_criteria, aao, countries, mutations)
+
+            for gene in genes:
+                if gene.upper() not in filename.upper():
+                    continue
+                if "duration_of_shortest_attack" in df.columns:
+                    # Get all values that are not NaN
+                    valid_vals = df["duration_of_shortest_attack"].dropna().astype(str)
+                    duration_data[gene]["shortest"].extend(valid_vals.tolist())
+
+                    # Get all values that are NaN and add them to the missing elements list
+                    missing_vals = df[df["duration_of_shortest_attack"].isna()]["duration_of_shortest_attack"]
+                    duration_data[gene]["shortest_отсутствует"].extend(["отсутствует"] * len(missing_vals))
+                else:
+                    # If the column doesn't exist, all rows are considered missing
+                    duration_data[gene]["shortest_отсутствует"].extend(["отсутствует"] * len(df))
+
+                if "duration_of_longest_attack" in df.columns:
+                    # Get all values that are not NaN
+                    valid_vals = df["duration_of_longest_attack"].dropna().astype(str)
+                    duration_data[gene]["longest"].extend(valid_vals.tolist())
+
+                    # Get all values that are NaN and add them to the missing elements list
+                    missing_vals = df[df["duration_of_longest_attack"].isna()]["duration_of_longest_attack"]
+                    duration_data[gene]["longest_отсутствует"].extend(["отсутствует"] * len(missing_vals))
+                else:
+                    # If the column doesn't exist, all rows are considered missing
+                    duration_data[gene]["longest_отсутствует"].extend(["отсутствует"] * len(df))
+        except Exception as e:
+            logger.error(f"Error fetching duration from {filename}: {e}")
+            continue
+
+    return duration_data
+
+def fetch_treatment_response_data(
+    genes,
+    filter_criteria=None,
+    aao=None,
+    countries=None,
+    mutations=None,
+    directory="excel",
+):
+    """
+    Fetch treatment response data for the specified genes.
+
+    Parameters:
+    - genes: List of genes to include
+    - filter_criteria, aao, countries, mutations: Filtering parameters
+    - directory: Directory containing Excel files
+
+    Returns:
+    - Dictionary with treatment response data for each gene
+    """
+    # Dynamically identify columns ending with "_response" from the first dataframe
+    standard_treatment_columns = []
+
+    other_drug_column = "other_drug_response"
+    response_types = ["positive", "negative", "none", "temporary", "partial", "unknown"]
+
+    treatment_data = {gene: {} for gene in genes}
+
+    # We'll populate standard_treatment_columns when processing the first file
+
+    for filename in os.listdir(directory):
+        if filename.startswith(".~") or filename.startswith("~$"):
+            continue  # Skip temporary Excel files
+
+        if not (filename.endswith(".xlsx") or filename.endswith(".xls")):
+            continue
+
+        # Check if file contains any of the requested genes
+        if not any(gene in filename.upper() for gene in genes):
+            continue
+
+        file_path = os.path.join(directory, filename)
+        try:
+            df = get_cached_dataframe(file_path)
+            logging.info(f"Processing file: {filename}, Initial DataFrame shape: {df.shape}")
+
+            if "mdsgene_decision" in df.columns:
+                df = df[df["mdsgene_decision"] == "IN"]
+
+            if filter_criteria is not None or countries is not None or mutations is not None:
+                df = apply_filter(df, filter_criteria, aao, countries, mutations)
+
+            # If this is the first file, identify columns ending with "_response"
+            if not standard_treatment_columns:
+                for col in df.columns:
+                    col_str = str(col).strip()  # Trim spaces like Java's trim()
+                    if col_str.endswith("_response") and col_str != other_drug_column:
+                        standard_treatment_columns.append(col_str)
+
+                # Initialize treatment_data with the identified standard treatment columns
+                for gene in genes:
+                    for col in standard_treatment_columns:
+                        treatment_data[gene][col] = {resp: 0 for resp in response_types}
+
+            # Process each gene in the file
+            for gene in genes:
+                if gene not in filename.upper():
+                    continue
+
+                # Process standard treatment columns
+                for col in standard_treatment_columns:
+                    if col not in df.columns:
+                        continue
+
+                    # Count response types
+                    for resp in ["positive", "negative", "none", "temporary", "partial"]:
+                        count = ((df[col] == resp) | (df[col] == resp.capitalize())).sum()
+                        treatment_data[gene][col][resp] += int(count)
+
+                    # Count unknown responses
+                    unknown_count = ((df[col] == "-99") | df[col].isna()).sum()
+                    treatment_data[gene][col]["unknown"] += int(unknown_count)
+
+                # Process other_drug_response column separately
+                if other_drug_column in df.columns:
+                    # Get non-null values
+                    other_drug_values = df[other_drug_column].dropna()
+
+                    for value in other_drug_values:
+                        if value == "-99":
+                            continue
+
+                        # Split by semicolon if multiple drugs are listed
+                        drug_entries = value.split(";")
+
+                        for entry in drug_entries:
+                            entry = entry.strip()
+                            if not entry:
+                                continue
+
+                            # Split by underscore to separate drug name and response
+                            parts = entry.split("_", 1)  # Split on first underscore only
+
+                            if len(parts) == 2:
+                                drug_name = parts[0].strip()
+                                response = parts[1].strip()  # Trim spaces like Java's trim()
+
+                                # Create drug key if it doesn't exist
+                                drug_key = f"{drug_name}_response"
+                                if drug_key not in treatment_data[gene]:
+                                    treatment_data[gene][drug_key] = {resp: 0 for resp in response_types}
+
+                                # Map response to standard types
+                                if response.lower() in ["positive", "negative", "none", "temporary", "partial"]:
+                                    treatment_data[gene][drug_key][response.lower()] += 1
+                                else:
+                                    treatment_data[gene][drug_key]["unknown"] += 1
+                            else:
+                                # If no underscore or invalid format, count as unknown
+                                drug_key = f"{entry}_response"
+                                if drug_key not in treatment_data[gene]:
+                                    treatment_data[gene][drug_key] = {resp: 0 for resp in response_types}
+                                treatment_data[gene][drug_key]["unknown"] += 1
+
+        except Exception as e:
+            logging.error(f"Error processing file {filename}: {str(e)}")
+            continue
+
+    return treatment_data

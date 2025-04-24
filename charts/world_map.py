@@ -130,6 +130,8 @@ def generate_world_map_data(all_data):
                 "value": int(count),
                 "z": int(count),
                 "code": country,
+                "color": "rgba(172, 32, 45, 0.5)",  # Add color to each data point
+                "borderColor": "#ac202d"  # Add border color to each data p
             }
             world_map_data.append(entry)
             logger.debug(f"Added country data: {entry}")
@@ -215,13 +217,22 @@ def generate_world_map_charts_data(
                 "min": 1,
                 "max": max(item["value"] for item in world_map_data),
                 "type": "logarithmic",
+                "stops": [
+                    [0, "#f7ccd2"],  # Light pink
+                    [0.5, "#d16277"],  # Medium pink
+                    [1, "#ac202d"]  # Dark red
+                ]
             },
             "series": [
                 {
                     "type": "map",
                     "name": "World Map",
-                    "enableMouseTracking": False,
+                    "mapData": None,  # This will use the default world map data from Highcharts
+                    "borderColor": "#A0A0A0",  # Medium gray border color
+                    "borderWidth": 2,  # Make this thicker (2px)
+                    "nullColor": "#F8F8F8",  # Light gray fill for countries
                     "showInLegend": False,
+                    "enableMouseTracking": False,
                 },
                 {
                     "type": "mapbubble",
@@ -242,7 +253,6 @@ def generate_world_map_charts_data(
         },
         "mutations": {},
     }
-
     # Generate mutation pie charts for each country and sort by patient count
     country_patient_counts = all_data["country"].value_counts()
     sorted_countries = [

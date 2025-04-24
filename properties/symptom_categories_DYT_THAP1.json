@@ -1,9 +1,9 @@
 {
   "Development in childhood/adolescence": {
     "delayed_speech_and_language_development_hp:0000750": "Delayed Speech And Language Development Hp:0000750",
-    "global_developmental_delay_hp:0001263": "Global Developmental Delay Hp:0001263",
     "mild_global_developmental_delay_hp:0011342": "Mild Global Developmental Delay Hp:0011342",
     "moderate_global_developmental_delay_hp:0011343": "Moderate Global Developmental Delay Hp:0011343",
+    "global_developmental_delay_hp:0001263": "Global Developmental Delay Hp:0001263",
     "motor_delay_hp:0001270": "Motor Delay Hp:0001270",
     "profound_global_developmental_delay_hp:0012736": "Profound Global Developmental Delay Hp:0012736",
     "severe_global_developmental_delay_hp:0011344": "Severe Global Developmental Delay Hp:0011344"

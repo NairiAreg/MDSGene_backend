@@ -19,6 +19,9 @@ from charts.reporter_signs_symptoms import generate_symptoms_chart
 from charts.initial_signs_symptoms import generate_initial_signs_symptoms
 from charts.levodopa_response import generate_levodopa_response
 from charts.world_map import generate_world_map_charts_data
+from charts.triggers_chart import generate_triggers_chart
+from charts.duration_chart import generate_duration_chart
+from charts.treatment_response_chart import generate_treatment_response_chart
 from study_details import get_patients_for_publication
 from mutation_details import get_data_for_mutation
 import logging
@@ -301,6 +304,63 @@ async def generate_world_map_charts_data_endpoint(
     data = generate_world_map_charts_data(
         disease_abbrev, gene, filter_criteria, aao, countries, mutations, directory
     )
+    return data
+
+
+@app.get("/triggers_chart")
+async def triggers_chart_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
+    directory: str = Query("excel", description="Directory"),
+):
+    gene_list = [gene.strip().upper()]
+    data = generate_triggers_chart(
+        gene_list, filter_criteria, aao, countries, mutations, directory
+    )
+    if data is None:
+        raise HTTPException(status_code=404, detail="No data found")
+    return data
+
+
+@app.get("/duration_chart")
+async def duration_chart_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
+    directory: str = Query("excel", description="Directory"),
+):
+    gene_list = [gene.strip().upper()]
+    data = generate_duration_chart(
+        gene_list, filter_criteria, aao, countries, mutations, directory
+    )
+    if data is None:
+        raise HTTPException(status_code=404, detail="No data found")
+    return data
+
+
+@app.get("/treatment_response_chart")
+async def treatment_response_chart_endpoint(
+    disease_abbrev: str,
+    gene: str,
+    filter_criteria: int = Query(None, description="Filter criteria"),
+    aao: float = Query(None, description="Age at onset"),
+    countries: str = Query(None, description="Comma-separated list of countries"),
+    mutations: str = Query(None, description="Comma-separated list of mutations"),
+    directory: str = Query("excel", description="Directory"),
+):
+    gene_list = [gene.strip().upper()]
+    data = generate_treatment_response_chart(
+        gene_list, filter_criteria, aao, countries, mutations, directory
+    )
+    if data is None:
+        raise HTTPException(status_code=404, detail="No data found")
     return data
 
 
