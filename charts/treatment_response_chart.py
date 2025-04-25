@@ -76,7 +76,7 @@ def generate_treatment_response_chart(
     none_data = []
     temporary_data = []
     partial_data = []
-    unknown_data = []
+    # unknown_data = []
 
     for treatment in valid_treatments:
         positive_count = sum(gene_data.get(treatment, {}).get("positive", 0) for gene_data in treatment_data.values())
@@ -91,12 +91,14 @@ def generate_treatment_response_chart(
         none_data.append(int(none_count))
         temporary_data.append(int(temporary_count))
         partial_data.append(int(partial_count))
-        unknown_data.append(int(unknown_count))
+        # unknown_data.append(int(unknown_count))
 
     # Create subtitle text with unknown-only treatments
     subtitle_text = ""
     if unknown_only_treatments:
         subtitle_text = "Treatments with only unknown responses: " + ", ".join(unknown_only_treatments)
+
+    subtitle_text_with_hint = subtitle_text + "<br><span style='color: #666666;'>Click category names to show/hide</span>"
 
     chart_config = {
         "accessibility": {
@@ -104,7 +106,11 @@ def generate_treatment_response_chart(
         },
         "chart": {"type": "column"},
         "title": {"text": "Response to Treatment"},
-        "subtitle": {"text": subtitle_text},
+        "caption": {
+            "text": subtitle_text_with_hint,
+            "align": "left",
+            "style": {"fontSize": "0.8em", "fontStyle": "italic"}
+        },
         "xAxis": {
             "categories": display_treatments,
             "title": {"text": "Treatment"},
@@ -127,9 +133,18 @@ def generate_treatment_response_chart(
             {"name": "None", "data": none_data, "color": "#8bbc21"},
             {"name": "Temporary", "data": temporary_data, "color": "#910000"},
             {"name": "Partial", "data": partial_data, "color": "#f28f43"},
-            {"name": "Unknown", "data": unknown_data, "color": "#1aadce"},
+            # {"name": "Unknown", "data": unknown_data, "color": "#1aadce"},
         ],
         "credits": {"enabled": False},
+        "legend": {
+            "enabled": "true",
+            "layout": "horizontal",
+            "align": "center",
+            "verticalAlign": "bottom",
+            "itemStyle": {
+                "cursor": "pointer"
+            }
+        },
     }
 
     return chart_config
