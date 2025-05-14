@@ -1,0 +1,25 @@
+fastapi
+uvicorn
+scipy
+pandas
+httpx
+cachetools
+joblib
+langchain-ollama
+langchain-chroma
+pdf_text_extractor
+langchain-community>=0.3.20
+pypdf>=5.4.0
+faiss-cpu
+python-multipart
+google-genai>=1.10.0
+google-cloud-aiplatform>=1.87.0
+langchain-community>=0.3.23
+pypdf>=5.4.0
+langchain[anthropic] >=0.3.24
+langchain-google-vertexai
+Langgraph>=0.3.34
+python-dotenv>=1.1.0
+faiss-cpu
+tqdm
+openpyxl
