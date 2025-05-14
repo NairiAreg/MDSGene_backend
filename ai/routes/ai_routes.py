@@ -5,7 +5,7 @@ import shutil
 import zipfile
 import threading
 import pandas as pd
-from typing import Dict, Optional, Any, List
+from typing import Dict, Optional
 from fastapi import APIRouter, HTTPException, UploadFile, File, Query
 from pathlib import Path
 from uuid import uuid4
@@ -139,130 +139,6 @@ pdf_analysis_progress: Dict[str, Dict[str, float]] = {}
 # In-memory storage for tracking ZIP analysis progress
 # In a production environment, this should be replaced with a database
 zip_analysis_progress: Dict[str, Dict[str, Any]] = {}
-
-# In-memory storage for process data (process-id:JSON)
-# This variable exists throughout the program's execution
-process_data: Dict[str, Dict[str, Any]] = {}
-# Global dictionary to track background task statuses if needed for more detailed progress
-# process_status: Dict[str, str] = {} # e.g., "pending", "processing_publication", "completed", "error"
-
-
-def background_pdf_processing_pipeline(process_id: str, filename: str, file_path: str):
-    """
-    Full pipeline for processing a PDF in the background.
-    Updates the global process_data dictionary.
-    """
-    try:
-        # Initialize process_data entry with basic info and status
-        process_data[process_id].update({
-            "status": "processing_publication_details",
-            "progress_message": "Extracting publication details...",
-            "publication_details": None,
-            "pmid": None,
-            "patient_identifiers": [],
-            "all_patient_data_rows": [],
-            "error_message": None
-        })
-
-        # --- Step 1: Publication Details ---
-        pub_agent = PublicationDetailsAgent() # PMID not known yet for agent constructor
-        pub_agent.setup()
-        pub_state = pub_agent.run({
-            "pdf_filepath": file_path, 
-            "publication_details": None, 
-            "pmid": None, 
-            "messages": [{"role": "user", "content": f"Extract publication details and PMID from {filename}"}]
-        })
-        publication_details = pub_state.get("publication_details")
-        pmid = pub_state.get("pmid")
-
-        process_data[process_id].update({
-            "publication_details": publication_details,
-            "pmid": pmid,
-            "status": "processing_patient_identifiers",
-            "progress_message": "Extracting patient identifiers...",
-        })
-        print(f"Process [{process_id}]: Publication details extracted. PMID: {pmid}")
-
-        # --- Step 2: Patient Identifiers ---
-        # Now use the extracted pmid (if any) for the PatientIdentifiersAgent
-        patient_agent = PatientIdentifiersAgent(pmid=pmid) 
-        patient_agent.setup()
-        patient_state = patient_agent.run({
-            "pdf_filepath": file_path, 
-            "patient_identifiers": [], 
-            "messages": [{"role": "user", "content": f"Extract patient identifiers from {filename}"}]
-        })
-        patient_identifiers = patient_state.get("patient_identifiers", [])
-
-        process_data[process_id].update({
-            "patient_identifiers": patient_identifiers,
-            "status": "processing_patient_questions",
-            "progress_message": "Processing patient questions...",
-        })
-        print(f"Process [{process_id}]: Patient identifiers extracted: {len(patient_identifiers)} found.")
-
-
-        # --- Step 3: Patient Questions ---
-        if not patient_identifiers:
-            print(f"Process [{process_id}]: No patient identifiers found. Skipping question processing.")
-            process_data[process_id].update({
-                "all_patient_data_rows": [], # Ensure it's an empty list
-                "status": "completed_no_patients",
-                "progress_message": "Completed. No patient identifiers found to process questions for.",
-            })
-        else:
-            # Use extracted pmid for QuestionsProcessingAgent
-            questions_agent = QuestionsProcessingAgent(pmid=pmid) 
-            questions_agent.setup()
-
-            # Patient identifiers for the agent come from the previous step's result,
-            # not directly from its cache (which might be stale or for a different context).
-            # The agent's internal logic for `get_patient_identifiers_from_cache` should ideally
-            # be bypassed or fed with `patient_identifiers` if we want to use fresh results.
-            # For now, assuming the agent can pick them up or we provide them if agent design allows.
-            # Let's ensure `patient_identifiers` are directly used if possible.
-            # The current QuestionsProcessingAgent.run fetches from its own cache.
-            # This might need a slight refactor in the agent or we rely on its caching mechanism.
-            # For simplicity here, we'll assume the agent's caching is up-to-date due to prior agent runs.
-
-            questions_state_input = {
-                "pdf_filepath": file_path,
-                "mapping_items": [], # Agent loads this
-                "patient_identifiers": patient_identifiers, # Explicitly provide identifiers
-                "patient_questions": [],
-                "patient_answers": [],
-                "vector_store": None, # Agent handles this
-                "pmid": pmid,
-                "process_id": process_id, # Pass process_id if agent uses it
-                "messages": [{"role": "user", "content": f"Process questions for patients in {filename}"}]
-            }
-            # If QuestionsProcessingAgent is modified to accept patient_identifiers directly:
-            # final_questions_state = questions_agent.run(questions_state_input)
-            # Else, rely on its internal cache mechanism. For now, we pass it.
-
-            final_questions_state = questions_agent.run(questions_state_input)
-            patient_answers_data = final_questions_state.get("patient_answers", [])
-
-            process_data[process_id].update({
-                "all_patient_data_rows": patient_answers_data,
-                "status": "completed", # All AI processing steps are done
-                "progress_message": "All data extraction steps completed.",
-            })
-            print(f"Process [{process_id}]: Patient questions processed. {len(patient_answers_data)} answer sets.")
-
-    except Exception as e:
-        error_msg = f"Error during background processing for process_id {process_id}: {str(e)}"
-        print(error_msg)
-        import traceback
-        traceback.print_exc()
-        if process_id in process_data:
-            process_data[process_id].update({
-                "status": "error",
-                "progress_message": "An error occurred during processing.",
-                "error_message": error_msg
-            })
-        # Optionally, re-raise or handle more gracefully
 
 def convert_word_to_text(word_path: str) -> str:
     """
@@ -698,122 +574,51 @@ async def upload_pdf_for_processing(file: UploadFile = File(...)):
     """
     Upload a PDF file for processing.
 
-    This endpoint accepts a PDF file, validates its type, and saves it to a temporary directory.
-    It then initiates the entire analysis chain in the background, which includes:
-    1. Extracting publication details and PMID
-    2. Extracting patient identifiers
-    3. Processing patient questions
+    This endpoint accepts a PDF file, validates its type, and saves it to a temporary directory
+    for further processing by other endpoints.
 
     Args:
         file: The PDF file to upload
 
     Returns:
-        JSON with filename, process-id and success message
+        JSON with filename and success message
     """
     if not file.content_type == "application/pdf":
         raise HTTPException(status_code=400, detail="Invalid file type. Only PDF is allowed.")
 
-    process_id = str(uuid4())
-    original_filename = file.filename
-    # Sanitize filename or use a unique name based on process_id to avoid conflicts
-    # For simplicity, using original filename here but in production, consider unique storage names.
-    file_location = Path(TEMP_UPLOAD_DIR) / original_filename 
-                                           # It might be better to save as TEMP_UPLOAD_DIR / f"{process_id}.pdf"
-                                           # And store original_filename separately if needed.
-
+    # Save file to temporary directory
+    file_location = Path(TEMP_UPLOAD_DIR) / file.filename
     try:
-        # Ensure the directory for the file exists if using subdirectories per process_id for example
-        # file_location.parent.mkdir(parents=True, exist_ok=True)
-
         with open(file_location, "wb+") as file_object:
             shutil.copyfileobj(file.file, file_object)
-
-        # Initialize process_data for this new process_id
-        process_data[process_id] = {
-            "filename": original_filename,
-            "file_path": str(file_location),
-            "timestamp": datetime.now().isoformat(),
-            "status": "pending_analysis", # Initial status
-            "progress_message": "File uploaded, pending analysis.",
-            "publication_details": None,
-            "pmid": None,
-            "patient_identifiers": [],
-            "all_patient_data_rows": [],
-            "error_message": None
-        }
-
-        # Start the background processing pipeline
-        thread = threading.Thread(
-            target=background_pdf_processing_pipeline,
-            args=(process_id, original_filename, str(file_location)),
-            daemon=True # Daemon threads exit when the main program exits
-        )
-        thread.start()
-
     except Exception as e:
-        # Clean up file if save failed partially?
-        if file_location.exists():
-             # os.remove(file_location) # If needed
-            pass
-        raise HTTPException(status_code=500, detail=f"Could not save or initiate processing for file: {e}")
+        raise HTTPException(status_code=500, detail=f"Could not save file: {e}")
     finally:
-        await file.close()
+        await file.close()  # Ensure file is closed
 
-    return {
-        "filename": original_filename,
-        "process_id": process_id,
-        "message": "File upload accepted. Processing started in background."
-    }
+    return {"filename": file.filename, "message": "File uploaded successfully, ready for processing."}
 
 
-
-# The individual GET endpoints for publication_details, patient_identifiers, 
-# and process_patient_questions are NO LONGER NEEDED for the NEW UPLOAD FLOW.
-# They are now internal steps in `background_pdf_processing_pipeline`.
-# They can be REMOVED if they are not used for any other purpose (e.g., re-running a single step on demand).
-# For now, we will keep them to reflect they are not part of the primary new upload flow.
-# If you still need them for other reasons, ensure they also check `process_id` and update `process_data`.
 
 @router.get("/file/patient_identifiers")
-async def get_patient_identifiers(
-    filename: str = Query(..., description="Filename of the uploaded PDF"),
-    process_id: str = Query(..., description="Process ID from upload endpoint")
-):
+async def get_patient_identifiers(filename: str = Query(..., description="Filename of the uploaded PDF")):
     """
     Get patient identifiers from a previously uploaded PDF file.
 
     This endpoint uses the PatientIdentifiersAgent to extract patient identifiers
     from the specified PDF file. The file must have been previously uploaded.
 
-    Note: This endpoint is no longer needed for the new upload flow, as patient identifiers
-    are now extracted automatically in the background after upload. This endpoint can still
-    be used to re-run the extraction if needed.
-
     Args:
         filename: The name of the PDF file to analyze
-        process_id: Process ID from upload endpoint (required)
 
     Returns:
-        A list of patient identifiers found in the document and the process-id
+        A list of patient identifiers found in the document
     """
-    # Check if process_id exists in process_data
-    if process_id not in process_data:
-        raise HTTPException(status_code=404, detail=f"Process ID '{process_id}' not found. Please upload the file first.")
-
-    # Get file information from process_data
-    file_info = process_data[process_id]
-
-    # Verify that the filename matches
-    if file_info["filename"] != filename:
-        raise HTTPException(status_code=400, detail=f"Filename '{filename}' does not match the file associated with process ID '{process_id}'")
-
-    # Use the file path from process_data
-    file_path = file_info["file_path"]
+    # Construct the full path to the uploaded file
+    file_path = os.path.join(TEMP_UPLOAD_DIR, filename)
 
     # Check if the file exists
     if not os.path.exists(file_path):
-        # If file doesn't exist, remove the process_id from process_data
-        del process_data[process_id]
         raise HTTPException(status_code=404, detail=f"File '{filename}' not found")
 
     try:
@@ -836,45 +641,20 @@ async def get_patient_identifiers(
         # Run the agent
         final_state = agent.run(initial_state)
 
-        # Get patient identifiers from the final state
-        patient_identifiers = final_state.get("patient_identifiers", [])
-
-        # Store patient identifiers in process_data dictionary
-        process_data[process_id]["patient_identifiers"] = patient_identifiers
-
-        # Update status in process_data
-        process_data[process_id].update({
-            "status": "patient_identifiers_extracted",
-            "progress_message": "Patient identifiers extracted manually."
-        })
-
-        # Return the patient identifiers and process-id
+        # Return the patient identifiers
         return {
             "filename": filename,
-            "process_id": process_id,
-            "patient_identifiers": patient_identifiers
+            "patient_identifiers": final_state.get("patient_identifiers", [])
         }
     except Exception as e:
         # Log the error for debugging
         print(f"Error processing file {filename}: {str(e)}")
         import traceback
         traceback.print_exc()
-
-        # Update error status in process_data
-        if process_id in process_data:
-            process_data[process_id].update({
-                "status": "error",
-                "progress_message": "Error extracting patient identifiers.",
-                "error_message": str(e)
-            })
-
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
 @router.get("/file/publication_details")
-async def get_publication_details(
-    filename: str = Query(..., description="Filename of the uploaded PDF"),
-    process_id: str = Query(..., description="Process ID from upload endpoint")
-):
+async def get_publication_details(filename: str = Query(..., description="Filename of the uploaded PDF")):
     """
     Get publication metadata from a previously uploaded PDF file.
 
@@ -882,35 +662,17 @@ async def get_publication_details(
     including title, author information, year, and PMID from the specified PDF file.
     The file must have been previously uploaded.
 
-    Note: This endpoint is no longer needed for the new upload flow, as publication details
-    are now extracted automatically in the background after upload. This endpoint can still
-    be used to re-run the extraction if needed.
-
     Args:
         filename: The name of the PDF file to analyze
-        process_id: Process ID from upload endpoint (required)
 
     Returns:
-        Publication details, PMID if available, and the process-id
+        Publication details and PMID if available
     """
-    # Check if process_id exists in process_data
-    if process_id not in process_data:
-        raise HTTPException(status_code=404, detail=f"Process ID '{process_id}' not found. Please upload the file first.")
-
-    # Get file information from process_data
-    file_info = process_data[process_id]
-
-    # Verify that the filename matches
-    if file_info["filename"] != filename:
-        raise HTTPException(status_code=400, detail=f"Filename '{filename}' does not match the file associated with process ID '{process_id}'")
-
-    # Use the file path from process_data
-    file_path = file_info["file_path"]
+    # Construct the full path to the uploaded file
+    file_path = os.path.join(TEMP_UPLOAD_DIR, filename)
 
     # Check if the file exists
     if not os.path.exists(file_path):
-        # If file doesn't exist, remove the process_id from process_data
-        del process_data[process_id]
         raise HTTPException(status_code=404, detail=f"File '{filename}' not found")
 
     try:
@@ -931,49 +693,22 @@ async def get_publication_details(
         # Run the agent
         final_state = agent.run(initial_state)
 
-        # Get publication details and PMID from the final state
-        publication_details = final_state.get("publication_details")
-        pmid = final_state.get("pmid")
-
-        # Store publication details and PMID in process_data dictionary
-        process_data[process_id]["publication_details"] = publication_details
-        process_data[process_id]["pmid"] = pmid
-
-        # Update status in process_data
-        process_data[process_id].update({
-            "status": "publication_details_extracted",
-            "progress_message": "Publication details extracted manually."
-        })
-
-        # Return the publication details, PMID, and process-id
+        # Return the publication details and PMID
         return {
             "filename": filename,
-            "process_id": process_id,
-            "publication_details": publication_details,
-            "pmid": pmid
+            "publication_details": final_state.get("publication_details"),
+            "pmid": final_state.get("pmid")
         }
     except Exception as e:
         # Log the error for debugging
         print(f"Error processing file {filename}: {str(e)}")
         import traceback
         traceback.print_exc()
-
-        # Update error status in process_data
-        if process_id in process_data:
-            process_data[process_id].update({
-                "status": "error",
-                "progress_message": "Error extracting publication details.",
-                "error_message": str(e)
-            })
-
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
 
 @router.get("/file/process_patient_questions")
-async def process_patient_questions(
-    filename: str = Query(..., description="Filename of the uploaded PDF"),
-    process_id: str = Query(..., description="Process ID from upload endpoint")
-):
+async def process_patient_questions(filename: str = Query(..., description="Filename of the uploaded PDF")):
     """
     Process patient questions for a previously uploaded PDF file.
 
@@ -984,35 +719,20 @@ async def process_patient_questions(
     4. Generate questions for each patient
     5. Process questions to get answers
 
-    Note: This endpoint is no longer needed for the new upload flow, as patient questions
-    are now processed automatically in the background after upload. This endpoint can still
-    be used to re-run the processing if needed.
+    Note: Patient identifiers must have been previously extracted using
+    the patient_identifiers endpoint before calling this endpoint.
 
     Args:
         filename: The name of the PDF file to analyze
-        process_id: Process ID from upload endpoint (required)
 
     Returns:
-        Processed patient data with answers to configured questions and the process-id
+        Processed patient data with answers to configured questions
     """
-    # Check if process_id exists in process_data
-    if process_id not in process_data:
-        raise HTTPException(status_code=404, detail=f"Process ID '{process_id}' not found. Please upload the file first.")
-
-    # Get file information from process_data
-    file_info = process_data[process_id]
-
-    # Verify that the filename matches
-    if file_info["filename"] != filename:
-        raise HTTPException(status_code=400, detail=f"Filename '{filename}' does not match the file associated with process ID '{process_id}'")
-
-    # Use the file path from process_data
-    file_path = file_info["file_path"]
+    # Construct the full path to the uploaded file
+    file_path = os.path.join(TEMP_UPLOAD_DIR, filename)
 
     # Check if the file exists
     if not os.path.exists(file_path):
-        # If file doesn't exist, remove the process_id from process_data
-        del process_data[process_id]
         raise HTTPException(status_code=404, detail=f"File '{filename}' not found")
 
     try:
@@ -1032,7 +752,6 @@ async def process_patient_questions(
             "patient_answers": [],
             "vector_store": None,
             "pmid": pmid,  # Include PMID in the state
-            "process_id": process_id,  # Include process_id in the state
             "messages": [
                 {"role": "user", "content": f"Process questions for patients in {filename}"}
             ]
@@ -1042,36 +761,15 @@ async def process_patient_questions(
         try:
             final_state = agent.run(initial_state)
 
-            # Get patient answers from the final state
-            patient_answers = final_state.get("patient_answers", [])
-
-            # Store patient answers in process_data dictionary
-            process_data[process_id]["all_patient_data_rows"] = patient_answers
-
-            # Update status in process_data
-            process_data[process_id].update({
-                "status": "patient_questions_processed",
-                "progress_message": "Patient questions processed manually."
-            })
-
-            # Return the processed data and process-id
+            # Return the processed data
             return {
                 "filename": filename,
-                "process_id": process_id,
                 "mapping_items_count": len(final_state.get("mapping_items", [])),
                 "patient_identifiers_count": len(final_state.get("patient_identifiers", [])),
-                "patient_answers": patient_answers
+                "patient_answers": final_state.get("patient_answers", [])
             }
         except ValueError as e:
             # This catches the specific error when patient identifiers are not found in cache
-            # Update error status in process_data
-            if process_id in process_data:
-                process_data[process_id].update({
-                    "status": "error",
-                    "progress_message": "Patient identifiers not found in cache.",
-                    "error_message": str(e)
-                })
-
             raise HTTPException(
                 status_code=400,
                 detail="Patient identifiers not found in cache. Please extract patient identifiers first."
@@ -1082,15 +780,6 @@ async def process_patient_questions(
         print(f"Error processing file {filename}: {str(e)}")
         import traceback
         traceback.print_exc()
-
-        # Update error status in process_data
-        if process_id in process_data:
-            process_data[process_id].update({
-                "status": "error",
-                "progress_message": "Error processing patient questions.",
-                "error_message": str(e)
-            })
-
         raise HTTPException(status_code=500, detail=f"Error processing file: {str(e)}")
 
 
@@ -1148,69 +837,6 @@ async def update_publication_details(
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error updating publication details: {str(e)}")
 
-
-
-@router.get("/file/get_process_data")
-async def get_process_data(
-    process_id: str = Query(..., description="Process ID from upload endpoint")
-):
-    """
-    Get all data associated with a process ID.
-
-    This endpoint retrieves all data stored for a specific process ID, including:
-    - publication_details
-    - patient_identifiers
-    - all_patient_data_rows
-
-    Args:
-        process_id: Process ID from upload endpoint (required)
-
-    Returns:
-        All data associated with the process ID
-    """
-    # Check if process_id exists in process_data
-    if process_id not in process_data:
-        raise HTTPException(status_code=404, detail=f"Process ID '{process_id}' not found. Please upload the file first.")
-
-    # Get data from process_data
-    process_info = process_data[process_id]
-
-    # Prepare response with all available data
-    response = {
-        "process_id": process_id,
-        "filename": process_info.get("filename"),
-        "timestamp": process_info.get("timestamp"),
-        "publication_details": process_info.get("publication_details"),
-        "patient_identifiers": process_info.get("patient_identifiers", []),
-        "all_patient_data_rows": process_info.get("all_patient_data_rows", [])
-    }
-
-    return response
-
-
-@router.get("/file/get_all_process_ids")
-async def get_all_process_ids():
-    """
-    Get all available process IDs.
-
-    This endpoint returns a list of all process IDs currently stored in the system.
-    This can be used to query the state of all processes.
-
-    Returns:
-        A dictionary containing:
-        - process_ids: List of all process IDs
-        - count: Number of process IDs
-    """
-    # Get all process IDs from the process_data dictionary
-    all_process_ids = list(process_data.keys())
-
-    # Prepare response
-    response = {
-        "process_ids": all_process_ids,
-        "count": len(all_process_ids)
-    }
-
-    return response
 
 
 @router.post("/file/update_patient_identifier")
@@ -2078,14 +1704,7 @@ def update_symptom_json(gene_name: str, disease_abbrev: str, patient_data: Dict[
 
 
 @router.post("/file/process_to_excel")
-async def process_to_excel(
-    data: List[Dict[str, Any]] = Body(...),
-    process_id: str = Query(..., description="Process ID from upload endpoint")
-):
-    # Check if process_id exists in process_data
-    if process_id not in process_data:
-        raise HTTPException(status_code=404, detail=f"Process ID '{process_id}' not found. Please upload the file first.")
-
+async def process_to_excel(data: List[Dict[str, Any]] = Body(...)):
     if not data:
         raise HTTPException(status_code=400, detail="No data provided")
 
@@ -2158,11 +1777,10 @@ async def process_to_excel(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error when saving data:{e}")
 
-    # Return the response with gene URLs included and process-id
+    # Return the response with gene URLs included
     return {
         "message": "Data successfully processed and saved to MDSGene.",
-        "gene_urls": gene_urls,
-        "process_id": process_id
+        "gene_urls": gene_urls
     }
 
 
@@ -2267,7 +1885,7 @@ async def get_aggregated_document_data(filename: str = Query(..., description="P
 
 def find_most_recent_file(directory: str) -> Optional[str]:
     """
-    Find the most recent file in the specified directory and all subdirectories.
+    Find the most recent file in the specified directory.
 
     Args:
         directory: Path to the directory to search
@@ -2281,24 +1899,19 @@ def find_most_recent_file(directory: str) -> Optional[str]:
             print(f"Directory {directory} does not exist")
             return None
 
-        # List to store all files
-        all_files = []
+        # Get all files in the directory (not subdirectories)
+        files = [os.path.join(directory, f) for f in os.listdir(directory) 
+                if os.path.isfile(os.path.join(directory, f))]
 
-        # Walk through directory and all subdirectories
-        for root, _, filenames in os.walk(directory):
-            for filename in filenames:
-                file_path = os.path.join(root, filename)
-                all_files.append(file_path)
-
-        if not all_files:
-            print(f"No files found in {directory} or its subdirectories")
+        if not files:
+            print(f"No files found in {directory}")
             return None
 
         # Sort files by modification time (most recent first)
-        all_files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+        files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
 
         # Return the most recent file
-        return all_files[0]
+        return files[0]
 
     except Exception as e:
         print(f"Error finding most recent file: {e}")

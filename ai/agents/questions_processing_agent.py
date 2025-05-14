@@ -19,7 +19,6 @@ class State(TypedDict):
     patient_questions: List[List[QuestionInfo]]
     patient_answers: List[Dict[str, str]]
     messages: Annotated[list, add_messages]
-    process_id: Optional[str]
 
 class QuestionsProcessingAgent(BaseAgent[State]):
     """Agent for processing questions mapping data from PDFs."""
@@ -355,22 +354,6 @@ class QuestionsProcessingAgent(BaseAgent[State]):
         """Process questions for each patient and get answers."""
         pdf_filepath = state["pdf_filepath"]
         patient_questions = state["patient_questions"]
-        process_id = state.get("process_id")
-
-        # Check if process_id is valid (if provided)
-        if process_id:
-            # Import here to avoid circular imports
-            from ai.routes.ai_routes import process_data
-
-            if process_id not in process_data:
-                error_msg = f"ERROR: Process ID '{process_id}' not found. Cannot process patient questions."
-                print(error_msg)
-                return {
-                    **state,
-                    "messages": state["messages"] + [
-                        {"role": "assistant", "content": error_msg}
-                    ]
-                }
 
         if not patient_questions:
             error_msg = "ERROR: No patient question sets generated. Cannot process patients."
@@ -388,20 +371,6 @@ class QuestionsProcessingAgent(BaseAgent[State]):
 
         patient_num = 0
         for patient_question_set in patient_questions:
-            # Check if process_id is still valid before processing each patient
-            if process_id:
-                from ai.routes.ai_routes import process_data
-                if process_id not in process_data:
-                    error_msg = f"ERROR: Process ID '{process_id}' not found during patient processing. Interrupting."
-                    print(error_msg)
-                    return {
-                        **state,
-                        "patient_answers": all_patient_data_rows,  # Return any results processed so far
-                        "messages": state["messages"] + [
-                            {"role": "assistant", "content": error_msg}
-                        ]
-                    }
-
             patient_num += 1
             if not patient_question_set:
                 print(f"\n=== Skipping Patient Set {patient_num} (Empty Question Set) ===")
@@ -416,19 +385,6 @@ class QuestionsProcessingAgent(BaseAgent[State]):
             patient_results["individual_id"] = current_patient_id
 
             for q_obj in patient_question_set:
-                # Check if process_id is still valid before processing each question
-                if process_id:
-                    from ai.routes.ai_routes import process_data
-                    if process_id not in process_data:
-                        error_msg = f"ERROR: Process ID '{process_id}' not found during question processing. Interrupting."
-                        print(error_msg)
-                        return {
-                            **state,
-                            "patient_answers": all_patient_data_rows,  # Return any results processed so far
-                            "messages": state["messages"] + [
-                                {"role": "assistant", "content": error_msg}
-                            ]
-                        }
                 print(f"--- Querying for field: {q_obj.field} (Patient: {current_patient_id}) ---")
                 query_text = q_obj.query
 
@@ -514,13 +470,6 @@ class QuestionsProcessingAgent(BaseAgent[State]):
                     print(f"  No answer found. Using default: -99_NO_ANSWER")
 
             all_patient_data_rows.append(patient_results)
-
-            # Update process_data dictionary with current state of all_patient_data_rows if process_id is available
-            if process_id:
-                from ai.routes.ai_routes import process_data
-                if process_id in process_data:
-                    process_data[process_id]["all_patient_data_rows"] = all_patient_data_rows
-                    print(f"  Updated process_data with {len(all_patient_data_rows)} patient data rows.")
 
         print(f"Processed {len(all_patient_data_rows)} patient data rows.")
 
