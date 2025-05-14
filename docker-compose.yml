@@ -1,0 +1,96 @@
+# Filename: docker-compose.yml
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest # Use the official Ollama image
+    container_name: ollama_service
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama # Persist Ollama models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia # Uncomment if you have NVIDIA GPU and want Ollama to use it
+              count: 1     # Or 'all'
+              capabilities: [gpu]
+    tty: true # Keeps the service running
+    restart: unless-stopped
+    # Healthcheck for Ollama can be tricky as it doesn't have a simple HTTP health endpoint
+    # We'll rely on the dependent services to handle connection issues for now.
+    # A script could be added to pull models on first start if desired,
+    # or you can pre-pull them on your host and the volume mount will make them available.
+
+  vector-store:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vector_store_service
+    command: uvicorn ai.vector_store_service:app --host 0.0.0.0 --port 8002
+    ports:
+      - "8002:8002"
+    volumes:
+      - .:/app # Mount current directory to /app in container for live reload
+      # Ensure paths in .env used by vector_store_service are writable or correctly mapped
+      - ./vector_store:/app/vector_store # Persist vector store data
+      - ./cache:/app/cache # Shared cache
+    env_file:
+      - .env.docker # Use a specific .env file for Docker
+    depends_on:
+      - ollama
+    restart: unless-stopped
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434 # Crucial: use service name 'ollama'
+
+  ai-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_processor_service
+    command: uvicorn ai.ai_processor_service:app --host 0.0.0.0 --port 8001
+    ports:
+      - "8001:8001"
+    volumes:
+      - .:/app
+      - ./cache:/app/cache
+    env_file:
+      - .env.docker
+    depends_on:
+      - ollama
+      - vector-store # If AI processor calls vector-store directly (it seems to via client)
+    restart: unless-stopped
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - VECTOR_STORE_SERVICE_URL=http://vector-store:8002 # Service name for vector store
+
+  main-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: main_application
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./excel:/app/excel # Mount excel data
+      - ./properties:/app/properties # Mount properties
+      - ./temp_uploads:/app/temp_uploads # For file uploads
+      - ./cache:/app/cache
+      - ./Model:/app/Model # For ML model
+    env_file:
+      - .env.docker
+    depends_on:
+      - ollama
+      - ai-processor
+      - vector-store
+    restart: unless-stopped
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - AI_PROCESSOR_SERVICE_URL=http://ai-processor:8001
+      - VECTOR_STORE_SERVICE_URL=http://vector-store:8002
+
+volumes:
+  ollama_data: # Persists Ollama models across container restarts
