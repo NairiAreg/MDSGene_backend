@@ -41,7 +41,8 @@
     "mapped_excel_column": "Guessed: Gene3",
     "response_convertion_strategy": "If applicable, enter the official HGNC-approved gene symbol for the third pathogenic variant. Leave blank or enter -99 if not applicable.",
     "custom_processor": "gene3",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut1_c",
@@ -49,7 +50,8 @@
     "mapped_excel_column": "Guessed: Mut1 cDNA",
     "response_convertion_strategy": "Enter the nucleotide change of the first (primary) mutation as reported in the article, using HGVS coding DNA nomenclature (e.g., c.511C>T). Include the transcript reference or genomic build if provided. If the notation is given in a non-standard format, record it as provided (it will be harmonized later). If no mutation is reported, enter -99.",
     "custom_processor": "mut1_c",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut1_p",
@@ -57,7 +59,8 @@
     "mapped_excel_column": "Guessed: Mut1 Protein",
     "response_convertion_strategy": "Enter the protein change (amino acid level) corresponding to the first mutation, using HGVS protein nomenclature and the three-letter amino acid code (e.g., p.Gln171* for a glutamine to stop codon change). Use the notation as given in the manuscript (it will be adjusted to HGVS format if needed). If no mutation reported or applicable, enter -99.",
     "custom_processor": "mut1_p",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut1_zygosity",
@@ -65,7 +68,8 @@
     "mapped_excel_column": "Guessed: Mut1 Zygosity",
     "response_convertion_strategy": "Enter the zygosity of the first mutation as reported: use 'heterozygous' if one allele is mutated, 'homozygous' if both alleles carry the mutation, or 'hemizygous' if the mutation is on an X-chromosome in a male. If zygosity is not stated, infer from context (e.g., in an autosomal recessive gene, a single reported mutation likely implies a homozygous state if no second mutation is mentioned) or enter -99 if uncertain.",
     "custom_processor": "mut1_zygosity",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut2_c",
@@ -73,7 +77,8 @@
     "mapped_excel_column": "Guessed: Mut2 cDNA",
     "response_convertion_strategy": "If the individual carries a second pathogenic mutation (e.g., in autosomal recessive cases or compound heterozygosity), enter the nucleotide change for the second mutation (e.g., c.1234G>A) as reported. If there is no second mutation reported, leave this blank or enter -99.",
     "custom_processor": "mut2_c",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut2_p",
@@ -81,7 +86,8 @@
     "mapped_excel_column": "Guessed: Mut2 Protein",
     "response_convertion_strategy": "Enter the protein-level change for the second mutation (e.g., p.Arg412His) using the three-letter amino acid code, if a second mutation is present. If no second mutation, leave blank or enter -99.",
     "custom_processor": "mut2_p",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut2_zygosity",
@@ -89,7 +95,8 @@
     "mapped_excel_column": "Guessed: Mut2 Zygosity",
     "response_convertion_strategy": "Enter the zygosity of the second mutation (usually 'heterozygous' for a compound heterozygous case). If not applicable or not stated, leave blank or -99.",
     "custom_processor": "mut2_zygosity",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut3_c",
@@ -97,7 +104,8 @@
     "mapped_excel_column": "Guessed: Mut3 cDNA",
     "response_convertion_strategy": "If a third mutation is reported (in rare cases, e.g., tri-allelic combinations), enter the cDNA notation for that mutation. If not applicable, leave blank or enter -99.",
     "custom_processor": "mut3_c",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut3_p",
@@ -105,7 +113,8 @@
     "mapped_excel_column": "Guessed: Mut3 Protein",
     "response_convertion_strategy": "Enter the protein change for the third mutation if applicable, or leave blank/enter -99 if no third mutation.",
     "custom_processor": "mut3_p",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut3_zygosity",
@@ -113,7 +122,8 @@
     "mapped_excel_column": "Guessed: Mut3 Zygosity",
     "response_convertion_strategy": "Enter the zygosity of the third mutation if applicable. If not applicable, leave blank or enter -99.",
     "custom_processor": "mut3_zygosity",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "genome_build",
@@ -121,7 +131,8 @@
     "mapped_excel_column": "Guessed: Genome Build",
     "response_convertion_strategy": "Enter any reference genome build or transcript ID mentioned in the publication that was used for reporting the mutation (e.g., hg19, GRCh37, NM_000041.3). Include terms like 'build', 'hg', 'GRCh', or transcript accession if provided. If no genome build or reference sequence is indicated, enter -99.",
     "custom_processor": "genome_build",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "physical_location",
@@ -129,7 +140,8 @@
     "mapped_excel_column": "Guessed: Physical Location",
     "response_convertion_strategy": "Enter the chromosomal coordinate of the mutation if it is provided or can be unequivocally determined from the publication, in the format 'chromosome:position' (e.g., 12:123456). **Note:** The physical location refers to the plus strand; for deletions/duplications/insertions, use the coordinate of the base immediately 5\u2032 to the variant\u2019s start. If the genomic position is not given or cannot be derived, enter -99.",
     "custom_processor": "physical_location",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mdsgene_decision",
@@ -137,7 +149,8 @@
     "mapped_excel_column": "Guessed: MDSGene Decision",
     "response_convertion_strategy": "Set mdsgene_decision to IN for all eligible patients who meet inclusion criteria and are included in MDSGene. If a patient is not included (e.g., does not fulfill criteria or is listed only for reference), set mdsgene_decision to EX. For excluded patients, ensure to provide the reason for exclusion in the patient\u2019s comments. If unclear, enter -99.",
     "custom_processor": "mdsgene_decision",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "comments_pat",
@@ -145,7 +158,8 @@
     "mapped_excel_column": "Guessed: Patient Comments",
     "response_convertion_strategy": "Enter any patient-specific comments or clarifications here. If the patient is excluded (mdsgene_decision = EX), include the reason for exclusion in this field so that the rationale is clear upon review. Otherwise, use this field for any notable details about the individual not captured by other variables. If none, enter -99.",
     "custom_processor": "comments_pat",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "initial_sympt1",
@@ -162,7 +176,8 @@
     "mapped_excel_column": "Guessed: initial_sympt2",
     "response_convertion_strategy": "If a second initial symptom is explicitly reported, enter it here (use symptom categories identical to '_sympt' variables, e.g., 'rigidity_sympt'). Leave blank or -99 if not applicable.",
     "custom_processor": "initial_sympt2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "initial_sympt3",
@@ -170,7 +185,8 @@
     "mapped_excel_column": "Guessed: initial_sympt3",
     "response_convertion_strategy": "If a third initial symptom is explicitly reported, enter it here (use symptom categories identical to '_sympt' variables, e.g., 'rigidity_sympt'). Leave blank or -99 if not applicable.",
     "custom_processor": "initial_sympt3",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "Author, year",
@@ -178,7 +194,8 @@
     "mapped_excel_column": "Guessed: Author, year",
     "response_convertion_strategy": "Enter the last name of the first author followed by the year of publication (e.g., 'Smith 2022'). If not available, enter -99.",
     "custom_processor": "Author, year",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "study_design",
@@ -195,7 +212,8 @@
     "mapped_excel_column": "Guessed: genet_methods",
     "response_convertion_strategy": "Enter the genetic testing methods used (e.g., 'WES', 'targeted sequencing', 'Sanger', 'MLPA', 'array CGH'). If multiple methods, list all separated by commas. If not reported, enter -99.",
     "custom_processor": "genet_methods",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "lower_age_limit",
@@ -203,7 +221,8 @@
     "mapped_excel_column": "Guessed: lower_age_limit",
     "response_convertion_strategy": "Enter the lower age limit in years for study inclusion criteria if reported. If not applicable or not reported, enter -99.",
     "custom_processor": "lower_age_limit",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "upper_age_limit",
@@ -211,7 +230,8 @@
     "mapped_excel_column": "Guessed: upper_age_limit",
     "response_convertion_strategy": "Enter the upper age limit in years for study inclusion criteria if reported. If not applicable or not reported, enter -99.",
     "custom_processor": "upper_age_limit",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "comments_study",
@@ -219,7 +239,8 @@
     "mapped_excel_column": "Guessed: comments_study",
     "response_convertion_strategy": "Enter any relevant notes about the study design, methodology, limitations, or other important context. If none, enter -99.",
     "custom_processor": "comments_study",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "disease_abbrev",
@@ -227,7 +248,8 @@
     "mapped_excel_column": "Guessed: disease_abbrev",
     "response_convertion_strategy": "Enter the disease abbreviation as reported (e.g., 'PD' for Parkinson's disease, 'MSA' for Multiple System Atrophy). If not abbreviated in the article, use standard abbreviations for common conditions. If diagnosis is uncertain or not provided, enter -99.",
     "custom_processor": "disease_abbrev",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "clinical_info",
@@ -235,7 +257,8 @@
     "mapped_excel_column": "Guessed: clinical_info",
     "response_convertion_strategy": "Provide a brief summary of key clinical features not captured by other fields (e.g., disease progression pattern, unusual features). If no additional information, enter -99.",
     "custom_processor": "clinical_info",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "ethnicity",
@@ -243,7 +266,8 @@
     "mapped_excel_column": "Guessed: ethnicity",
     "response_convertion_strategy": "Enter the ethnicity as reported in the article. Use standardized categories (e.g., 'European', 'East Asian', 'African') when appropriate. If not reported, enter -99.",
     "custom_processor": "ethnicity",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "country",
@@ -251,7 +275,8 @@
     "mapped_excel_column": "Guessed: country",
     "response_convertion_strategy": "Enter the country of origin or country where the patient was examined. If not reported, enter -99.",
     "custom_processor": "country",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "sex",
@@ -259,7 +284,8 @@
     "mapped_excel_column": "Guessed: sex",
     "response_convertion_strategy": "Enter 'M' for male, 'F' for female. If not specified, enter -99.",
     "custom_processor": "sex",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "index_pat",
@@ -267,7 +293,8 @@
     "mapped_excel_column": "Guessed: index_pat",
     "response_convertion_strategy": "Enter 'yes' if the patient is explicitly reported as the index case or proband, 'no' if another family member is the index case, or -99 if not specified or not applicable.",
     "custom_processor": "index_pat",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "famhx",
@@ -275,7 +302,8 @@
     "mapped_excel_column": "Guessed: famhx",
     "response_convertion_strategy": "Enter 'yes' if family history is reported as positive, 'no' if explicitly reported as negative, or -99 if not reported.",
     "custom_processor": "famhx",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "num_het_mut_affected",
@@ -283,7 +311,8 @@
     "mapped_excel_column": "Guessed: num_het_mut_affected",
     "response_convertion_strategy": "Enter the number of affected individuals with heterozygous mutations in the family. If not reported or not applicable, enter -99.",
     "custom_processor": "num_het_mut_affected",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "num_hom_mut_affected",
@@ -291,7 +320,8 @@
     "mapped_excel_column": "Guessed: num_hom_mut_affected",
     "response_convertion_strategy": "Enter the number of affected individuals with homozygous mutations in the family. If not reported or not applicable, enter -99.",
     "custom_processor": "num_hom_mut_affected",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "num_het_mut_unaffected",
@@ -299,7 +329,8 @@
     "mapped_excel_column": "Guessed: num_het_mut_unaffected",
     "response_convertion_strategy": "Enter the number of unaffected individuals with heterozygous mutations in the family. If not reported or not applicable, enter -99.",
     "custom_processor": "num_het_mut_unaffected",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "num_hom_mut_unaffected",
@@ -307,7 +338,8 @@
     "mapped_excel_column": "Guessed: num_hom_mut_unaffected",
     "response_convertion_strategy": "Enter the number of unaffected individuals with homozygous mutations in the family. If not reported or not applicable, enter -99.",
     "custom_processor": "num_hom_mut_unaffected",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "num_wildtype_affected",
@@ -315,7 +347,8 @@
     "mapped_excel_column": "Guessed: num_wildtype_affected",
     "response_convertion_strategy": "Enter the number of affected individuals with no mutations (wildtype) in the family. If not reported or not applicable, enter -99.",
     "custom_processor": "num_wildtype_affected",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "num_wildtype_unaffected",
@@ -323,7 +356,8 @@
     "mapped_excel_column": "Guessed: num_wildtype_unaffected",
     "response_convertion_strategy": "Enter the number of unaffected individuals with no mutations (wildtype) in the family. If not reported or not applicable, enter -99.",
     "custom_processor": "num_wildtype_unaffected",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "status_clinical",
@@ -331,7 +365,8 @@
     "mapped_excel_column": "Guessed: status_clinical",
     "response_convertion_strategy": "Enter 'affected' if the patient has the disease/condition, 'unaffected' if explicitly stated to be unaffected, 'carrier' if a carrier without symptoms, or -99 if not specified.",
     "custom_processor": "status_clinical",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "aae",
@@ -339,7 +374,8 @@
     "mapped_excel_column": "Guessed: aae",
     "response_convertion_strategy": "Enter the age at examination as a numerical value in years. If a range is given, enter the midpoint. If not reported, enter -99.",
     "custom_processor": "aae",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "aao",
@@ -347,7 +383,8 @@
     "mapped_excel_column": "Guessed: aao",
     "response_convertion_strategy": "Enter the age at onset as a numerical value in years. If a range is given, enter the midpoint. If not reported, enter -99.",
     "custom_processor": "aao",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "duration",
@@ -355,7 +392,8 @@
     "mapped_excel_column": "Guessed: duration",
     "response_convertion_strategy": "Enter the disease duration as a numerical value in years. If a range is given, enter the midpoint. If not reported, enter -99.",
     "custom_processor": "duration",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "age_dx",
@@ -363,7 +401,8 @@
     "mapped_excel_column": "Guessed: age_dx",
     "response_convertion_strategy": "Enter the age at diagnosis as a numerical value in years. If a range is given, enter the midpoint. If not reported, enter -99.",
     "custom_processor": "age_dx",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "age_death",
@@ -371,7 +410,8 @@
     "mapped_excel_column": "Guessed: age_death",
     "response_convertion_strategy": "Enter the age at death as a numerical value in years. If not applicable or not reported, enter -99.",
     "custom_processor": "age_death",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "hg_version",
@@ -380,6 +420,7 @@
     "response_convertion_strategy": "Enter the human genome version (e.g., 'hg19', 'GRCh37', 'hg38') used for reporting genomic coordinates. If not reported, enter -99.",
     "custom_processor": "hg_version",
     "query_processor": "gemini",
+    "active": true,
     "active": true
   },
   {
@@ -395,7 +436,8 @@
     "mapped_excel_column": "Guessed: reference_allele1",
     "response_convertion_strategy": "Enter the reference nucleotide(s) for the first mutation. If not reported, enter -99.",
     "custom_processor": "reference_allele1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "observed_allele1",
@@ -403,7 +445,8 @@
     "mapped_excel_column": "Guessed: observed_allele1",
     "response_convertion_strategy": "Enter the mutant nucleotide(s) for the first mutation. If not reported, enter -99.",
     "custom_processor": "observed_allele1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut1_g",
@@ -411,7 +454,8 @@
     "mapped_excel_column": "Guessed: mut1_g",
     "response_convertion_strategy": "Enter the genomic notation (g.) for the first mutation using HGVS format (e.g., 'g.76639_76642del'). If not reported, enter -99.",
     "custom_processor": "mut1_g",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut1_alias_original",
@@ -419,7 +463,8 @@
     "mapped_excel_column": "Guessed: mut1_alias_original",
     "response_convertion_strategy": "Enter any alternative notation for the first mutation exactly as provided in the article, if HGVS notation was not used. If standard HGVS was used or no alternative notation given, enter -99.",
     "custom_processor": "mut1_alias_original",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut1_alias",
@@ -427,7 +472,8 @@
     "mapped_excel_column": "Guessed: mut1_alias",
     "response_convertion_strategy": "Enter any standardized alternative notation for the first mutation. If not applicable, enter -99.",
     "custom_processor": "mut1_alias",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut1_genotype",
@@ -435,7 +481,8 @@
     "mapped_excel_column": "Guessed: mut1_genotype",
     "response_convertion_strategy": "Enter 'het' for heterozygous, 'hom' for homozygous, or 'hemi' for hemizygous mutations. If not reported, enter -99.",
     "custom_processor": "mut1_genotype",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut1_type",
@@ -443,7 +490,8 @@
     "mapped_excel_column": "Guessed: mut1_type",
     "response_convertion_strategy": "Enter the mutation type (e.g., 'missense', 'nonsense', 'frameshift', 'deletion', 'insertion', 'splice site'). If not reported or cannot be determined, enter -99.",
     "custom_processor": "mut1_type",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "gnomAD1 v2.1.1",
@@ -451,7 +499,8 @@
     "mapped_excel_column": "Guessed: gnomAD1 v2.1.1",
     "response_convertion_strategy": "Enter the allele frequency from gnomAD v2.1.1 for the first mutation as a decimal (e.g., '0.00001'). If not reported, enter -99.",
     "custom_processor": "gnomAD1 v2.1.1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "gnomAD1 v4.0.0",
@@ -459,7 +508,8 @@
     "mapped_excel_column": "Guessed: gnomAD1 v4.0.0",
     "response_convertion_strategy": "Enter the allele frequency from gnomAD v4.0.0 for the first mutation as a decimal. If not reported, enter -99.",
     "custom_processor": "gnomAD1 v4.0.0",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "physical_location2",
@@ -467,7 +517,8 @@
     "mapped_excel_column": "Guessed: physical_location2",
     "response_convertion_strategy": "Enter the chromosomal coordinate of the second mutation in the format 'chromosome:position' (e.g., '12:123456'). If not applicable or not provided, enter -99.",
     "custom_processor": "physical_location2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "reference_allele2",
@@ -475,7 +526,8 @@
     "mapped_excel_column": "Guessed: reference_allele2",
     "response_convertion_strategy": "Enter the reference nucleotide(s) for the second mutation. If not applicable or not reported, enter -99.",
     "custom_processor": "reference_allele2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "observed_allele2",
@@ -483,7 +535,8 @@
     "mapped_excel_column": "Guessed: observed_allele2",
     "response_convertion_strategy": "Enter the mutant nucleotide(s) for the second mutation. If not applicable or not reported, enter -99.",
     "custom_processor": "observed_allele2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut2_g",
@@ -491,7 +544,8 @@
     "mapped_excel_column": "Guessed: mut2_g",
     "response_convertion_strategy": "Enter the genomic notation (g.) for the second mutation using HGVS format. If not applicable or not reported, enter -99.",
     "custom_processor": "mut2_g",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut2_alias_original",
@@ -499,7 +553,8 @@
     "mapped_excel_column": "Guessed: mut2_alias_original",
     "response_convertion_strategy": "Enter any alternative notation for the second mutation exactly as provided in the article, if HGVS notation was not used. If not applicable or standard HGVS was used, enter -99.",
     "custom_processor": "mut2_alias_original",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut2_alias",
@@ -507,7 +562,8 @@
     "mapped_excel_column": "Guessed: mut2_alias",
     "response_convertion_strategy": "Enter any standardized alternative notation for the second mutation. If not applicable, enter -99.",
     "custom_processor": "mut2_alias",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut2_genotype",
@@ -515,7 +571,8 @@
     "mapped_excel_column": "Guessed: mut2_genotype",
     "response_convertion_strategy": "Enter 'het' for heterozygous, 'hom' for homozygous, or 'hemi' for hemizygous mutations. If not applicable or not reported, enter -99.",
     "custom_processor": "mut2_genotype",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut2_type",
@@ -523,7 +580,8 @@
     "mapped_excel_column": "Guessed: mut2_type",
     "response_convertion_strategy": "Enter the mutation type (e.g., 'missense', 'nonsense', 'frameshift', 'deletion', 'insertion', 'splice site'). If not applicable or cannot be determined, enter -99.",
     "custom_processor": "mut2_type",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "gnomAD2 v2.1.1",
@@ -531,7 +589,8 @@
     "mapped_excel_column": "Guessed: gnomAD2 v2.1.1",
     "response_convertion_strategy": "Enter the allele frequency from gnomAD v2.1.1 for the second mutation as a decimal. If not applicable or not reported, enter -99.",
     "custom_processor": "gnomAD2 v2.1.1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "gnomAD2 v4.0.0",
@@ -539,7 +598,8 @@
     "mapped_excel_column": "Guessed: gnomAD2 v4.0.0",
     "response_convertion_strategy": "Enter the allele frequency from gnomAD v4.0.0 for the second mutation as a decimal. If not applicable or not reported, enter -99.",
     "custom_processor": "gnomAD2 v4.0.0",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "physical_location3",
@@ -547,7 +607,8 @@
     "mapped_excel_column": "Guessed: physical_location3",
     "response_convertion_strategy": "Enter the chromosomal coordinate of the third mutation in the format 'chromosome:position' (e.g., '12:123456'). If not applicable or not provided, enter -99.",
     "custom_processor": "physical_location3",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "reference_allele3",
@@ -555,7 +616,8 @@
     "mapped_excel_column": "Guessed: reference_allele3",
     "response_convertion_strategy": "Enter the reference nucleotide(s) for the third mutation. If not applicable or not reported, enter -99.",
     "custom_processor": "reference_allele3",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "observed_allele3",
@@ -563,7 +625,8 @@
     "mapped_excel_column": "Guessed: observed_allele3",
     "response_convertion_strategy": "Enter the mutant nucleotide(s) for the third mutation. If not applicable or not reported, enter -99.",
     "custom_processor": "observed_allele3",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut3_g",
@@ -571,7 +634,8 @@
     "mapped_excel_column": "Guessed: mut3_g",
     "response_convertion_strategy": "Enter the genomic notation (g.) for the third mutation using HGVS format. If not applicable or not reported, enter -99.",
     "custom_processor": "mut3_g",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut3_alias",
@@ -579,7 +643,8 @@
     "mapped_excel_column": "Guessed: mut3_alias",
     "response_convertion_strategy": "Enter any standardized alternative notation for the third mutation. If not applicable, enter -99.",
     "custom_processor": "mut3_alias",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut3_genotype",
@@ -587,7 +652,8 @@
     "mapped_excel_column": "Guessed: mut3_genotype",
     "response_convertion_strategy": "Enter 'het' for heterozygous, 'hom' for homozygous, or 'hemi' for hemizygous mutations. If not applicable or not reported, enter -99.",
     "custom_processor": "mut3_genotype",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "mut_3_type",
@@ -595,7 +661,8 @@
     "mapped_excel_column": "Guessed: mut_3_type",
     "response_convertion_strategy": "Enter the mutation type (e.g., 'missense', 'nonsense', 'frameshift', 'deletion', 'insertion', 'splice site'). If not applicable or cannot be determined, enter -99.",
     "custom_processor": "mut_3_type",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "gnomAD3 v2.1.1",
@@ -603,7 +670,8 @@
     "mapped_excel_column": "Guessed: gnomAD3 v2.1.1",
     "response_convertion_strategy": "Enter the allele frequency from gnomAD v2.1.1 for the third mutation as a decimal. If not applicable or not reported, enter -99.",
     "custom_processor": "gnomAD3 v2.1.1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "gnomAD3 v4.0.0",
@@ -611,7 +679,8 @@
     "mapped_excel_column": "Guessed: gnomAD3 v4.0.0",
     "response_convertion_strategy": "Enter the allele frequency from gnomAD v4.0.0 for the third mutation as a decimal. If not applicable or not reported, enter -99.",
     "custom_processor": "gnomAD3 v4.0.0",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "motor_sympt",
@@ -619,7 +688,8 @@
     "mapped_excel_column": "Guessed: motor_sympt",
     "response_convertion_strategy": "Enter 'yes' if motor symptoms are present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "motor_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "parkinsonism_sympt",
@@ -627,7 +697,8 @@
     "mapped_excel_column": "Guessed: parkinsonism_sympt",
     "response_convertion_strategy": "Enter 'yes' if parkinsonism is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "parkinsonism_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "motor_instrument1",
@@ -635,7 +706,8 @@
     "mapped_excel_column": "Guessed: motor_instrument1",
     "response_convertion_strategy": "Enter the name of the first motor assessment scale used (e.g., 'UPDRS-III', 'MDS-UPDRS'). If not reported, enter -99.",
     "custom_processor": "motor_instrument1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "motor_score1",
@@ -643,7 +715,8 @@
     "mapped_excel_column": "Guessed: motor_score1",
     "response_convertion_strategy": "Enter the numerical score from the first motor assessment. If not reported, enter -99.",
     "custom_processor": "motor_score1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "motor_instrument2",
@@ -651,7 +724,8 @@
     "mapped_excel_column": "Guessed: motor_instrument2",
     "response_convertion_strategy": "Enter the name of the second motor assessment scale used (if applicable). If none or not reported, enter -99.",
     "custom_processor": "motor_instrument2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "motor_score2",
@@ -659,7 +733,8 @@
     "mapped_excel_column": "Guessed: motor_score2",
     "response_convertion_strategy": "Enter the numerical score from the second motor assessment (if applicable). If none or not reported, enter -99.",
     "custom_processor": "motor_score2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "NMS_park_sympt",
@@ -667,7 +742,8 @@
     "mapped_excel_column": "Guessed: NMS_park_sympt",
     "response_convertion_strategy": "Enter 'yes' if non-motor symptoms of parkinsonism are present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "NMS_park_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "olfaction_sympt",
@@ -675,7 +751,8 @@
     "mapped_excel_column": "Guessed: olfaction_sympt",
     "response_convertion_strategy": "Enter 'yes' if olfactory dysfunction (hyposmia/anosmia) is present, 'no' if explicitly stated as normal, or -99 if not reported.",
     "custom_processor": "olfaction_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "NMS_scale",
@@ -683,7 +760,8 @@
     "mapped_excel_column": "Guessed: NMS_scale",
     "response_convertion_strategy": "Enter the name of any non-motor symptom assessment scale used (e.g., 'NMSS', 'NMSQuest'). If not reported, enter -99.",
     "custom_processor": "NMS_scale",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "bradykinesia_sympt",
@@ -691,7 +769,8 @@
     "mapped_excel_column": "Guessed: bradykinesia_sympt",
     "response_convertion_strategy": "Enter 'yes' if bradykinesia is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "bradykinesia_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "tremor_HP:0001337",
@@ -699,7 +778,8 @@
     "mapped_excel_column": "Guessed: tremor_HP:0001337",
     "response_convertion_strategy": "Enter 'yes' if any form of tremor is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "tremor_HP:0001337",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "tremor_rest_sympt",
@@ -707,7 +787,8 @@
     "mapped_excel_column": "Guessed: tremor_rest_sympt",
     "response_convertion_strategy": "Enter 'yes' if resting tremor is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "tremor_rest_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "tremor_action_sympt",
@@ -715,7 +796,8 @@
     "mapped_excel_column": "Guessed: tremor_action_sympt",
     "response_convertion_strategy": "Enter 'yes' if action tremor is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "tremor_action_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "tremor_postural_sympt",
@@ -723,7 +805,8 @@
     "mapped_excel_column": "Guessed: tremor_postural_sympt",
     "response_convertion_strategy": "Enter 'yes' if postural tremor is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "tremor_postural_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "tremor_dystonic_sympt",
@@ -731,7 +814,8 @@
     "mapped_excel_column": "Guessed: tremor_dystonic_sympt",
     "response_convertion_strategy": "Enter 'yes' if dystonic tremor is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "tremor_dystonic_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "rigidity_sympt",
@@ -739,7 +823,8 @@
     "mapped_excel_column": "Guessed: rigidity_sympt",
     "response_convertion_strategy": "Enter 'yes' if rigidity is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "rigidity_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "postural_instability_sympt",
@@ -747,7 +832,8 @@
     "mapped_excel_column": "Guessed: postural_instability_sympt",
     "response_convertion_strategy": "Enter 'yes' if postural instability is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "postural_instability_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "levodopa_response",
@@ -755,7 +841,8 @@
     "mapped_excel_column": "Guessed: levodopa_response",
     "response_convertion_strategy": "Enter 'good' for good/excellent response, 'partial' for moderate/incomplete response, 'poor' for minimal/no response, or -99 if not reported or not treated with levodopa.",
     "custom_processor": "levodopa_response",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "response_quantification",
@@ -763,7 +850,8 @@
     "mapped_excel_column": "Guessed: response_quantification",
     "response_convertion_strategy": "Enter any quantitative measure of levodopa response (e.g., percentage improvement on UPDRS). If not reported, enter -99.",
     "custom_processor": "response_quantification",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "dyskinesia_sympt",
@@ -771,7 +859,8 @@
     "mapped_excel_column": "Guessed: dyskinesia_sympt",
     "response_convertion_strategy": "Enter 'yes' if dyskinesia is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "dyskinesia_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "dystonia_sympt",
@@ -779,7 +868,8 @@
     "mapped_excel_column": "Guessed: dystonia_sympt",
     "response_convertion_strategy": "Enter 'yes' if dystonia is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "dystonia_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "hyperreflexia_sympt",
@@ -787,7 +877,8 @@
     "mapped_excel_column": "Guessed: hyperreflexia_sympt",
     "response_convertion_strategy": "Enter 'yes' if hyperreflexia is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "hyperreflexia_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "diurnal_fluctuations_sympt",
@@ -795,7 +886,8 @@
     "mapped_excel_column": "Guessed: diurnal_fluctuations_sympt",
     "response_convertion_strategy": "Enter 'yes' if diurnal fluctuations are present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "diurnal_fluctuations_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "sleep_benefit_sympt",
@@ -803,7 +895,8 @@
     "mapped_excel_column": "Guessed: sleep_benefit_sympt",
     "response_convertion_strategy": "Enter 'yes' if sleep benefit is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "sleep_benefit_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "motor_fluctuations_sympt",
@@ -811,7 +904,8 @@
     "mapped_excel_column": "Guessed: motor_fluctuations_sympt",
     "response_convertion_strategy": "Enter 'yes' if motor fluctuations are present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "motor_fluctuations_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "depression_sympt",
@@ -819,7 +913,8 @@
     "mapped_excel_column": "Guessed: depression_sympt",
     "response_convertion_strategy": "Enter 'yes' if depression is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "depression_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "depression_scale",
@@ -827,7 +922,8 @@
     "mapped_excel_column": "Guessed: depression_scale",
     "response_convertion_strategy": "Enter the name of the depression scale used and the score if available (e.g., 'BDI: 18'). If not reported, enter -99.",
     "custom_processor": "depression_scale",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "anxiety_sympt",
@@ -835,7 +931,8 @@
     "mapped_excel_column": "Guessed: anxiety_sympt",
     "response_convertion_strategy": "Enter 'yes' if anxiety is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "anxiety_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "anxiety_scale",
@@ -843,7 +940,8 @@
     "mapped_excel_column": "Guessed: anxiety_scale",
     "response_convertion_strategy": "Enter the name of the anxiety scale used and the score if available (e.g., 'HAM-A: 15'). If not reported, enter -99.",
     "custom_processor": "anxiety_scale",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "psychotic_sympt",
@@ -851,7 +949,8 @@
     "mapped_excel_column": "Guessed: psychotic_sympt",
     "response_convertion_strategy": "Enter 'yes' if psychotic symptoms (hallucinations, delusions, etc.) are present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "psychotic_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "psychotic_scale",
@@ -859,7 +958,8 @@
     "mapped_excel_column": "Guessed: psychotic_scale",
     "response_convertion_strategy": "Enter the name of the psychotic symptoms scale used and the score if available. If not reported, enter -99.",
     "custom_processor": "psychotic_scale",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "sleep_disorder_sympt",
@@ -867,7 +967,8 @@
     "mapped_excel_column": "Guessed: sleep_disorder_sympt",
     "response_convertion_strategy": "Enter 'yes' if sleep disorders (RBD, insomnia, etc.) are present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "sleep_disorder_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "cognitive_decline_sympt",
@@ -875,7 +976,8 @@
     "mapped_excel_column": "Guessed: cognitive_decline_sympt",
     "response_convertion_strategy": "Enter 'yes' if cognitive decline is present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "cognitive_decline_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "subdomains_cognitive_decline",
@@ -883,7 +985,8 @@
     "mapped_excel_column": "Guessed: subdomains_cognitive_decline",
     "response_convertion_strategy": "List the specific cognitive domains affected (e.g., 'memory, executive function, attention'). If not reported or not applicable, enter -99.",
     "custom_processor": "subdomains_cognitive_decline",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "cognitive_decline_scale",
@@ -891,7 +994,8 @@
     "mapped_excel_column": "Guessed: cognitive_decline_scale",
     "response_convertion_strategy": "Enter the name of the cognitive assessment scale used and the score if available (e.g., 'MMSE: 24', 'MoCA: 21'). If not reported, enter -99.",
     "custom_processor": "cognitive_decline_scale",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "autonomic_sympt",
@@ -899,7 +1003,8 @@
     "mapped_excel_column": "Guessed: autonomic_sympt",
     "response_convertion_strategy": "Enter 'yes' if autonomic symptoms (orthostatic hypotension, urinary dysfunction, etc.) are present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "autonomic_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "atypical_park_sympt",
@@ -907,7 +1012,8 @@
     "mapped_excel_column": "Guessed: atypical_park_sympt",
     "response_convertion_strategy": "Enter 'yes' if atypical parkinsonian features are present, 'no' if explicitly stated as absent, or -99 if not reported.",
     "custom_processor": "atypical_park_sympt",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "pathogenicity1",
@@ -915,7 +1021,8 @@
     "mapped_excel_column": "Guessed: pathogenicity1",
     "response_convertion_strategy": "Enter classification as 'pathogenic', 'likely pathogenic', 'VUS' (variant of uncertain significance), 'likely benign', or 'benign'. If not reported, enter -99.",
     "custom_processor": "pathogenicity1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "pathogenicity2",
@@ -923,7 +1030,8 @@
     "mapped_excel_column": "Guessed: pathogenicity2",
     "response_convertion_strategy": "Enter classification as 'pathogenic', 'likely pathogenic', 'VUS' (variant of uncertain significance), 'likely benign', or 'benign'. If not applicable or not reported, enter -99.",
     "custom_processor": "pathogenicity2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "pathogenicity3",
@@ -931,7 +1039,8 @@
     "mapped_excel_column": "Guessed: pathogenicity3",
     "response_convertion_strategy": "Enter classification as 'pathogenic', 'likely pathogenic', 'VUS' (variant of uncertain significance), 'likely benign', or 'benign'. If not applicable or not reported, enter -99.",
     "custom_processor": "pathogenicity3",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "CADD_1",
@@ -939,7 +1048,8 @@
     "mapped_excel_column": "Guessed: CADD_1",
     "response_convertion_strategy": "Enter the CADD phred score as a numerical value. If not reported, enter -99.",
     "custom_processor": "CADD_1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "CADD_2",
@@ -947,7 +1057,8 @@
     "mapped_excel_column": "Guessed: CADD_2",
     "response_convertion_strategy": "Enter the CADD phred score as a numerical value. If not applicable or not reported, enter -99.",
     "custom_processor": "CADD_2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "CADD_3",
@@ -955,7 +1066,8 @@
     "mapped_excel_column": "Guessed: CADD_3",
     "response_convertion_strategy": "Enter the CADD phred score as a numerical value. If not applicable or not reported, enter -99.",
     "custom_processor": "CADD_3",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "fun_evidence_pos_1",
@@ -963,7 +1075,8 @@
     "mapped_excel_column": "Guessed: fun_evidence_pos_1",
     "response_convertion_strategy": "Enter a brief description of functional evidence supporting pathogenicity (e.g., 'reduced enzyme activity', 'protein misfolding'). If none reported, enter -99.",
     "custom_processor": "fun_evidence_pos_1",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "fun_evidence_pos_2",
@@ -971,7 +1084,8 @@
     "mapped_excel_column": "Guessed: fun_evidence_pos_2",
     "response_convertion_strategy": "Enter a brief description of functional evidence supporting pathogenicity. If not applicable or none reported, enter -99.",
     "custom_processor": "fun_evidence_pos_2",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "fun_evidence_pos_3",
@@ -979,7 +1093,8 @@
     "mapped_excel_column": "Guessed: fun_evidence_pos_3",
     "response_convertion_strategy": "Enter a brief description of functional evidence supporting pathogenicity. If not applicable or none reported, enter -99.",
     "custom_processor": "fun_evidence_pos_3",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "entry",
@@ -987,13 +1102,16 @@
     "mapped_excel_column": "Guessed: entry",
     "response_convertion_strategy": "Enter any identification number or code assigned to this entry. If not applicable, enter -99.",
     "custom_processor": "entry",
-    "query_processor": "gemini"
+    "query_processor": "gemini",
+    "active": true
   },
   {
     "field": "comment",
     "question": "Any additional general comments about this data?",
     "mapped_excel_column": "Guessed: comment",
     "response_convertion_strategy": "Enter any additional comments or notes that don't fit into other fields. If none, enter -99.",
-    "custom_processor": "comment"
+    "custom_processor": "entry",
+    "query_processor": "gemini",
+    "active": true
   }
 ]
