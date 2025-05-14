@@ -1,4 +1,5 @@
 import json
+import shutil
 from typing import List, Dict
 
 from fastapi import FastAPI, Query, HTTPException, Form, File, UploadFile, Response
@@ -11,6 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 
 import utils
+from ai.routes import ai_routes
 from charts.aao_empirical_distribution import generate_aao_empirical_distribution
 from charts.aao_histogram import generate_aao_histogram
 from charts.country_pie import generate_country_pie_chart
@@ -22,6 +24,7 @@ from charts.world_map import generate_world_map_charts_data
 from charts.triggers_chart import generate_triggers_chart
 from charts.duration_chart import generate_duration_chart
 from charts.treatment_response_chart import generate_treatment_response_chart
+from qc.routes import qc_routes
 from study_details import get_patients_for_publication
 from mutation_details import get_data_for_mutation
 import logging
@@ -73,12 +76,14 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+app.include_router(qc_routes.router, prefix="/api/gene", tags=["gene"])
+app.include_router(ai_routes.router, prefix="/api/ai", tags=["ai"])
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
+        "*",
     ],  # Allow your frontend origin
     allow_credentials=True,
     allow_methods=["*"],  # You can specify specific HTTP methods if needed
@@ -1117,3 +1122,7 @@ Input data:
 #     json_string = text[start:end].strip()
 #
 #     return json_string
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "main_app"}
