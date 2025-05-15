@@ -70,7 +70,7 @@ class CustomProcessors:
         Returns:
             str: The value to process for testing it should always return 'PD'
         """
-        return "PD"
+        return "PARK"
 
 
     @staticmethod
