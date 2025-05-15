@@ -11,6 +11,10 @@
     {
       "patient": "CII-3",
       "family": "Family C"
+    },
+    {
+      "patient": "D",
+      "family": null
     }
   ]
 }
