@@ -1186,7 +1186,7 @@ async def delete_patient_identifier(
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error deleting patient identifier: {str(e)}")
 
-@router.get("/file/mapping_data")
+@router.get("/gene/mapping_data")
 async def get_mapping_data():
     """
     Retrieve the content of the mapping_data_all.json file.
@@ -1631,6 +1631,7 @@ from pathlib import Path
 from fastapi import HTTPException
 from qc.api.gene.utils import EXPECTED_HEADERS
 from qc.config import properties_directory, excel_folder
+from ai.custom_processors import CustomProcessors
 
 # Ensure these directories exist
 EXCEL_FOLDER = Path(excel_folder)
@@ -1666,7 +1667,7 @@ def prepare_excel_row(patient_data: Dict[str, Any], expected_headers: set) -> Di
 
 # Helper to update or create symptom category JSON
 def update_symptom_json(gene_name: str, disease_abbrev: str, patient_data: Dict[str, Any], properties_dir: Path):
-    symptom_file_name = f"symptom_categories_{gene_name}_{disease_abbrev}.json"
+    symptom_file_name = f"symptom_categories_{disease_abbrev}_{gene_name}.json"
     symptom_file_path = properties_dir / symptom_file_name
 
     current_symptoms_data = {}
@@ -1676,25 +1677,79 @@ def update_symptom_json(gene_name: str, disease_abbrev: str, patient_data: Dict[
                 current_symptoms_data = json.load(f)
         except json.JSONDecodeError:
             print(f"Warning: Symptom file {symptom_file_path} is corrupted. Will overwrite.")
-            current_symptoms_data = {"Default Category": {}}  # Default structure
+            current_symptoms_data = {
+                "Motor signs and symptoms": {},
+                "Non-motor signs and symptoms": {},
+                "Unknown": {}
+            }  # Default structure
     else:
-        current_symptoms_data = {"Default Category": {}}  # Default structure
+        current_symptoms_data = {
+            "Motor signs and symptoms": {},
+            "Non-motor signs and symptoms": {},
+            "Unknown": {}
+        }  # Default structure
 
-    # Ensure "Default Category" exists
-    if "Default Category" not in current_symptoms_data:
-        current_symptoms_data["Default Category"] = {}
+    # Ensure all categories exist
+    for category in ["Motor signs and symptoms", "Non-motor signs and symptoms", "Unknown"]:
+        if category not in current_symptoms_data:
+            current_symptoms_data[category] = {}
 
     # Extract symptoms from patient_data
-    patient_symptoms = {}
+    motor_symptoms = {}
+    non_motor_symptoms = {}
+    unknown_symptoms = {}
+
+    # Process motor_symptoms and non_motor_symptoms fields
+    for symptom_type in ['motor_symptoms', 'non_motor_symptoms']:
+        symptoms_data = patient_data.get(symptom_type, '')
+        if symptoms_data and symptoms_data != '-99_NO_ANSWER':
+            symptoms = symptoms_data.split(';')
+            for symptom in symptoms:
+                if ':' in symptom:
+                    symptom_name, symptom_value = symptom.strip().split(':', 1)
+                    col_name = f"{symptom_name.strip().lower().replace(' ', '_')}_sympt"
+
+                    # Determine category based on symptom_type
+                    if symptom_type == 'motor_symptoms':
+                        if col_name not in current_symptoms_data["Motor signs and symptoms"]:
+                            motor_symptoms[col_name] = symptom_name.strip()
+                    else:  # non_motor_symptoms
+                        if col_name not in current_symptoms_data["Non-motor signs and symptoms"]:
+                            non_motor_symptoms[col_name] = symptom_name.strip()
+
+    # Process other symptom fields in patient_data
     for key, value in patient_data.items():
         key_lower = key.lower()
-        if "_sympt" in key_lower or "_hp:" in key_lower:
-            # Use original key for symptom name
-            if key not in current_symptoms_data["Default Category"]:
-                patient_symptoms[key] = key  # Store symptom_key: symptom_name (display name)
+        if ("_sympt" in key_lower or "_hp:" in key_lower) and key not in motor_symptoms and key not in non_motor_symptoms:
+            # Check if it's already in any category
+            found = False
+            for category in ["Motor signs and symptoms", "Non-motor signs and symptoms"]:
+                if key in current_symptoms_data[category]:
+                    found = True
+                    break
 
-    if patient_symptoms:
-        current_symptoms_data["Default Category"].update(patient_symptoms)
+            if not found:
+                # Try to categorize based on key name
+                if any(motor_term in key_lower for motor_term in ["motor", "tremor", "rigid", "bradykinesia", "postural", "gait", "dyskinesia", "dystonia"]):
+                    if key not in current_symptoms_data["Motor signs and symptoms"]:
+                        motor_symptoms[key] = key
+                elif any(non_motor_term in key_lower for non_motor_term in ["cognitive", "depression", "anxiety", "sleep", "psychotic", "autonomic", "olfaction"]):
+                    if key not in current_symptoms_data["Non-motor signs and symptoms"]:
+                        non_motor_symptoms[key] = key
+                else:
+                    if key not in current_symptoms_data["Unknown"]:
+                        unknown_symptoms[key] = key
+
+    # Update the categories with new symptoms
+    if motor_symptoms:
+        current_symptoms_data["Motor signs and symptoms"].update(motor_symptoms)
+    if non_motor_symptoms:
+        current_symptoms_data["Non-motor signs and symptoms"].update(non_motor_symptoms)
+    if unknown_symptoms:
+        current_symptoms_data["Unknown"].update(unknown_symptoms)
+
+    # Save the updated data
+    if motor_symptoms or non_motor_symptoms or unknown_symptoms:
         try:
             with open(symptom_file_path, 'w', encoding='utf-8') as f:
                 json.dump(current_symptoms_data, f, indent=2, ensure_ascii=False)
@@ -1708,22 +1763,60 @@ async def process_to_excel(data: List[Dict[str, Any]] = Body(...)):
     if not data:
         raise HTTPException(status_code=400, detail="No data provided")
 
+    # Load mapping data for custom processors
+    mapping_file_path = os.path.join(".questions", "mapping_data.json")
+
+    if not os.path.exists(mapping_file_path):
+        raise HTTPException(status_code=404, detail="Mapping data file not found")
+
+    with open(mapping_file_path, 'r', encoding='utf-8') as file:
+        mapping_data = json.load(file)
+
+    # Create a dictionary of field to custom processor mapping
+    field_processors = {}
+    for item in mapping_data:
+        if "field" in item and "custom_processor" in item and item["custom_processor"]:
+            field_processors[item["field"]] = item["custom_processor"]
+
     processed_rows = []
+
+    #remove from data column "Author_year" because there is another column with the name Author, year
+    for patient in data:
+        if 'Author_year' in patient:
+            del patient['Author_year']
+
 
     # Обработка каждой строки отдельно
     for patient in data:
         row = {key: '-99' for key in EXPECTED_HEADERS}
 
-        # Заполнение базовых полей из текущей строки данных
+        # Check if the processor method exists in CustomProcessors class
+        if hasattr(CustomProcessors, 'disease_abbrev'):
+            # Call the processor method to process the value
+            processor_method = getattr(CustomProcessors, 'disease_abbrev')
+            update_symptom_json(patient['gene1'], processor_method(patient['disease_abbrev']), patient, PROPERTIES_DIRECTORY)
+
         row['PMID'] = patient.get('PMID', '-99')
-        row['author, year'] = patient.get('Author_year', '-99')
         row['family_ID'] = patient.get('Family_ID', '-99')
         row['individual_ID'] = patient.get('individual_ID', '-99')
 
         # Динамическое заполнение всех полей из patient
         for field, value in patient.items():
             if field in EXPECTED_HEADERS:
-                row[field] = value
+                # Check if this field has a custom processor
+                if field in field_processors:
+                    processor_name = field_processors[field]
+                    # Check if the processor method exists in CustomProcessors class
+                    if hasattr(CustomProcessors, processor_name):
+                        # Call the processor method to process the value
+                        processor_method = getattr(CustomProcessors, processor_name)
+                        row[field] = processor_method(value)
+                    else:
+                        # If processor doesn't exist, use the value as is
+                        row[field] = value
+                else:
+                    # No custom processor, use the value as is
+                    row[field] = value
 
         # Обработка motor_symptoms и non_motor_symptoms
         for symptom_type in ['motor_symptoms', 'non_motor_symptoms']:
@@ -1745,8 +1838,9 @@ async def process_to_excel(data: List[Dict[str, Any]] = Body(...)):
         # Используем данные из первой строки для имени файла
         gene_name = processed_rows[0].get('gene1', 'gene_unknown')
         disease_abbrev = processed_rows[0].get('disease_abbrev', 'disease_unknown')
-        existing_files = list(EXCEL_FOLDER.glob(f"{gene_name}*.xlsx"))
-        excel_file_name = existing_files[0].name if existing_files else f"{gene_name}-{disease_abbrev}_auto_created.xlsx"
+        # add timestamp to filename
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        excel_file_name = f"{gene_name}-{disease_abbrev}_auto_created-{timestamp}.xlsx"
         excel_path = EXCEL_FOLDER / excel_file_name
 
         if excel_path.exists():
@@ -1756,7 +1850,6 @@ async def process_to_excel(data: List[Dict[str, Any]] = Body(...)):
             for _, new_row in df_new_rows.iterrows():
                 condition = (
                     (df_existing['PMID'] == new_row['PMID']) &
-                    (df_existing['author, year'] == new_row['author, year']) &
                     (df_existing['family_ID'] == new_row['family_ID']) &
                     (df_existing['individual_ID'] == new_row['individual_ID'])
                 )

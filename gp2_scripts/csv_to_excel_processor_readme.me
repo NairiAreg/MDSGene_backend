@@ -1,0 +1,114 @@
+# CSV to Excel Data Processor
+
+## Overview
+
+This tool processes genetic variant data from CSV files and adds it to an Excel spreadsheet following specific formatting rules. It was designed to work with the Parkinson's disease variant data files (PARKPINK1.csv and PARKVPS35.csv) and the template Excel file (Ignacio_variant_list 1.xlsx).
+
+## Files Description
+
+### 1. csv_to_excel.py
+
+The main Python script that processes CSV files and updates the Excel file.
+
+### 2. PARKPINK1.csv
+
+Contains Parkinson's disease variant data related to the PINK1 gene with the following columns:
+- `pmid`: PubMed ID reference
+- `protein`: Protein change notation (e.g., "p.Arg492*")
+- `gene`: Gene name (PINK1)
+- `hg19`: Genomic coordinate in hg19 reference (e.g., "1:20975710")
+- `ref_alt`: Reference and alternative alleles (e.g., "C,T")
+
+### 3. PARKVPS35.csv
+
+Contains Parkinson's disease variant data related to the VPS35 gene with the following columns:
+- `url`: Source URL of the variant information
+- `protein`: Protein change notation (e.g., "p.Pro316Ser")
+- `gene`: Gene name (VPS35)
+- `hg19`: Genomic coordinate in hg19 reference (e.g., "16:46708541")
+- `ref_alt`: Reference and alternative alleles (e.g., "G, A")
+
+### 4. Ignacio_variant_list 1.xlsx
+
+The Excel template file that will be updated with the transformed data from the CSV files.
+
+## Data Transformation Rules
+
+The script transforms the CSV data as follows before adding it to the Excel file:
+
+1. **Variant column**: `gene (protein)`
+   - Example: "PINK1 (p.Arg492*)"
+
+2. **hg19 column**: `chr{hg19}>{ref_alt}`
+   - Example: "chr1:20975710>C,T"
+
+3. **snp_name column**: Value from `protein` field
+   - Example: "p.Arg492*"
+
+4. **locus column**: Value from `gene` field
+   - Example: "PINK1"
+
+5. **submitter_email column**: Always set to "joanne.trinh@uni-luebeck.de"
+
+## Requirements
+
+- Python 3.6 or higher
+- pandas library
+- openpyxl library
+
+Install required libraries with:
+```
+pip install pandas openpyxl
+```
+
+## How to Use
+
+1. Make sure all files (Python script, CSV files, and Excel file) are in the same directory.
+
+2. Run the Python script:
+   ```
+   python csv_to_excel.py
+   ```
+
+3. When prompted, enter the name of the CSV file you want to process:
+   ```
+   Enter the CSV filename to process: PARKPINK1.csv
+   ```
+   or
+   ```
+   Enter the CSV filename to process: PARKVPS35.csv
+   ```
+
+4. The script will read the specified CSV file, transform the data according to the rules, and add it to the Excel file.
+
+5. Check the updated Excel file to verify the data has been added correctly.
+
+## Example
+
+For the PARKPINK1.csv entry:
+```
+pmid: 37198191
+protein: p.Arg492*
+gene: PINK1
+hg19: 1:20975710
+ref_alt: C,T
+```
+
+The transformed data added to the Excel file will be:
+```
+Variant: PINK1 (p.Arg492*)
+hg19: chr1:20975710>C,T
+snp_name: p.Arg492*
+locus: PINK1
+submitter_email: joanne.trinh@uni-luebeck.de
+```
+
+## Troubleshooting
+
+- If you get an error about missing files, make sure the CSV and Excel files are in the same directory as the Python script.
+- If you encounter issues with the pandas or openpyxl libraries, ensure they are properly installed.
+- If the Excel file structure changes, you may need to modify the script to match the new structure.
+
+## Contact
+
+For any questions or issues, please contact joanne.trinh@uni-luebeck.de.
