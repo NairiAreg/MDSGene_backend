@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have cognitive decline?",
+  "context": "Based on the information in Table 2, \"Clinical features of patients with p.D620N mutation,\" for patient 'CII-3', the row \"Dementia\" has a \"–\" entry. This indicates that dementia was not present. As dementia is a form of cognitive decline, and no other information suggests cognitive decline for this patient, the answer is:\n\nNo"
+}

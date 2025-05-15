@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have action tremor?",
+  "context": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") and the \"Clinical Presentation\" section on page 3:\n\n*   Table 2 indicates that patient BIII-8 has \"Resting tremor\" (marked with a \"+\").\n*   The text in \"Clinical Presentation\" states: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor...\"\n\nThe document specifies \"resting tremor\" for patient BIII-8. It does not explicitly state whether patient BIII-8 has \"action tremor\".\n\nTherefore, the answer is:\nInformation not found"
+}

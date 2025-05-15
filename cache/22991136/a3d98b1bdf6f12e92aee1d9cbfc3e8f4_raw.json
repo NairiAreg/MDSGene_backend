@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes, patient 'BIII-8' has sleep benefit.\n\nThis information is found in Table 2 on page 3, under the \"Clinical features of patients with p.D620N mutation\". For patient \"BIII-8\", the row for \"Sleep benefit\" has a \"+\" sign, indicating the presence of this feature.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Does the patient have sleep benefit?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Does the patient have sleep benefit?\n\nIf the information is not found in the document, state 'Information not found'."
+}

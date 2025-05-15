@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nPatient 'AII-11' is described in the \"Clinical Presentation\" section (Page 3, right column): \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62... His father and 4 of 8 siblings were diagnosed with PD (Fig. 1A)...\"\n\nThe abbreviation \"PD\" is defined multiple times in the document, for example, in the Abstract (Page 1, left column): \"...autosomal dominant Parkinson's disease (PD)...\"\n\nTherefore, the abbreviation of the disease diagnosed in patient 'AII-11' is **PD**.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What is the abbreviation of the disease or condition diagnosed in this patient?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What is the abbreviation of the disease or condition diagnosed in this patient?\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "missense",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What type of mutation is the first variant?",
+  "context": "The first variant for patient 'CII-3' from family 'C' is the p.D620N mutation.\n\nThe document states on page 2, under \"Results\", \"Detection of p.D620N Mutation\": \"We detected the heterozygous **missense** p.D620N mutation in 3 unrelated patients with ADPD...\"\n\nFigure 1 on page 3 shows the pedigree for Family C, and patient CII-3 is one of the individuals analyzed. Table 1 on page 3 lists patient CII-3 as having the \"VPS35 p.D620N\" mutation.\n\nTherefore, the type of mutation is missense."
+}

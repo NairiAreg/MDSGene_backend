@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have postural tremor?",
+  "context": "Information not found.\n\n(The document states in Table 2 that patient BIII-8 has 'Resting tremor' marked as '+' (present) and 'Postural instability' marked as '-' (absent). However, 'Postural tremor' is not listed as a specific clinical feature in Table 2 for patient BIII-8 or any other patient, nor is it explicitly mentioned in the text for patient BIII-8.)"
+}

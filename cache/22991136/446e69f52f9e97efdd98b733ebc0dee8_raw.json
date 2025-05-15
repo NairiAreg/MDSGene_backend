@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Patient BIII-8 carries the p.D620N mutation in the VPS35 gene (Table 1: \"VPS35 p.D620N A/G\" for patient BIII-8).\n\nThe text on page 3, first paragraph under \"Results\" states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nThis indicates that no second mutation was found in the VPS35 gene for patient BIII-8.\n\nTherefore, the answer is:\nNone.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Second mutation (cDNA), if any?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Second mutation (cDNA), if any?\n\nIf the information is not found in the document, state 'Information not found'."
+}

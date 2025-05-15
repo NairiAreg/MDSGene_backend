@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': At what age did the patient die (if applicable)?",
+  "context": "Based on the information in the document:\n\n*   **Figure 1C** (page 3) shows the pedigree for Family C. Patient II-3 (CII-3) is an affected male (closed square). The legend for Figure 1 states: \"forward slash through symbol, deceased individuals\". Patient CII-3's symbol does *not* have a forward slash through it.\n*   **Table 2** (page 3) provides clinical features for patient CII-3. It lists \"Age at disease onset (y)\" as 34 and \"Disease duration (y)\" as 7. It does not list an age of death.\n\nTherefore, the document does not state that patient CII-3 from Family C has died, nor does it provide an age of death.\n\nInformation not found."
+}

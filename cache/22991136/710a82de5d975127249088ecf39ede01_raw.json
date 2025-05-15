@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Second mutation protein change?",
+  "context": "On page 3, the text below Figure 1 states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient AII-11 from Family A is identified as carrying the p.D620N mutation (Fig. 1, Table 1). The document indicates that no *other* variants in VPS35 were found in these patients. The document does not provide information about a second mutation protein change in any other gene for patient AII-11.\n\nTherefore, based only on the information in the document:\n\nInformation not found."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "heterozygous",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the zygosity of the first mutation?",
+  "context": "The zygosity of the first mutation (p.D620N) for patient 'CII-3' from family 'Family C' is heterozygous.\n\nThis is supported by:\n1.  **Page 2, Results, \"Detection of p.D620N Mutation\":** \"We detected the heterozygous missense p.D620N mutation in 3 unrelated patients with ADPD...\" Patient CII-3 is one of these patients from an ADPD family (Family C, as shown in Figure 1C and Table 2).\n2.  **Table 1. Haplotype analysis of VPS35 p.D620N mutation carriers:** For patient \"CII-3\", under the row \"VPS35 p.D620N\", the entry is \"A/G\". This notation indicates that the patient has one 'A' allele (the mutant allele, given c.1858G>A results in p.D620N) and one 'G' allele (the wild-type allele) at this position, which defines a heterozygous state.\n3.  **Page 4, Discussion, first paragraph:** \"We detected the heterozygous p.D620N mutation of VPS35 in 3 ADPD families...\""
+}

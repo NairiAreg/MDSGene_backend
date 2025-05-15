@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.\n\nThe document states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" (Page 3, first paragraph under \"Results\"). Patient AII-11 from Family A is one of the patients identified with the p.D620N mutation (Figure 1A, Table 1, Table 2). Therefore, according to this document, patient AII-11 was found to have only one mutation (p.D620N) in the VPS35 gene. There is no mention of a second or third mutation for this patient within the VPS35 gene, nor is there information provided about mutations in other genes specifically for patient AII-11.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What is the pathogenicity classification for the third mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What is the pathogenicity classification for the third mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

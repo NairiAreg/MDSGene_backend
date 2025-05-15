@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Japanese",
+  "question": "Format answer for: Regarding patient 'D': What is the patient's ethnicity?",
+  "context": "The document states:\n1.  The title of the research article is \"VPS35 Mutation in **Japanese** Patients with Typical Parkinson's Disease.\"\n2.  In the \"Patients and Methods\" section, under \"Subjects\" (page 2): \"The study subjects were 308 **Japanese** patients (300 index patients) with ADPD... and 433 **Japanese** SPD patients...\"\n3.  In the \"Discussion\" section (page 4): \"We detected the heterozygous p.D620N mutation of VPS35 in 3 ADPD families and 1 SPD patient with **East Asian ancestry**.\"\n4.  Also in the \"Discussion\" section (page 4), when discussing haplotype analysis: \"...patient CII-3 (family C) and **patient D (SPD)**.\" This identifies patient D as the SPD patient.\n\nSince Patient D is the one SPD patient found with the mutation, and this patient is described as having \"East Asian ancestry\" and is part of a study cohort explicitly defined as \"Japanese patients,\" the patient's ethnicity is Japanese.\n\nJapanese."
+}

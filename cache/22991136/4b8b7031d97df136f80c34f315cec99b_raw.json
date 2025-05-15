@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have motor symptoms?",
+  "context": "Yes, patient BIII-8 has motor symptoms.\n\nAccording to Table 2 on page 3, patient 'BIII-8' presents with:\n*   Resting tremor (+)\n*   Bradykinesia (+)\n*   Rigidity (+)\n*   Gait disturbance (+)\n*   Postural instability (+)\n\nThe first paragraph on page 2 of the document describes Parkinson's disease (PD) as being \"characterized by progressive motor disturbances manifested by tremor, rigidity, akinesia, and postural instability.\" The listed symptoms for BIII-8 fall under this description of motor symptoms."
+}

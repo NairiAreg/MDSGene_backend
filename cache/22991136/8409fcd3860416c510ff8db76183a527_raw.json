@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information contained within the provided document, patient BIII-8 from Family B was found to have the p.D620N mutation in the VPS35 gene. The document states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" (Page 3, first full paragraph).\n\nTherefore, the document does not provide information about a \"third mutation\" for patient BIII-8.\n\nInformation not found",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What is the standardized alias for the third mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What is the standardized alias for the third mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

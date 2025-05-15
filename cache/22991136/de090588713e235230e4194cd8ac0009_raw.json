@@ -1,0 +1,5 @@
+{
+  "raw_answer": "c.1858G>A",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the DNA-level mutation? (Primary mutation)",
+  "context": "Based on the information in the document:\n\nPatient BIII-8 from Family B carries the **p.D620N** mutation in the VPS35 gene (as indicated in Figure 1, Table 1, and the text on page 3: \"Patients AII-11 and BIII-8 in this study carried at least the same single allele of microsatellites in the flanking region of VPS35 (Table 1).\").\n\nThe DNA-level change for the p.D620N mutation is specified in the \"Genetic Analysis\" section on page 2: \"**c.1858G>A (p.D620N)**\". This is also mentioned in the \"Discussion\" on page 4: \"the substitution of VPS35 **c.1858G>A (p.D620N)**\".\n\nTable 1 shows that for patient BIII-8, under \"VPS35 p.D620N\", the entry is \"A/G\", indicating they are heterozygous for this mutation.\n\nTherefore, the DNA-level mutation for patient 'BIII-8' is **c.1858G>A** in the VPS35 gene."
+}

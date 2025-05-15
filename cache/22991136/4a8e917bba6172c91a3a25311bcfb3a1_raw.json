@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': How does the patient respond to levodopa treatment?",
+  "context": "Based on the information in the document:\n\nIn TABLE 2, \"Clinical features of patients with p.D620N mutation,\" for patient 'AII-11', the row \"Clinical response to levodopa\" has a \"+\" symbol.\n\nTherefore, patient 'AII-11' from Family 'A' shows a positive clinical response to levodopa treatment."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the standardized alias for the first mutation?",
+  "context": "The standardized alias for the first mutation for patient 'BIII-8' from family 'Family B' is **p.D620N**.\n\nThis is stated in Table 1 on page 3, under the \"Patient ID\" column for \"BIII-8\", the row \"VPS35 p.D620N\" indicates the genotype \"A/G\", signifying the presence of this mutation. Figure 1 (page 3) also indicates that individuals marked with an asterisk (which includes BIII-8) were \"analyzed for the p.D620N mutation\". The text on page 3 further clarifies: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35,\" indicating this is the primary (and only identified) VPS35 mutation for these patients in this study."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "55",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': At what age was the patient diagnosed?",
+  "context": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3, patient 'BIII-8' had an 'Age at disease onset (y)' of 55.\n\nThe \"Clinical Presentation\" section on page 3 further states: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\"\n\nTherefore, patient 'BIII-8' was diagnosed (disease onset) at age 55."
+}

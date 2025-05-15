@@ -1,0 +1,5 @@
+{
+  "raw_answer": "VPS35",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the first gene with a pathogenic variant found in the patient?",
+  "context": "Based on the information contained within the provided document:\n\nPatient BIII-8 from Family B was found to have the p.D620N mutation (Table 1 and Table 2). This mutation is in the **VPS35** gene (Figure 1 caption, Table 1, Abstract, and multiple other mentions). The document states that \"The p.D620N has been reported previously as a pathogenic mutation for familial PD\" (Page 3, first column, first paragraph under Figure 1).\n\nTherefore, the first gene with a pathogenic variant found in patient 'BIII-8' from family 'Family B', according to this document, is **VPS35**."
+}

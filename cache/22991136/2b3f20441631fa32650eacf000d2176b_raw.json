@@ -1,0 +1,5 @@
+{
+  "raw_answer": "0",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': How many affected individuals in the family have homozygous mutations?",
+  "context": "Based on the information in the document:\n\nThe document states on page 2, under \"Results\": \"We detected the heterozygous missense p.D620N mutation in 3 unrelated patients with ADPD...\". Patient AII-11 is one of these ADPD patients from Family A (as shown in Figure 1A and Table 1 on page 3).\n\nThe question asks how many affected individuals in Family A have *homozygous* mutations.\nSince the detected mutation in the proband AII-11 (and other ADPD probands) is described as heterozygous, and there is no mention of any affected individual in Family A (or any other family) having a homozygous mutation for VPS35, the number of affected individuals in Family A with homozygous mutations reported in this document is 0.\n\nAnswer: 0"
+}

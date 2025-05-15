@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Resting tremor: yes; Bradykinesia: yes; Rigidity: yes; Gait disturbance: yes; Postural instability: yes; Wearing off: yes; Asymmetry at onset: yes; Levodopa-induced dyskinesia: yes; Dystonia at onset: no; Hyperreflexia: no; Gaze palsy: no",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': List all *motor* symptoms observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Rigidity: yes; Tremor: no; Bradykinesia: yes.",
+  "context": "Based on the information in Table 2 on page 3, for patient AII-11:\n\nResting tremor: yes\nBradykinesia: yes\nRigidity: yes\nGait disturbance: yes\nPostural instability: yes\nWearing off: yes\nAsymmetry at onset: yes\nLevodopa-induced dyskinesia: yes\nDystonia at onset: no\nHyperreflexia: no\nGaze palsy: no"
+}

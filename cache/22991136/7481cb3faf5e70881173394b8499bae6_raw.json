@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes, according to Table 2 (\"Clinical features of patients with p.D620N mutation\"), patient BIII-8 has a '+' in the row for \"Dystonia at onset\", indicating the presence of dystonia at onset.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Does the patient have dystonia?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Does the patient have dystonia?\n\nIf the information is not found in the document, state 'Information not found'."
+}

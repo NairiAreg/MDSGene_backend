@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Enter the disease abbreviation as reported (e.g., 'PD' for Parkinson's disease, 'MSA' for Multiple System Atrophy). If not abbreviated in the article, use standard abbreviations for common conditions. If diagnosis is uncertain or not provided, enter -99.",
+  "question": "Format answer for: Regarding patient 'D': What is the abbreviation of the disease or condition diagnosed in this patient?",
+  "context": "PD"
+}

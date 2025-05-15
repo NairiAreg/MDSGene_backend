@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based *only* on the information contained within the provided document, the motor symptoms observed in patient 'D' are as follows:\n\nResting tremor: yes\nBradykinesia: yes\nRigidity: yes\nGait disturbance: yes\nPostural instability: yes\nWearing off: yes\nLevodopa-induced dyskinesia: yes\nDystonia at onset: no\nHyperreflexia: no\nGaze palsy: no",
+  "question": "Regarding patient 'D': List all *motor* symptoms observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Rigidity: yes; Tremor: no; Bradykinesia: yes.",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': List all *motor* symptoms observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Rigidity: yes; Tremor: no; Bradykinesia: yes.\n\nIf the information is not found in the document, state 'Information not found'."
+}

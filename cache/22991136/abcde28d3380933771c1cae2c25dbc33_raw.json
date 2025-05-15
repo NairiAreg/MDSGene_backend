@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the original alias or alternate notation for the second mutation as reported in the article?",
+  "context": "Based on the information in the document:\n\nPatient CII-3 from Family C was found to have the p.D620N mutation in the VPS35 gene (as seen in Figure 1C, Table 1, and Table 2).\nThe text on page 3, under \"Detection of p.D620N Mutation\", states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nThis indicates that only one mutation (p.D620N) was reported for patient CII-3 within the VPS35 gene in this article. Therefore, there is no \"second mutation\" reported for patient CII-3 in this document.\n\nInformation not found."
+}

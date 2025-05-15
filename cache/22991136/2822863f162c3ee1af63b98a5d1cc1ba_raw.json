@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': How is the levodopa response quantified?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': How is the levodopa response quantified?\n\nIf the information is not found in the document, state 'Information not found'."
+}

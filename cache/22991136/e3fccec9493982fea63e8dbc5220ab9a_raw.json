@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have tremor?",
+  "context": "Yes, patient 'BIII-8' from family 'Family B' has tremor.\n\nThis information is found in:\n1.  **TABLE 2. Clinical features of patients with p.D620N mutation** on page 3. Under the column for \"Patient ID\" BIII-8, the row for \"Resting tremor\" shows a \"+\".\n2.  The **Clinical Presentation** section on page 3 states: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\""
+}

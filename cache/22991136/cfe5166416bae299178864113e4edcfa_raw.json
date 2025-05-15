@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What subdomains of cognitive function are affected (if any)?",
+  "context": "Based *only* on the information contained within the provided document:\n\nFor patient 'AII-11' from family 'Family A', the document states:\n1.  In Table 2, under \"Patient ID AII-11\", the entry for \"Dementia\" is \"+\".\n2.  In the \"Clinical Presentation\" section (page 3), it mentions: \"At age 75, he underwent gastrostomy for progressive dysphagia, then developed **cognitive dysfunction** without hallucination.\"\n\nWhile \"dementia\" and \"cognitive dysfunction\" indicate that cognitive functions are affected, the document does not specify the *subdomains* of cognitive function (e.g., memory, attention, executive function, language, visuospatial skills) that are affected for patient AII-11.\n\nTherefore, the answer is:\nInformation not found."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "G",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the reference allele for the first mutation?",
+  "context": "The document states on page 2, under \"Genetic Analysis\": \"In addition, SPD patients and control subjects were also genotyped for c.1858G>A (p.D620N) mutation...\".\n\nThe notation \"c.1858G>A\" indicates that at nucleotide position 1858, the reference allele is G, and it has mutated to A. Patient BIII-8 is listed in Table 1 as having the \"VPS35 p.D620N\" mutation with alleles \"A/G\". This is consistent with the c.1858G>A change, where G is the reference allele. The document focuses on the p.D620N mutation, and no other mutation is mentioned as being found in patient BIII-8.\n\nTherefore, the reference allele for the (first and only mentioned) mutation in patient BIII-8 is G.\n\nG"
+}

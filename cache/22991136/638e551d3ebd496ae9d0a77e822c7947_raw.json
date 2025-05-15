@@ -1,0 +1,5 @@
+{
+  "raw_answer": "c.1858G>A",
+  "question": "Format answer for: Regarding patient 'D': What is the DNA-level mutation? (Primary mutation)",
+  "context": "The DNA-level mutation for patient 'D' is **c.1858G>A**.\n\nThis is derived from the following information:\n*   Page 3, Table 2 (\"Clinical features of patients with p.D620N mutation\") lists patient 'D'.\n*   Page 2, under \"Genetic Analysis\", states: \"SPD patients and control subjects were also genotyped for **c.1858G>A (p.D620N)** mutation...\"\n*   Page 4, under \"Discussion\", states: \"We detected the heterozygous p.D620N mutation of VPS35 in 3 ADPD families and 1 SPD patient...\" and later clarifies, \"Because the family history of patient D was unknown, she was categorized as SPD.\"\n*   Page 4, under \"Discussion\", also states: \"Based on haplotype analysis reported in previous studies, the substitution of VPS35 **c.1858G>A (p.D620N)** occurs from independent mutational events.\"\n\nThese sections confirm that patient D has the p.D620N mutation, and the document specifies the DNA-level change for p.D620N as c.1858G>A."
+}

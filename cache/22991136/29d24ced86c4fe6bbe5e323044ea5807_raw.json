@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nPatient BIII-8 from Family B was found to have the heterozygous p.D620N mutation in the VPS35 gene (Table 1, Fig 1B).\nThe document states on page 3, \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nTherefore, regarding a third mutation (cDNA) for patient BIII-8:\nInformation not found.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Third mutation (cDNA), if any?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Third mutation (cDNA), if any?\n\nIf the information is not found in the document, state 'Information not found'."
+}

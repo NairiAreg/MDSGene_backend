@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What depression assessment scale was used and what was the score?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What depression assessment scale was used and what was the score?\n\nIf the information is not found in the document, state 'Information not found'."
+}

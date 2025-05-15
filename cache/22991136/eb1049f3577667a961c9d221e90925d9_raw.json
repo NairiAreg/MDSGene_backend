@@ -1,0 +1,5 @@
+{
+  "raw_answer": "On page 3, TABLE 2 (\"Clinical features of patients with p.D620N mutation\") lists clinical features for patient AII-11. For the row \"Hyperreflexia\", the entry for patient AII-11 is \"–\".\n\nBased on this, patient AII-11 does not have hyperreflexia.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have hyperreflexia?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have hyperreflexia?\n\nIf the information is not found in the document, state 'Information not found'."
+}

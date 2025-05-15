@@ -1,0 +1,5 @@
+{
+  "raw_answer": "For patient 'BIII-8' from family 'Family B', the genotype for the VPS35 p.D620N mutation is listed as 'A/G' in Table 1. This indicates two different alleles, meaning the mutation is heterozygous.\n\nThe text in the \"Results\" section on page 2 also states: \"We detected the heterozygous missense p.D620N mutation in 3 unrelated patients with ADPD...\". Patient BIII-8 is from an ADPD family (Family B, Fig. 1) and carries this mutation.\n\nTherefore, the zygosity of the first (p.D620N) mutation for patient BIII-8 is heterozygous.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What is the zygosity of the first mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What is the zygosity of the first mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

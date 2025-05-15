@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The document states in the \"Genetic Analysis\" section on page 2:\n\"Patients with ADPD and SPD were examined for the following 7 variants: ... of VPS35 (RefSeq accession number NM_018206.4).\"\n\nThis RefSeq accession number (NM_018206.4) refers to a transcript. The document does not explicitly mention a genome build.\n\nTherefore, the transcript used was NM_018206.4. Information on the genome build is not found.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Which genome build/transcript was used?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Which genome build/transcript was used?\n\nIf the information is not found in the document, state 'Information not found'."
+}

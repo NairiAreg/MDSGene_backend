@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The document states on page 3, in the first paragraph of the \"Results\" section: \"The p.D620N has been reported previously as a **pathogenic mutation** for familial PD.\" Patient BIII-8 from Family B was found to have the p.D620N mutation.\n\nAdditionally, on page 2, the first paragraph under the heading \"Parkinson's disease (PD) is a neurodegenerative disorder...\" states: \"One missense mutation has been reported to be **pathogenic for PD**.3,4 Mutation of c.1858G>A (p.D620N) was identified...\"\n\nTherefore, the pathogenicity classification for the first (and only mentioned) mutation in patient BIII-8 (which is p.D620N) is pathogenic.\n\nPathogenic.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What is the pathogenicity classification for the first mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What is the pathogenicity classification for the first mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

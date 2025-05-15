@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have action tremor?",
+  "context": "Information not found.\n\n**Reasoning:**\nTable 2 on page 3 lists \"Clinical features of patients with p.D620N mutation\". For patient \"CII-3\", the row \"Resting tremor\" is marked with a \"+\", indicating its presence. However, \"action tremor\" is not listed as a specific clinical feature for any patient in this table or mentioned in the text describing patient CII-3. The document only confirms \"upper limb rest tremor\" for patient CII-3 (page 3, \"Clinical Presentation\")."
+}

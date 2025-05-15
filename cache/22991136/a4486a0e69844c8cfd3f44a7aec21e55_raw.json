@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have depression?",
+  "context": "Table 2 on page 3, \"Clinical features of patients with p.D620N mutation,\" lists clinical features for patient BIII-8. The features listed are:\n- Age at disease onset (y): 55\n- Disease duration (y): 2\n- Resting tremor: +\n- Bradykinesia: +\n- Rigidity: +\n- Gait disturbance: +\n- Postural instability: +\n- Clinical response to levodopa: +\n- Wearing off: +\n- Asymmetry at onset: +\n- Orthostatic hypotension: -\n- Incontinence: -\n- Urinary urgency: -\n- Levodopa-induced dyskinesia: +\n- Sleep benefit: -\n- Dystonia at onset: -\n- Hyperreflexia: -\n- Hallucination: -\n- Other psychosis: -\n- Dementia: -\n- Gaze palsy: -\n- Brain MRI: WNL\n- Cardiac MIBG scintigraphy: Not performed\n\nDepression is not listed as a clinical feature for patient BIII-8 in this table or mentioned elsewhere in the document in relation to this specific patient.\n\nTherefore, based only on the information contained within the provided document:\nInformation not found."
+}

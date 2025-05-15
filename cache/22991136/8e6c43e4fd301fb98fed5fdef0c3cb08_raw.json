@@ -1,0 +1,5 @@
+{
+  "raw_answer": "p.Asp620Asn",
+  "question": "Format answer for: Regarding patient 'D': What is the protein-level effect of the mutation?",
+  "context": "Based on the information in the document:\n\nFor patient 'D', the protein-level effect of the mutation is a **missense p.D620N mutation**.\n\nThis means that at position 620 of the VPS35 protein, the amino acid Aspartic acid (D) is replaced by Asparagine (N). This is explicitly stated on page 3, under \"Detection of p.D620N Mutation,\" where it says: \"We detected the heterozygous missense p.D620N mutation in 3 unrelated patients with ADPD and 1 patient with SPD (Fig. 1).\" Patient D is identified as the patient with SPD in Table 2 and in the discussion on page 4. The mutation is consistently referred to as p.D620N for all affected patients identified, including patient D."
+}

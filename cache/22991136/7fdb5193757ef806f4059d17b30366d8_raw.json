@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': How does the patient respond to levodopa treatment?",
+  "context": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3, patient 'CII-3' shows a positive clinical response to levodopa. This is indicated by a '+' in the row \"Clinical response to levodopa\" for patient CII-3."
+}

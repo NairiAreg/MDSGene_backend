@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Does the patient have rigidity?",
+  "context": "Yes, patient 'AII-11' from family 'Family A' has rigidity.\n\nThis information is found in Table 2 on page 3, under the \"Patient ID\" column for \"AII-11\", where the row for \"Rigidity\" has a \"+\" symbol, indicating its presence."
+}

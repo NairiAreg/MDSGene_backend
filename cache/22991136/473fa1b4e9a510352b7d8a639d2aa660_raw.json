@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nOn page 3, under the \"Results\" section, the first paragraph states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Patient CII-3 is identified as carrying the p.D620N mutation (Table 1 and Table 2).\n\nTherefore, the document does not report a \"second mutation\" for patient CII-3 in the VPS35 gene.\n\nInformation not found.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What is the reference allele for the second mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What is the reference allele for the second mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

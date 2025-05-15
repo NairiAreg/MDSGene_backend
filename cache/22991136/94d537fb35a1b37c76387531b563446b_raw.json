@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the gnomAD v2.1.1 frequency for the third mutation?",
+  "context": "The document states on page 3, under the \"Results\" section, \"Detection of p.D620N Mutation\": \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nThis implies that patient BIII-8, who is listed in Table 1 (page 3) as a carrier of the p.D620N mutation, does not have a second or third mutation in VPS35 according to this study.\n\nFurthermore, the document does not mention \"gnomAD\" or provide gnomAD frequencies for any mutation.\n\nTherefore, the information about a \"third mutation\" for patient BIII-8 and its gnomAD v2.1.1 frequency is not found in the document.\n\nInformation not found"
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on Table 2 \"Clinical features of patients with p.D620N mutation\" for patient BIII-8:\n\nOrthostatic hypotension: no\nIncontinence: no\nUrinary urgency: no\nSleep benefit: no\nHallucination: no\nOther psychosis: no\nDementia: no",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': List all *non-motor* symptoms (like cognitive, autonomic, psychiatric, sleep, sensory) observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Depression: yes; Anosmia: no; RBD: yes; Constipation: yes.",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': List all *non-motor* symptoms (like cognitive, autonomic, psychiatric, sleep, sensory) observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Depression: yes; Anosmia: no; RBD: yes; Constipation: yes.\n\nIf the information is not found in the document, state 'Information not found'."
+}

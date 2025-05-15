@@ -1,0 +1,5 @@
+{
+  "raw_answer": "77",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What was the age at examination (AAE) for this patient?",
+  "context": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3:\n\nFor patient AII-11:\n*   Age at disease onset (y) = 62\n*   Disease duration (y) = 15\n\nThe age at examination would be the age at disease onset plus the disease duration.\n62 + 15 = 77.\n\nThe text under \"Clinical Presentation\" on page 3 also states: \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62.\" This confirms his age at the time of the reported clinical status.\n\nTherefore, the age at examination (AAE) for patient 'AII-11' was 77."
+}

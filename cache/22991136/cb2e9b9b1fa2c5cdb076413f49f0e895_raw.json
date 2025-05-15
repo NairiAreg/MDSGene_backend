@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes, patient AII-11 developed cognitive dysfunction.\n\nThe document states on page 3, under \"Clinical Presentation\": \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62. At age 75, he underwent gastrostomy for progressive dysphagia, then developed cognitive dysfunction without hallucination.\"",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have cognitive decline?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have cognitive decline?\n\nIf the information is not found in the document, state 'Information not found'."
+}

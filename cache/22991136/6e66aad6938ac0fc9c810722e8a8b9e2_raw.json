@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes, patient 'BIII-8' from family 'Family B' does have parkinsonism symptoms.\n\nTable 2, \"Clinical features of patients with p.D620N mutation,\" lists the following for patient BIII-8:\n*   Resting tremor: +\n*   Bradykinesia: +\n*   Rigidity: +\n*   Gait disturbance: +\n*   Postural instability: +\n\nAdditionally, the text under \"Clinical Presentation\" on page 3 states: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\"",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Does the patient have parkinsonism symptoms?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Does the patient have parkinsonism symptoms?\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the physical genomic location of the mutation?",
+  "context": "Based on the information in the document:\n\nFor patient 'CII-3' from family 'Family C', the mutation is the p.D620N mutation in the VPS35 gene.\nThe document states:\n1.  On page 2, under \"Genetic Analysis\": \"p.D620N (exon 15)... of VPS35\".\n2.  Table 1 on page 3 lists \"VPS35 p.D620N\" for patient CII-3.\n3.  The haplotype analysis in Table 1 uses markers such as D16S401, Chr16_45.333M, and D16S3105. The \"16\" in \"D16S\" and \"Chr16\" indicates Chromosome 16.\n4.  On page 4, in the \"Discussion\" section, it states: \"By genotyping of D16S3105, which is located approximately 1.5 kb centromeric of VPS35...\" This confirms VPS35 is near D16S3105, which is on Chromosome 16.\n\nTherefore, the physical genomic location of the mutation is **exon 15 of the VPS35 gene, which is located on Chromosome 16**."
+}

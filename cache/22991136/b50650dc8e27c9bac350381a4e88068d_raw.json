@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Third mutation (cDNA), if any?",
+  "context": "Based on the information in the document:\n\n*   Patient CII-3 from Family C was analyzed for the VPS35 p.D620N mutation (Figure 1, Table 1, page 3).\n*   Patient CII-3 was found to have the heterozygous p.D620N mutation in the VPS35 gene (Table 1, page 3: \"VPS35 p.D620N A/G\" for CII-3). The cDNA notation for this mutation is c.1858G>A (page 2, \"Genetic Analysis\" and page 4, \"Discussion\").\n*   The document states on page 3: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nThe document identifies one mutation (p.D620N, corresponding to c.1858G>A at the cDNA level) in the VPS35 gene for patient CII-3 and explicitly states no other variants were found in all exons of VPS35 for these patients. Therefore, there is no information about a second or third mutation for patient CII-3 in the VPS35 gene.\n\nInformation not found."
+}

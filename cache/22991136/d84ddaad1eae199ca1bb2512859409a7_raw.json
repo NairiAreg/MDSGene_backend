@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\n*   In Figure 1 (Pedigrees of families with the VPS35 p.D620N mutation), patient BIII-8 is represented by an unslashed square. The legend for Figure 1 states: \"forward slash through symbol, deceased individuals\". Since BIII-8's symbol is not slashed, this indicates the patient was not deceased at the time of data collection for the pedigree.\n*   Table 2 (\"Clinical features of patients with p.D620N mutation\") lists patient BIII-8 with an \"Age at disease onset (y)\" of 55 and a \"Disease duration (y)\" of 2. There is no field or information regarding age at death.\n\nTherefore, the age at which patient 'BIII-8' died is not provided in the document.\n\nInformation not found.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': At what age did the patient die (if applicable)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': At what age did the patient die (if applicable)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

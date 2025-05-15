@@ -1,0 +1,5 @@
+{
+  "raw_answer": "p.Asp620Asn",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the protein-level effect of the mutation?",
+  "context": "Based on the information in the document:\n\nPatient 'CII-3' from family 'Family C' has the **p.D620N** mutation in the VPS35 gene. This notation (p.D620N) describes the protein-level effect: at amino acid position 620, an Aspartic Acid (D) has been substituted with an Asparagine (N). This is a missense mutation.\n\nTherefore, the protein-level effect of the mutation is **p.D620N**."
+}

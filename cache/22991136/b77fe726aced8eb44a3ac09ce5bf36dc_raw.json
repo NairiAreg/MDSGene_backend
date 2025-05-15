@@ -1,0 +1,5 @@
+{
+  "raw_answer": "VPS35",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the first gene with a pathogenic variant found in the patient?",
+  "context": "Based only on the information contained within the provided document:\n\nThe first gene with a pathogenic variant found in patient 'CII-3' from family 'Family C' is **VPS35**.\n\n(Evidence: Figure 1 on page 3 shows patient CII-3 in Pedigree C, who was analyzed for the p.D620N mutation. The figure caption states \"Pedigrees of families with the VPS35 p.D620N mutation\". Table 2 on page 3 lists clinical features for patient CII-3, under the heading \"Clinical features of patients with p.D620N mutation\". The abstract and multiple sections throughout the paper confirm that the p.D620N mutation is in the VPS35 gene and is considered pathogenic.)"
+}

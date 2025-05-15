@@ -1,0 +1,5 @@
+{
+  "raw_answer": "*   The phase of patient BIII-8 was undetermined, which made it inconclusive whether the p.D620N mutation was shared on a common founder with Family A. (Page 4, under \"Discussion\")\n*   Brain MRI for patient BIII-8 was WNL (within normal limits). (Table 2)\n*   Cardiac MIBG scintigraphy was not performed for patient BIII-8. (Table 2)",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Any additional general comments about this data?",
+  "context": "Based only on the information contained within the provided document, the following are additional general comments about the data for patient 'BIII-8' from family 'Family B':\n\n*   The phase of patient BIII-8 was undetermined, which made it inconclusive whether the p.D620N mutation was shared on a common founder with Family A. (Page 4, under \"Discussion\")\n*   Brain MRI for patient BIII-8 was WNL (within normal limits). (Table 2)\n*   Cardiac MIBG scintigraphy was not performed for patient BIII-8. (Table 2)"
+}

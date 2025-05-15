@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.\n\nThe document states on page 3, \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\" This identifies one initial symptom for CII-3. Table 2 on page 3 lists various clinical features for patient CII-3, including \"Resting tremor,\" \"Bradykinesia,\" \"Rigidity,\" etc., as present. However, the document does not provide a chronological order for the *initial* symptoms beyond the first mentioned (upper limb rest tremor) for patient CII-3.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What was the third initial symptom of the patient (if applicable)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What was the third initial symptom of the patient (if applicable)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

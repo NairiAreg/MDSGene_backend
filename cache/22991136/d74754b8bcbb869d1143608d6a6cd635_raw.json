@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have dystonia?",
+  "context": "Yes, according to Table 2 (\"Clinical features of patients with p.D620N mutation\"), patient BIII-8 has a '+' in the row for \"Dystonia at onset\", indicating the presence of dystonia at onset."
+}

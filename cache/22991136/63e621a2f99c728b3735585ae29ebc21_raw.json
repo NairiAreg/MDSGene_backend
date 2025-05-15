@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Table 2 on page 3 lists \"Clinical features of patients with p.D620N mutation\". For patient 'CII-3':\n*   Orthostatic hypotension: -\n*   Incontinence: -\n*   Urinary urgency: -\n\nThese are all autonomic symptoms, and they are all marked as negative (-) for patient CII-3.\n\nTherefore, based on the information provided for these specific autonomic symptoms, the patient does not have them.\n\nAnswer: No, patient CII-3 does not have the listed autonomic symptoms of orthostatic hypotension, incontinence, or urinary urgency.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Does the patient have autonomic symptoms?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Does the patient have autonomic symptoms?\n\nIf the information is not found in the document, state 'Information not found'."
+}

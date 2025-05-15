@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based *only* on the information contained within the provided document:\n\nThe mutation in patient 'D' is the p.D620N mutation.\nThis mutation is located in **exon 15 of the VPS35 gene** (page 2, \"Genetic Analysis\" section, states \"p.D620N (exon 15)\").\nThe VPS35 gene itself is located on **Chromosome 16**. This is inferred from Table 1 (page 3) which lists microsatellite markers with physical map positions on Chromosome 16 (e.g., \"Chr16_45.333M\", \"Chr16_45.615M\") in the vicinity of VPS35.\nFurthermore, the text on page 4 (\"Discussion\" section) states: \"D16S3105, which is located approximately 1.5 kb centromeric of VPS35\". This places the VPS35 gene (and therefore the mutation within it) on Chromosome 16 in that genomic region.",
+  "question": "Regarding patient 'D': What is the physical genomic location of the mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': What is the physical genomic location of the mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

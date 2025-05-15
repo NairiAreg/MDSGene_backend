@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the standardized alias for the third mutation?",
+  "context": "Based *only* on the information contained within the provided document:\n\nThe document states on page 3, in the first paragraph of the right column: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Patient CII-3 from Family C is one of the patients identified with the p.D620N mutation (as shown in Table 1 and Figure 1C).\n\nTherefore, according to this document, patient CII-3 was found to have only the p.D620N mutation in the VPS35 gene, and no other variants (which would include a \"second\" or \"third\" mutation) were detected in this patient within the VPS35 gene.\n\nThus, the information for a \"third mutation\" for patient CII-3 is not found in the document.\n\nInformation not found."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the pathogenicity classification for the second mutation?",
+  "context": "Based on the information in the document:\n\nOn page 3, in the \"Results\" section under \"Detection of p.D620N Mutation\", the text states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient CII-3 from Family C is listed in Table 1 and Table 2 as carrying the p.D620N mutation. Therefore, according to this document, patient CII-3 does not have a second mutation in the VPS35 gene.\n\nThus, the pathogenicity classification for a second mutation cannot be provided.\n\n**Information not found**"
+}

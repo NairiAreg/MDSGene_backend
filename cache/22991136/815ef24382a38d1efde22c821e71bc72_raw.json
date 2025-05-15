@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 2, \"Clinical features of patients with p.D620N mutation\", patient 'AII-11' has a '+' in the row for 'Sleep benefit'.\n\nTherefore, the patient does have sleep benefit.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have sleep benefit?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have sleep benefit?\n\nIf the information is not found in the document, state 'Information not found'."
+}

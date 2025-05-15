@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the original alias or alternate notation for the first mutation as reported in the article?",
+  "context": "Based on the information in the provided document, the mutation found in patient BIII-8 is p.D620N.\n\nThe article provides an alternate notation for this mutation on page 2, in the second paragraph of the main text (left column), stating: \"Mutation of c.1858G>A (p.D620N) was identified...\".\nAlso, in the \"Genetic Analysis\" section on page 2, it mentions: \"...SPD patients and control subjects were also genotyped for c.1858G>A (p.D620N) mutation...\".\n\nTherefore, the original alias or alternate notation for the first (and only reported) mutation for patient BIII-8 as reported in the article is **c.1858G>A**."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nPatient CII-3 from Family C was found to have the p.D620N mutation in the VPS35 gene (Table 1 and Table 2).\nThe document states on page 3, under \"Detection of p.D620N Mutation\": \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nSince patient CII-3 is one of the patients carrying the p.D620N mutation, this statement implies that no other (second) mutation was found in the VPS35 gene for this patient. The document does not provide information about a second mutation protein change for patient CII-3 in any other gene.\n\nTherefore, the specific protein change for a second mutation is not found in the document.\n\nInformation not found",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Second mutation protein change?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Second mutation protein change?\n\nIf the information is not found in the document, state 'Information not found'."
+}

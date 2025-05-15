@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nRegarding patient 'BIII-8' from family 'Family B', the document states that the determination of the chromosomal phase for the p.D620N mutation was inconclusive for patient BIII-8. It further comments that to determine the chromosomal phase of families B (which includes BIII-8) and C, \"detailed genetic analyses of other family members are needed in future studies.\"",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Are there any additional comments about the study methodology?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Are there any additional comments about the study methodology?\n\nIf the information is not found in the document, state 'Information not found'."
+}

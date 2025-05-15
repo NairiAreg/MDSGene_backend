@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information contained within the provided document, patient 'CII-3' from 'Family C' is one of the subjects of the study described in this document.\n\nThe first author of this document is Maya Ando.\nThe publication year of this document is 2012 (visible in the abstract copyright and the footer).\n\nTherefore, the first author is Maya Ando and the publication year is 2012.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Who is the first author and what is the publication year?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Who is the first author and what is the publication year?\n\nIf the information is not found in the document, state 'Information not found'."
+}

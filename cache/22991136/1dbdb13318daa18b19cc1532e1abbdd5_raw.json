@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The document states on page 2, under \"Subjects\": \"The study subjects were 308 Japanese patients (300 index patients) with ADPD (age at disease onset [AAO; mean ± SD], 51.1 ± 11.7 years; range, 8-83 years; female/male [F/M] ratio, 1.35) and 433 Japanese SPD patients...\"\nOn page 2, under \"Results\", it states: \"We detected the heterozygous missense p.D620N mutation in 3 unrelated patients with ADPD...\"\nPatient CII-3 is listed in Table 2 (page 3) as one of the patients with the p.D620N mutation and is part of Family C (Fig 1, page 3), which is one of the ADPD families.\n\nTherefore, patient CII-3 is Japanese.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What is the patient's ethnicity?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What is the patient's ethnicity?\n\nIf the information is not found in the document, state 'Information not found'."
+}

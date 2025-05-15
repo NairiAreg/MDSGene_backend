@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': How many unaffected individuals in the family have homozygous mutations?",
+  "context": "Based on the information in Figure 1A (Pedigree of Family A):\n*   Individuals are marked with an asterisk if they were \"analyzed for the p.D620N mutation and/or haplotype.\"\n*   In Family A, individuals AII-11 and AII-12 are marked with an asterisk.\n*   Individual AII-11 is the proband (indicated by an arrow) and is affected (closed symbol).\n*   Individual AII-12 is also affected (closed symbol).\n\nNo unaffected individuals (open symbols) in Family A are marked with an asterisk. This means that, according to the provided document, no unaffected individuals in Family A were genetically analyzed for the mutation. Therefore, it is not possible to determine how many unaffected individuals in Family A have homozygous mutations.\n\nInformation not found"
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found",
+  "question": "Regarding patient 'D': What was the third initial symptom of the patient (if applicable)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': What was the third initial symptom of the patient (if applicable)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

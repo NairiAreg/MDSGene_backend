@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Regarding patient 'D': Patient D was categorized as an SPD (sporadic Parkinson's disease) patient.\n\nBased on the \"Patients and Methods\" section, under \"Subjects\" (page 2):\n\"The study subjects were [...] 433 Japanese SPD patients (AAO [age at disease onset], 47.2 ± 12.9 years; range, 5-88 years) selected from the gene bank of Juntendo University.\"\n\nThis indicates that for the group of SPD patients included in the study (to which Patient D belongs), the range for age at disease onset was 5 to 88 years. Therefore, the lower age limit for study inclusion, based on the age at disease onset for SPD patients, was 5 years.",
+  "question": "Regarding patient 'D': What is the lower age limit for study inclusion (if any)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': What is the lower age limit for study inclusion (if any)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

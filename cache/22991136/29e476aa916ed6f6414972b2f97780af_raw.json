@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based *only* on the information contained within the provided document:\n\nInformation not found.\n\n(The document, specifically Table 2 on page 3, lists clinical features and symptoms for patient CII-3, such as resting tremor, bradykinesia, and rigidity, but does not mention any specific motor assessment scales used.)",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What is the second motor assessment scale used (if any)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What is the second motor assessment scale used (if any)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

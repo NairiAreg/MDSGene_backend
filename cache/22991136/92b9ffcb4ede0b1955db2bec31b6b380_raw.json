@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Does the patient have postural instability?",
+  "context": "Yes, patient 'AII-11' from family 'Family A' does have postural instability.\n\nThis is indicated in Table 2, \"Clinical features of patients with p.D620N mutation\". Under the column for patient 'AII-11', the row for 'Postural instability' has a '+' symbol, signifying its presence. Figure 1 also identifies patient AII-11 as the proband from Family A."
+}

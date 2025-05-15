@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Third mutation protein change?",
+  "context": "The document states that patient AII-11 has the p.D620N mutation in the VPS35 gene (Table 1, Page 3; Figure 1, Page 3; Page 3, text: \"One disease allele was detected by analyzing patient AII-11 and his relatives.\").\n\nThe document also states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" (Page 3, under \"Detection of p.D620N Mutation\").\n\nTherefore, based only on the information in this document, information about a \"Third mutation protein change\" for patient AII-11 is not found. Only one mutation (p.D620N) is reported for this patient in the VPS35 gene."
+}

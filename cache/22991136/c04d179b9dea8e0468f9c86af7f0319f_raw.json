@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Japan",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the patient's country of origin?",
+  "context": "Based on the information contained within the provided document:\n\nThe document states on page 2, under \"Subjects\": \"The study subjects were 308 Japanese patients (300 index patients) with ADPD...\". Family B is one of the ADPD families studied (Fig. 1, page 3).\n\nFurthermore, on page 4, in the \"Discussion\" section, it mentions: \"The p.D620N mutation possibly shared a common founder between Japanese ADPD families A and B\". This explicitly identifies Family B as Japanese.\n\nTherefore, patient 'BIII-8' from family 'Family B' is from Japan.\n\nThe patient's country of origin is **Japan**."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The first variant identified in patient 'AII-11' from family 'Family A' is the p.D620N mutation.\n\nOn page 3, under the section \"Detection of p.D620N Mutation\", the text states: \"We detected the heterozygous **missense** p.D620N mutation in 3 unrelated patients with ADPD...\"\nPatient AII-11 is one of these patients, as shown in FIG. 1 (Family A, individual II-11) and TABLE 1 (listing AII-11 as a carrier of the p.D620N mutation).\n\nTherefore, the type of mutation is **missense**.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What type of mutation is the first variant?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What type of mutation is the first variant?\n\nIf the information is not found in the document, state 'Information not found'."
+}

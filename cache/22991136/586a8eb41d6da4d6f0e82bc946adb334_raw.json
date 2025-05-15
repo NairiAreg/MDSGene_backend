@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on Table 2, \"Clinical features of patients with p.D620N mutation\", for patient 'CII-3', the row for 'Hyperreflexia' has a '–' symbol. This indicates the absence of the symptom.\n\nTherefore, the patient 'CII-3' from family 'Family C' does not have hyperreflexia.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Does the patient have hyperreflexia?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Does the patient have hyperreflexia?\n\nIf the information is not found in the document, state 'Information not found'."
+}

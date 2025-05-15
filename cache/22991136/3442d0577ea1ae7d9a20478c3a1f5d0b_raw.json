@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 2 on page 3, for patient AII-11:\n\nResting tremor: yes\nBradykinesia: yes\nRigidity: yes\nGait disturbance: yes\nPostural instability: yes\nWearing off: yes\nAsymmetry at onset: yes\nLevodopa-induced dyskinesia: yes\nDystonia at onset: no\nHyperreflexia: no\nGaze palsy: no",
+  "question": "Regarding patient 'AII-11' from family 'Family A': List all *motor* symptoms observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Rigidity: yes; Tremor: no; Bradykinesia: yes.",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': List all *motor* symptoms observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Rigidity: yes; Tremor: no; Bradykinesia: yes.\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based *only* on the information contained within the provided document:\n\nFor patient 'BIII-8' from family 'Family B', Table 2 (\"Clinical features of patients with p.D620N mutation\") provides the following information related to cognitive function:\n*   Hallucination: -\n*   Other psychosis: -\n*   Dementia: -\n\nThe \"-\" symbol indicates these features were not present or observed. The document does not specify any subdomains of cognitive function that *are* affected for patient BIII-8.\n\nTherefore, the answer is:\nInformation not found",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What subdomains of cognitive function are affected (if any)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What subdomains of cognitive function are affected (if any)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

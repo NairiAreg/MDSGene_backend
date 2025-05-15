@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What was the second initial symptom of the patient (if applicable)?",
+  "context": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") and the \"Clinical Presentation\" section on page 3, patient CII-3 developed \"upper limb rest tremor\" at age 34. The table also indicates \"Asymmetry at onset\" was positive for this patient.\n\nHowever, the text only states that the patient \"developed upper limb rest tremor\". It does not explicitly state a second initial symptom or the order in which other early symptoms (like bradykinesia or rigidity, which are listed as positive in Table 2) appeared. \"Asymmetry at onset\" describes a characteristic of the initial presentation, but not necessarily a distinct, sequential second symptom.\n\nTherefore, the second initial symptom is not explicitly stated.\n\nInformation not found."
+}

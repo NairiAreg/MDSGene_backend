@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Is this patient the index case in the family?",
+  "context": "Based on the information in FIG. 1 on page 3, patient 'BIII-8' from family 'Family B' is not the index case. The arrow in the pedigree, which indicates the proband (index case), points to individual 'II-1' in Family B."
+}

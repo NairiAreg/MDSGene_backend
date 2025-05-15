@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Japan",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the patient's country of origin?",
+  "context": "The document states: \"The study subjects were 308 Japanese patients (300 index patients) with ADPD...\". It also mentions \"Haplotype analysis demonstrated that the Japanese patients with the p.D620N mutation had different genotypes...\" and later, \"By genotyping of D16S3105... there were at least 3 different haplotypes in Japanese because families A and C and patient D (SPD) did not have the same alleles for this microsatellite.\"\n\nSince patient CII-3 is from Family C, and Family C is described in the context of Japanese patients, the patient's country of origin is Japan."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have motor symptoms?",
+  "context": "Yes, patient 'CII-3' from family 'Family C' does have motor symptoms.\n\nTable 2, \"Clinical features of patients with p.D620N mutation,\" lists patient CII-3. Under this patient, the following motor symptoms are marked with a \"+\", indicating their presence:\n*   Resting tremor\n*   Bradykinesia\n*   Rigidity\n*   Gait disturbance\n*   Postural instability\n*   Levodopa-induced dyskinesia\n\nAdditionally, the \"Clinical Presentation\" section on page 3 states: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\""
+}

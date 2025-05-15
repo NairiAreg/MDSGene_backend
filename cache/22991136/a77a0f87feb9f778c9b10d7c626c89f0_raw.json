@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have bradykinesia?",
+  "context": "Yes, patient BIII-8 from Family B has bradykinesia.\n\nThis information is found in Table 2, \"Clinical features of patients with p.D620N mutation.\" In this table, the row for \"Bradykinesia\" under the column for patient \"BIII-8\" has a \"+\" symbol, indicating the presence of this feature. Figure 1 confirms that patient III-8 belongs to Family B."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 2 on page 3 (\"Clinical features of patients with p.D620N mutation\"), patient 'BIII-8' has a \"+\" in the row for \"Clinical response to levodopa\".\n\nTherefore, patient BIII-8 shows a clinical response to levodopa treatment.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': How does the patient respond to levodopa treatment?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': How does the patient respond to levodopa treatment?\n\nIf the information is not found in the document, state 'Information not found'."
+}

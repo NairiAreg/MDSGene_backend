@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes, patient 'AII-11' from family 'A' has autonomic symptoms.\n\nTable 2, \"Clinical features of patients with p.D620N mutation,\" lists the following for patient AII-11:\n*   Orthostatic hypotension: +\n*   Incontinence: +\n*   Urinary urgency: +\n\nThese are considered autonomic symptoms.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have autonomic symptoms?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have autonomic symptoms?\n\nIf the information is not found in the document, state 'Information not found'."
+}

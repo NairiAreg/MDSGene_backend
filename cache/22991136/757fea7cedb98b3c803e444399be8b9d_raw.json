@@ -1,0 +1,5 @@
+{
+  "raw_answer": "34",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What was the age at onset (AAO) of symptoms for this patient?",
+  "context": "Based on the information in Table 2 on page 3, the \"Age at disease onset (y)\" for patient 'CII-3' is 34.\n\nThis is also stated in the \"Clinical Presentation\" section on page 3: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\""
+}

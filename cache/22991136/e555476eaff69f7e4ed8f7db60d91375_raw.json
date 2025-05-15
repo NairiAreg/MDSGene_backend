@@ -1,0 +1,5 @@
+{
+  "raw_answer": "A",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the observed (mutant) allele for the first mutation?",
+  "context": "The observed (mutant) allele for the first mutation (which is p.D620N) in patient 'BIII-8' from 'Family B' can be found in Table 1 on page 3.\n\nTable 1, titled \"Haplotype analysis of VPS35 p.D620N mutation carriers\", lists Patient ID 'BIII-8'. The row \"VPS35 p.D620N\" shows the genotype for BIII-8 as \"A/G\".\n\nThe paper specifies that the p.D620N mutation corresponds to c.1858G>A (page 2, \"Genetic Analysis\" section: \"c.1858G>A (p.D620N) mutation\"). This means 'G' is the wild-type allele and 'A' is the mutant allele. Since patient BIII-8 has the genotype A/G, the observed mutant allele is 'A'.\n\nThe text also states on page 3, under \"Results\", \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" This confirms that p.D620N is the relevant (and only found) mutation in VPS35 for this patient.\n\nTherefore, the observed (mutant) allele for the p.D620N mutation in patient BIII-8 is A."
+}

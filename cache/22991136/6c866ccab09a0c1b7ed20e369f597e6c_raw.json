@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nOn page 3, the text states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient AII-11 is identified as carrying the p.D620N mutation (Figure 1A, Table 1, Table 2). Since the document states these patients did not have any *other* variants, there is no information about a \"second variant\" for patient AII-11.\n\nTherefore, the answer is:\nInformation not found",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What type of mutation is the second variant?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What type of mutation is the second variant?\n\nIf the information is not found in the document, state 'Information not found'."
+}

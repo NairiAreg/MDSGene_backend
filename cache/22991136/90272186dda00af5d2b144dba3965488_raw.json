@@ -1,0 +1,5 @@
+{
+  "raw_answer": "For patient 'AII-11' from family 'Family A', Table 2 on page 3 lists clinical features. Under the entry \"Wearing off\", there is a \"+\" symbol for patient AII-11. \"Wearing off\" is a type of motor fluctuation related to medication timing, which can be considered a diurnal fluctuation.\n\nTherefore, based on the \"Wearing off\" symptom:\n\nYes, the patient has diurnal fluctuations (in the form of \"wearing off\").",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have diurnal fluctuations?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have diurnal fluctuations?\n\nIf the information is not found in the document, state 'Information not found'."
+}

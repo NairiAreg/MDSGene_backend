@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on Table 2, \"Clinical features of patients with p.D620N mutation\", patient AII-11 has:\n*   Resting tremor: + (present)\n*   Dystonia at onset: + (present)\n\nThe table does not explicitly state whether the tremor is \"dystonic tremor\". It lists \"Resting tremor\" and \"Dystonia at onset\" as separate features.\n\nTherefore, based *only* on the information contained within the provided document:\n\nInformation not found.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have dystonic tremor?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have dystonic tremor?\n\nIf the information is not found in the document, state 'Information not found'."
+}

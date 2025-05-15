@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based *only* on the information contained within the provided document:\n\nFor patient 'CII-3' from 'Family C', TABLE 2 on page 3 lists \"Hallucination\" as \"-\" and \"Other psychosis\" as \"-\".\n\nHowever, the document does not specify what psychotic symptoms assessment scale was used for this patient. Therefore, the specific scale used and a numerical score from such a scale are not found.\n\nInformation not found.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What psychotic symptoms assessment scale was used and what was the score?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What psychotic symptoms assessment scale was used and what was the score?\n\nIf the information is not found in the document, state 'Information not found'."
+}

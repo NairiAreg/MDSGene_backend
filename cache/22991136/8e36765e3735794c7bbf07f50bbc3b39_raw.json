@@ -1,0 +1,5 @@
+{
+  "raw_answer": "M",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the patient's sex/gender?",
+  "context": "Based on the information in Figure 1 (pedigree A, individual II-11 is represented by a square, which denotes 'male' according to the figure legend) and in the \"Clinical Presentation\" section on page 3 (\"Patient AII-11 was a 77-year-old man...\"), the patient AII-11 from Family A is **male**."
+}

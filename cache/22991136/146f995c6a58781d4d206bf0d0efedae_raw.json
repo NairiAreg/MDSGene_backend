@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the reference allele for the third mutation?",
+  "context": "Information not found.\n\nThe document states on page 3: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Patient BIII-8 is listed in Table 1 as a carrier of the p.D620N mutation (genotype A/G for VPS35 p.D620N). Therefore, according to the document, patient BIII-8 only has this one identified mutation in the VPS35 gene, and there is no information about a \"third mutation\" for this patient."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nOn page 3, in the first paragraph under \"FIG. 1. Pedigrees...\", the text states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nSince patient AII-11 from Family A is one of the patients identified with the p.D620N mutation (as shown in FIG. 1A, TABLE 1, and TABLE 2), this sentence indicates that no other variants (i.e., no second mutation) were found in the VPS35 gene for this patient within the scope of this study.\n\nTherefore, the information about a second mutation for patient AII-11 is not found.\n\nInformation not found",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What is the observed (mutant) allele for the second mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What is the observed (mutant) allele for the second mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have hyperreflexia?",
+  "context": "Based on Table 2, \"Clinical features of patients with p.D620N mutation\", for patient 'CII-3', the row for 'Hyperreflexia' has a '–' symbol. This indicates the absence of the symptom.\n\nTherefore, the patient 'CII-3' from family 'Family C' does not have hyperreflexia."
+}

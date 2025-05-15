@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Figure 1B (pedigree for Family B) on page 3 of the document:\n\n*   The symbol for patient 'BIII-8' is a **square**.\n*   The legend for Figure 1 states: \"square, male\".\n\nTherefore, the patient's sex/gender is **male**.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What is the patient's sex/gender?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What is the patient's sex/gender?\n\nIf the information is not found in the document, state 'Information not found'."
+}

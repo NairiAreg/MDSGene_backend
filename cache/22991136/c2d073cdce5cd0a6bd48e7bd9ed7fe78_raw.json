@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the physical genomic location of the mutation?",
+  "context": "Based *only* on the information contained within the provided document:\n\nThe document states that patient BIII-8 has the p.D620N mutation in the VPS35 gene (Table 1, page 3).\nThe document mentions several microsatellite markers on chromosome 16 (e.g., D16S401, Chr16_45.333M in Table 1, page 3).\nOn page 4, it states: \"By genotyping of D16S3105, which is located approximately 1.5 kb centromeric of VPS35...\"\nTable 1 (page 3) lists \"VPS35 p.D620N\" and then lists various microsatellite markers, some of which have coordinate-like names (e.g., \"Chr16_45.333M\"). However, a specific physical genomic coordinate (like a base pair number or a direct \"Chr16_XXXXM\" value) for the VPS35 gene itself or the p.D620N mutation within it is not explicitly provided in the document. The locations given are for flanking markers or relative positions.\n\nTherefore, the precise physical genomic location of the mutation is:\nInformation not found."
+}

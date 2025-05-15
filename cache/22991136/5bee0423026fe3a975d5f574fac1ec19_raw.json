@@ -1,0 +1,5 @@
+{
+  "raw_answer": "right upper limb rest tremor",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What was the initial symptom of the patient?",
+  "context": "Based on the information in the document:\n\nThe initial symptom of patient 'AII-11' from family 'Family A' was **right upper limb rest tremor**.\n\nThis is stated in the \"Clinical Presentation\" section on page 3: \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62.\""
+}

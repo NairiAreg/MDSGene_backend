@@ -1,0 +1,5 @@
+{
+  "raw_answer": "upper limb rest tremor",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What was the initial symptom of the patient?",
+  "context": "Based on the information in the document, the initial symptom of patient 'CII-3' from family 'Family C' was **upper limb rest tremor**.\n\nThis is stated on page 3, under the \"Clinical Presentation\" section: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\" Table 2 on the same page indicates that patient CII-3 had an age at disease onset of 34 years and shows a \"+\" for \"Resting tremor\"."
+}

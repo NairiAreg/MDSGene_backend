@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The study design is a genetic screening study. The aim was to determine the incidence and clinical features of Asian Parkinson's Disease (PD) patients with VPS35 mutations. The researchers screened 300 Japanese index patients with autosomal dominant PD (which would include patient CII-3 from Family C, as Family C is shown in Figure 1 as a family with autosomal dominant PD and CII-3 is a member), 433 patients with sporadic PD, and 579 controls for 7 reported nonsynonymous missense variants of VPS35 (including p.D620N) using direct sequencing or high-resolution melting (HRM) analysis. For patients found to have the p.D620N mutation (like CII-3), their clinical features were described and haplotype analysis was performed.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What is the study design of this article?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What is the study design of this article?\n\nIf the information is not found in the document, state 'Information not found'."
+}

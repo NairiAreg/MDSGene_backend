@@ -1,0 +1,5 @@
+{
+  "raw_answer": "No. Table 2 ('Clinical features of patients with p.D620N mutation') indicates that for patient 'BIII-8', 'Levodopa-induced dyskinesia' is marked with a '-', signifying absence.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Does the patient have dyskinesia?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Does the patient have dyskinesia?\n\nIf the information is not found in the document, state 'Information not found'."
+}

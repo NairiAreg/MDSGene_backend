@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Does the patient have action tremor?",
+  "context": "Based on Table 2, \"Clinical features of patients with p.D620N mutation,\" patient 'AII-11' has \"Resting tremor\" indicated by a \"+\". The table does not list \"action tremor\" as a feature for patient AII-11, nor is it mentioned in the \"Clinical Presentation\" text for this specific patient.\n\nTherefore, the answer is:\nInformation not found"
+}

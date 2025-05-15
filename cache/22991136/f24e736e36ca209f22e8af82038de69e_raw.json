@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Table 2 on page 3, \"Clinical features of patients with p.D620N mutation,\" lists patient 'BIII-8'. In the row for 'Rigidity', there is a '+' symbol under the column for 'BIII-8', indicating the presence of this feature.\n\nTherefore, the patient BIII-8 does have rigidity.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Does the patient have rigidity?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Does the patient have rigidity?\n\nIf the information is not found in the document, state 'Information not found'."
+}

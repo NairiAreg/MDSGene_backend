@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Is there a family history of the disease?",
+  "context": "Yes, there is a family history of the disease for patient 'AII-11' from 'Family A'.\n\nThe document states in the \"Clinical Presentation\" section on page 3: \"His father and 4 of 8 siblings were diagnosed with PD (Fig. 1A)...\". Figure 1A on page 3 also visually depicts this family history, showing the father (I-1) and several siblings of AII-11 (II-1, II-2, II-3, II-5, II-6, II-8, II-10) as affected individuals."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'D': What is the patient's country of origin?",
+  "context": "Based on the information in the document:\n\nOn page 4, in the \"Discussion\" section, the text states: \"By genotyping of D16S3105, which is located approximately 1.5 kb centromeric of VPS35, there were at least 3 different haplotypes in Japanese because families A and C and patient D (SPD) did not have the same alleles for this microsatellite.\"\n\nThis sentence explicitly links patient D to the discussion about haplotypes in Japanese patients, indicating patient D is Japanese. The overall study is also titled \"VPS35 Mutation in Japanese Patients with Typical Parkinson's Disease\" and the \"Subjects\" section (page 2) describes the study subjects as \"Japanese patients\".\n\nTherefore, the patient's country of origin is Japan."
+}

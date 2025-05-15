@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nThe title of the research article is \"VPS35 Mutation in **Japanese** Patients with Typical Parkinson's Disease.\"\n\nUnder the \"Patients and Methods\" section, sub-section \"Subjects\" (page 2), it states: \"The study subjects were 308 **Japanese** patients (300 index patients) with ADPD (age at disease onset...)\"\n\nPatient BIII-8 is from Family B, which is one of the families with autosomal dominant Parkinson's Disease (ADPD) studied (as shown in Figure 1 and Table 1, page 3).\n\nTherefore, patient BIII-8's ethnicity is Japanese.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What is the patient's ethnicity?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What is the patient's ethnicity?\n\nIf the information is not found in the document, state 'Information not found'."
+}

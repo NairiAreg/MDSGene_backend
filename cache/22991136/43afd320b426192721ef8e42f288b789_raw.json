@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have dystonia?",
+  "context": "Based on Table 2, \"Clinical features of patients with p.D620N mutation\", for patient ID 'CII-3', the row 'Dystonia at onset' shows a '-' symbol. This indicates the absence of dystonia at onset.\n\nTherefore, the answer is: No."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have parkinsonism symptoms?",
+  "context": "Yes, patient CII-3 from Family C has parkinsonism symptoms.\n\nTable 2 (\"Clinical features of patients with p.D620N mutation\") indicates that patient CII-3 presented with:\n*   Resting tremor (+)\n*   Bradykinesia (+)\n*   Rigidity (+)\n*   Gait disturbance (+)\n*   Postural instability (+)\n\nThese are all characteristic symptoms of parkinsonism. Additionally, the text under \"Clinical Presentation\" on page 3 states: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\" Figure 1C also shows CII-3 as an \"affected member\" in Family C."
+}

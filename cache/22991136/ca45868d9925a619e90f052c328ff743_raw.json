@@ -1,0 +1,5 @@
+{
+  "raw_answer": "East Asian",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the patient's ethnicity?",
+  "context": "Based on the information in the document:\n\nThe study subjects are described as \"308 Japanese patients (300 index patients) with ADPD\" and \"433 Japanese SPD patients\" (Page 2, \"Subjects\" section).\n\nFigure 1 (Page 3) shows the pedigree for \"Family A\", which includes patient 'AII-11'.\n\nThe \"Haplotype analysis\" section (Page 3) states: \"Haplotype analysis demonstrated that the Japanese patients with the p.D620N mutation had different genotypes from those of white patients with the same mutation. One disease allele was detected by analyzing patient AII-11 and his relatives.\"\n\nFurthermore, in the \"Discussion\" section (Page 4), it is mentioned: \"The p.D620N mutation possibly shared a common founder between Japanese ADPD families A and B\". Patient AII-11 is from Family A.\n\nTherefore, the patient's ethnicity is Japanese."
+}

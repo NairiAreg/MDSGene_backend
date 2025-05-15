@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Does the patient have bradykinesia?",
+  "context": "Table 2 on page 3 of the document lists clinical features for patients with the p.D620N mutation. For patient 'AII-11', the row for 'Bradykinesia' shows a '+'.\n\nTherefore, based on the information in the document, patient 'AII-11' from family 'Family A' does have bradykinesia."
+}

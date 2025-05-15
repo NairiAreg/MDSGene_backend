@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Table 2 on page 3, \"Clinical features of patients with p.D620N mutation,\" lists patient 'AII-11'.\nUnder the clinical features for patient 'AII-11':\n*   \"Wearing off\" is marked with a \"+\".\n*   \"Levodopa-induced dyskinesia\" is marked with a \"+\".\n\n\"Wearing off\" and \"levodopa-induced dyskinesia\" are types of motor fluctuations.\n\nTherefore, patient AII-11 from Family A does have motor fluctuations.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have motor fluctuations?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have motor fluctuations?\n\nIf the information is not found in the document, state 'Information not found'."
+}

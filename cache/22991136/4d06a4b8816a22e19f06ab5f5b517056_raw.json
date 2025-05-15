@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': How is the levodopa response quantified?",
+  "context": "For patient 'CII-3' from 'Family C', Table 2 on page 3 indicates a 'Clinical response to levodopa' with a '+'. However, the document does not specify *how* this response was quantified (e.g., using a specific scale, percentage improvement, or other defined metric). It only indicates the presence of a response.\n\nTherefore, based *only* on the information contained within the provided document:\nInformation not found."
+}

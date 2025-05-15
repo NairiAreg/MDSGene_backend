@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the pathogenicity classification for the second mutation?",
+  "context": "The document states on page 3, in the first paragraph of the Results section: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient BIII-8 from Family B is identified as carrying the p.D620N mutation (Fig. 1, Table 1, Table 2). According to the statement above, this patient did not have any other variants (i.e., a second mutation) in the exons of VPS35.\n\nTherefore, the information about a \"second mutation\" for patient BIII-8 and its pathogenicity classification is not found in the document.\n\nInformation not found."
+}

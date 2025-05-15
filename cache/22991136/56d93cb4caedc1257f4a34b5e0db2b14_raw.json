@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the gnomAD v2.1.1 frequency for the second mutation?",
+  "context": "Based on the information in the document:\n\nPatient AII-11 from Family A was found to have the p.D620N mutation in the VPS35 gene (Table 1, Page 3; Figure 1A, Page 3).\nThe text on page 3 states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nThis indicates that, according to this study, patient AII-11 did not have a second mutation in the VPS35 gene. Furthermore, the document does not mention gnomAD frequencies for any variants.\n\nTherefore, the answer is:\nInformation not found"
+}

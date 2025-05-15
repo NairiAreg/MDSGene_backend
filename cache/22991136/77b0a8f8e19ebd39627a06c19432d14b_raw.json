@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The first variant for patient 'BIII-8' from family 'Family B' is a heterozygous missense p.D620N mutation.\n\nSpecifically, the document states on page 2, in the \"Results\" section under \"Detection of p.D620N Mutation\": \"We detected the heterozygous missense p.D620N mutation in 3 unrelated patients with ADPD and 1 patient with SPD (Fig. 1).\" Patient BIII-8 is shown in Figure 1, Family B.\n\nTable 1 on page 3 confirms that patient BIII-8 is a carrier of the \"VPS35 p.D620N\" mutation.\n\nTherefore, the type of mutation is **missense**.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What type of mutation is the first variant?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What type of mutation is the first variant?\n\nIf the information is not found in the document, state 'Information not found'."
+}

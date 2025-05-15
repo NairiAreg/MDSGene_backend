@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the pathogenicity classification for the third mutation?",
+  "context": "Based on the information in the document:\n\nOn page 3, in the first paragraph under the \"Results\" section, it states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient BIII-8 is listed in Table 1 as a carrier of the p.D620N mutation. Therefore, according to the document, patient BIII-8 only has the p.D620N mutation in the VPS35 gene, and no other variants (including a third mutation) in this gene were identified.\n\nThus, the information about a \"third mutation\" for patient BIII-8 is not found.\n\n**Answer:** Information not found"
+}

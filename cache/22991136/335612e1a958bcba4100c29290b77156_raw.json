@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information contained within the provided document:\n\nThe first author is **Maya Ando**.\nThe publication year is **2012**.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Who is the first author and what is the publication year?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Who is the first author and what is the publication year?\n\nIf the information is not found in the document, state 'Information not found'."
+}

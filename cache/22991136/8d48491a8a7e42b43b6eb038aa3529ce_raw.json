@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes, patient 'CII-3' from 'Family C' does have rigidity.\n\nThis information is found in Table 2 on page 3, under the \"Patient ID\" column for \"CII-3\", in the row for \"Rigidity\", where a \"+\" symbol indicates the presence of this clinical feature.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Does the patient have rigidity?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Does the patient have rigidity?\n\nIf the information is not found in the document, state 'Information not found'."
+}

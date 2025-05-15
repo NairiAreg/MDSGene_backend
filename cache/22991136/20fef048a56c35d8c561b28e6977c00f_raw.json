@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Second mutation (cDNA), if any?",
+  "context": "Based on the information in the document:\n\nThe document states on page 3, in the paragraph directly under Figure 1: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient AII-11 is confirmed to have the p.D620N mutation (Table 1, page 3).\n\nTherefore, for patient 'AII-11' from family 'Family A', the second mutation (cDNA) is:\nNone reported in VPS35."
+}

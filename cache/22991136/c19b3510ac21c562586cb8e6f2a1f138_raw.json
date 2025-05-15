@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Does the patient have olfactory dysfunction?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Does the patient have olfactory dysfunction?\n\nIf the information is not found in the document, state 'Information not found'."
+}

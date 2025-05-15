@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Does the patient have motor symptoms?",
+  "context": "Yes, patient 'AII-11' from family 'Family A' has motor symptoms.\n\nThe document states on page 3, under \"Clinical Presentation\": \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62.\"\n\nFurthermore, Table 2 on page 3, \"Clinical features of patients with p.D620N mutation,\" lists the following for patient AII-11:\n*   Resting tremor: +\n*   Bradykinesia: +\n*   Rigidity: +\n*   Gait disturbance: +\n*   Postural instability: +\n*   Levodopa-induced dyskinesia: +\n*   Dystonia at onset: +"
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\"), for patient 'BIII-8', the row 'Dementia' has a '-' entry. This indicates that dementia was not observed or was absent in this patient. The document does not use the specific term \"cognitive decline\" for this patient, but dementia is a form of cognitive decline.\n\nTherefore, based on the provided information:\nPatient 'BIII-8' from family 'Family B' does not have dementia, which is the most relevant indicator of cognitive decline presented for this patient in the document.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Does the patient have cognitive decline?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Does the patient have cognitive decline?\n\nIf the information is not found in the document, state 'Information not found'."
+}

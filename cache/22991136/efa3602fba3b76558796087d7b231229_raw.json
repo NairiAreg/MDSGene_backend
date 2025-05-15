@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nThe study subjects included \"433 Japanese SPD patients (AAO, 47.2 ± 12.9 years; range, 5-88 years; F/M ratio, 1.09)\". Patient D is described as an \"SPD patient\".\n\nTherefore, the upper age limit for study inclusion for SPD patients (based on age at disease onset) is **88 years**.",
+  "question": "Regarding patient 'D': What is the upper age limit for study inclusion (if any)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': What is the upper age limit for study inclusion (if any)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

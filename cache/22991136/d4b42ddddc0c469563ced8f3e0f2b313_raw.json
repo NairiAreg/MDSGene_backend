@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.\n\n**Reasoning:**\nThe document states that patient AII-11 from Family A has the p.D620N mutation in the VPS35 gene (Page 3, Table 1 and surrounding text). It further clarifies: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35\" (Page 3, first paragraph). This indicates that, according to the screening performed in this study, patient AII-11 was found to have only this one specific mutation (p.D620N) within the VPS35 gene. The document does not mention or describe a \"first,\" \"second,\" or \"third\" distinct mutation for patient AII-11. Therefore, information regarding a \"third mutation\" for this specific patient is not provided.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What is the physical genomic location of the third mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What is the physical genomic location of the third mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the genomic-level notation for the third mutation?",
+  "context": "Information not found.\n\nThe document states that \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35\" (page 3). Patient BIII-8 is identified as carrying the p.D620N mutation (Table 1, page 3). The genomic-level notation for this mutation is c.1858G>A (page 2, \"Genetic Analysis\"). However, the document does not provide information about a \"first,\" \"second,\" or \"third\" distinct mutation for patient BIII-8; it only identifies the p.D620N mutation."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Is this patient the index case in the family?",
+  "context": "Based *only* on the information contained within the provided document:\n\nFigure 1 on page 3 shows pedigrees of families with the VPS35 p.D620N mutation. The caption for Figure 1 states: \"arrow, proband\". A proband is typically the index case.\nIn pedigree C (representing Family C), patient CII-3 is shown as affected (closed symbol) and analyzed (asterisk). However, there is no arrow pointing to individual CII-3.\n\nTherefore, based on the provided pedigree notation where an arrow indicates the proband (index case), patient CII-3 is not the index case in Family C."
+}

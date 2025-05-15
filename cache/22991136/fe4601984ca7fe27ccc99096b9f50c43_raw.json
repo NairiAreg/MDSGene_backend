@@ -1,0 +1,5 @@
+{
+  "raw_answer": "c.1858G>A",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the DNA-level mutation? (Primary mutation)",
+  "context": "The DNA-level mutation for patient 'AII-11' from 'Family A' is **c.1858G>A (p.D620N)**.\n\nThis is stated in the \"Genetic Analysis\" section on page 2: \"...SPD patients and control subjects were also genotyped for **c.1858G>A (p.D620N)** mutation...\"\nAnd in the \"Discussion\" on page 4: \"...the substitution of VPS35 **c.1858G>A (p.D620N)** occurs from independent mutational events.\"\nFigure 1A shows Family A, with AII-11 as the proband analyzed for the p.D620N mutation. Table 1 also lists AII-11 as a carrier of the \"VPS35 p.D620N\" mutation."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Does the patient have resting tremor?",
+  "context": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3, patient AII-11 has a \"+\" in the row for \"Resting tremor\".\n\nAdditionally, the \"Clinical Presentation\" section on page 3 states: \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62.\"\n\nTherefore, yes, patient AII-11 from Family A does have resting tremor."
+}

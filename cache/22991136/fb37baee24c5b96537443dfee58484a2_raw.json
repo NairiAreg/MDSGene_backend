@@ -1,0 +1,5 @@
+{
+  "raw_answer": "het",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the genotype of the first mutation?",
+  "context": "Based on the information in Table 1, \"Haplotype analysis of VPS35 p.D620N mutation carriers\", for patient ID 'CII-3', the genotype for 'VPS35 p.D620N' is **A/G**."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the physical genomic location of the third mutation?",
+  "context": "Based on the information contained within the provided document:\n\nThe document states that \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" (Page 3, paragraph under FIG. 1). Patient CII-3 from Family C is one of the patients identified with the p.D620N mutation. Therefore, the document does not identify a \"third mutation\" for patient CII-3.\n\nInformation not found."
+}

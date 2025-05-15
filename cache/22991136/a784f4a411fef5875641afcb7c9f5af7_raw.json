@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information contained within the provided document:\n\nPatient D developed upper limb rest tremor at age 42 and had no family history of PD. She underwent subthalamic nucleus deep brain stimulation (STN-DBS) at age 60 because of disabling motor fluctuation and dyskinesia refractory to pharmacological treatment. Patient D was born to nonconsanguineous parents. The p.D620N mutation probably occurred independently in patient D. Because her family history was unknown, she was categorized as SPD (sporadic PD). Haplotype analysis showed patient D (SPD) did not have the same alleles for the microsatellite D16S3105 compared to families A and C.",
+  "question": "Regarding patient 'D': Any additional comments about this patient?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': Any additional comments about this patient?\n\nIf the information is not found in the document, state 'Information not found'."
+}

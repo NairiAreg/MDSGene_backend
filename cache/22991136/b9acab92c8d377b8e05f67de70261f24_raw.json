@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the second gene with a pathogenic variant found in the patient (if any)?",
+  "context": "Based *only* on the information contained within the provided document:\n\nThe document states on page 3, under \"Results\" and \"Detection of p.D620N Mutation\": \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Patient AII-11 is confirmed to have the VPS35 p.D620N mutation (Table 1, page 3).\n\nThe document mentions on page 2, under \"Subjects\": \"Some of the selected subjects had been confirmed negative for SNCA, PARK2, PINK1, PARK7, LRRK2, and PLA2G6 mutations.\" However, it does not explicitly state that patient AII-11 was one of these subjects, nor does it provide results of any such screening specifically for patient AII-11 if it was performed.\n\nTherefore, based *only* on the provided document, while we know AII-11 has a pathogenic variant in VPS35, the document does not provide information about a second gene with a pathogenic variant found in this specific patient.\n\nInformation not found."
+}

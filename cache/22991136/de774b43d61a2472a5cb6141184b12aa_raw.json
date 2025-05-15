@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Does the patient have tremor?",
+  "context": "Yes, patient AII-11 developed \"right upper limb rest tremor at age 62.\" This is stated in Table 2 (\"Resting tremor\" is marked with a \"+\") and in the \"Clinical Presentation\" section on page 3."
+}

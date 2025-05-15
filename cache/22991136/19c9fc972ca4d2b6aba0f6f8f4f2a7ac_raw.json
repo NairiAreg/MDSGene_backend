@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on Table 2, \"Clinical features of patients with p.D620N mutation\", for patient ID 'CII-3', the row 'Dystonia at onset' shows a '-' symbol. This indicates the absence of dystonia at onset.\n\nTherefore, the answer is: No.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Does the patient have dystonia?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Does the patient have dystonia?\n\nIf the information is not found in the document, state 'Information not found'."
+}

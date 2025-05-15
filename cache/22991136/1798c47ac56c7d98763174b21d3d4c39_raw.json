@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the genomic-level notation for the first mutation?",
+  "context": "The genomic-level notation for the first mutation in patient 'AII-11' from family 'Family A' is **c.1858G>A**.\n\nThis is stated on page 2, in the second paragraph from the bottom of the left column: \"Mutation of c.1858G>A (p.D620N) was identified in 3 Austrian families...\" The document then goes on to identify patient AII-11 as having the p.D620N mutation (e.g., Figure 1 caption, Table 1). Page 3, in the paragraph under \"Results\" and above Table 1, states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35,\" indicating this is the relevant mutation. The connection between p.D620N and c.1858G>A is made multiple times (e.g., also page 2, right column, \"Genetic Analysis\" section)."
+}

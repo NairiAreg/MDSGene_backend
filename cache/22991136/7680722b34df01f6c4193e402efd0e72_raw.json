@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.\n\n(The document states on page 3, Table 2, that for patient 'AII-11', the \"Age at disease onset (y)\" was 62. The text under \"Clinical Presentation\" on page 3 also states: \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62.\" However, \"age at disease onset\" is not necessarily the same as \"age at diagnosis\". The document does not explicitly state the age at which patient AII-11 was diagnosed.)",
+  "question": "Regarding patient 'AII-11' from family 'Family A': At what age was the patient diagnosed?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': At what age was the patient diagnosed?\n\nIf the information is not found in the document, state 'Information not found'."
+}

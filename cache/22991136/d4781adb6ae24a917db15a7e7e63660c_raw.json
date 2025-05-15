@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have motor fluctuations?",
+  "context": "Based on the information in Table 2, \"Clinical features of patients with p.D620N mutation\":\nFor patient 'BIII-8':\n- The feature \"Wearing off\" is marked with a '–'.\n- The feature \"Levodopa-induced dyskinesia\" is marked with a '–'.\n\n\"Wearing off\" is a type of motor fluctuation. Since this is explicitly marked as absent ('–') for patient BIII-8, the patient does not have this type of motor fluctuation. The document does not list a general \"motor fluctuations\" category for BIII-8 but provides data on specific types of motor complications. Given the absence of \"wearing off\" and \"levodopa-induced dyskinesia\", the available information indicates the patient does not have these motor fluctuations.\n\nNo."
+}

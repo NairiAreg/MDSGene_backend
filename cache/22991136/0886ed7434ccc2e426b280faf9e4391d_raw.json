@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in the document:\n\nThe initial symptom of patient 'AII-11' from family 'Family A' was **right upper limb rest tremor**.\n\nThis is stated in the \"Clinical Presentation\" section on page 3: \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62.\"",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What was the initial symptom of the patient?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What was the initial symptom of the patient?\n\nIf the information is not found in the document, state 'Information not found'."
+}

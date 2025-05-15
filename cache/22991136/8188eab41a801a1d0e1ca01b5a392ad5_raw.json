@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have psychotic symptoms?",
+  "context": "Based on Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3 of the document, patient 'BIII-8' has a '–' (minus sign) entry for 'Hallucination' and a '–' (minus sign) entry for 'Other psychosis'.\n\nTherefore, the patient does not have psychotic symptoms."
+}

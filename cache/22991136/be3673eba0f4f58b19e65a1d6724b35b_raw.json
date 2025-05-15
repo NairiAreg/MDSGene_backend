@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 1 (\"Haplotype analysis of VPS35 p.D620N mutation carriers\") and Table 2 (\"Clinical features of patients with p.D620N mutation\"), the entry identifier for this data (referred to as \"Patient ID\" in the tables) is **CII-3**.\n\nFigure 1 also shows pedigree \"C\" (representing Family C) and identifies individual \"II-3\" (marked with an asterisk), which corresponds to patient CII-3 in the tables.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What is the entry identifier for this data?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What is the entry identifier for this data?\n\nIf the information is not found in the document, state 'Information not found'."
+}

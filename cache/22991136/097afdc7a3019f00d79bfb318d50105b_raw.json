@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the standardized alias for the second mutation?",
+  "context": "Based on the information in the document:\n\nPatient AII-11 carries the p.D620N mutation. The text on page 3, in the paragraph directly under Figure 1, states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nTherefore, information about a second mutation for patient AII-11 is not found.\n\nAnswer: Information not found"
+}

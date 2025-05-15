@@ -1,0 +1,5 @@
+{
+  "raw_answer": "NM_018206.4",
+  "question": "Format answer for: Regarding patient 'D': Which genome build/transcript was used?",
+  "context": "Based on the information in the document:\n\nThe transcript used for VPS35 was RefSeq accession number NM_018206.4 (mentioned on page 2, under \"Genetic Analysis\").\n\nInformation regarding the specific genome build was not found."
+}

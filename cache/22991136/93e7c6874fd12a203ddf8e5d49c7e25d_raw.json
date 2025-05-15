@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.\n\n**Reasoning:**\nThe document states on page 4, under \"Clinical Presentation\": \"Patient D, who developed upper limb rest tremor at age 42, had no family history of PD.\" This identifies the first initial symptom.\nTable 2 lists other symptoms for Patient D (Bradykinesia, Rigidity, Gait disturbance, Postural instability) as positive, but it does not specify the order of onset for these symptoms relative to the initial tremor, nor does it indicate if any of these were the *second initial* symptom. The table presents a collection of symptoms observed, not necessarily their chronological appearance at the very beginning of the disease.",
+  "question": "Regarding patient 'D': What was the second initial symptom of the patient (if applicable)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': What was the second initial symptom of the patient (if applicable)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

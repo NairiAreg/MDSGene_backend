@@ -1,0 +1,5 @@
+{
+  "raw_answer": "PD",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the abbreviation of the disease or condition diagnosed in this patient?",
+  "context": "Based on the information in the document:\n\n*   Figure 1 shows \"Pedigrees of families with the VPS35 p.D620N mutation\". Family B is depicted, and individual 'III-8' is shown as an \"affected member\" (closed symbol) and marked with an asterisk, indicating they were analyzed.\n*   Table 2 lists \"Clinical features of patients with p.D620N mutation\" and includes patient 'BIII-8'.\n*   The text on page 3, under \"Clinical Presentation,\" states: \"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively. The mother and aunts of patient BIII-8 and the father of patient CII-3 also developed PD (Fig. 1B, C).\"\n*   The document consistently uses \"PD\" as the abbreviation for Parkinson's disease (e.g., Abstract: \"autosomal dominant Parkinson's disease (PD)\").\n\nTherefore, the abbreviation of the disease diagnosed in patient 'BIII-8' from family 'Family B' is **PD**."
+}

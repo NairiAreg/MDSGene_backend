@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Resting tremor: yes; Bradykinesia: yes; Rigidity: yes; Gait disturbance: yes; Postural instability: no; Levodopa-induced dyskinesia: no; Dystonia at onset: no",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': List all *motor* symptoms observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Rigidity: yes; Tremor: no; Bradykinesia: yes.",
+  "context": "Based on Table 2, \"Clinical features of patients with p.D620N mutation\":\n\nFor patient CII-3:\nResting tremor: yes\nBradykinesia: yes\nRigidity: yes\nGait disturbance: yes\nPostural instability: no\nLevodopa-induced dyskinesia: no\nDystonia at onset: no"
+}

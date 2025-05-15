@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have hyperreflexia?",
+  "context": "Based on Table 2 on page 3, \"Clinical features of patients with p.D620N mutation\", for patient 'BIII-8', the entry in the row for 'Hyperreflexia' is '—'. This indicates that the patient does not have hyperreflexia.\n\nTherefore, the patient BIII-8 from family B does not have hyperreflexia."
+}

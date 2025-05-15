@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Is there a family history of the disease?",
+  "context": "Yes, there is a family history of the disease for patient 'CII-3' from family 'Family C'.\n\nThe document states on page 4, in the first paragraph which describes clinical presentations: \"...and the father of patient CII-3 also developed PD (Fig. 1B, C).\"\nFigure 1C, the pedigree for Family C, also visually shows that individual I-1 (the father of II-3) is affected (filled square)."
+}

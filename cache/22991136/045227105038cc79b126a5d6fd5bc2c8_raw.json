@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Dementia: yes; Orthostatic hypotension: yes; Incontinence: yes; Urinary urgency: yes; Progressive dysphagia: yes; Hallucination: yes; Other psychosis: no; Sleep benefit: yes",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': List all *non-motor* symptoms (like cognitive, autonomic, psychiatric, sleep, sensory) observed in the patient and state if they were present (yes/no). Format as 'Symptom Name: yes/no', separated by semicolons or newlines. Examples: Depression: yes; Anosmia: no; RBD: yes; Constipation: yes.",
+  "context": "Based only on the information contained within the provided document, for patient 'AII-11' from family 'Family A', the following non-motor symptoms were observed:\n\nDementia: yes\nOrthostatic hypotension: yes\nIncontinence: yes\nUrinary urgency: yes\nProgressive dysphagia: yes\nHallucination: yes\nOther psychosis: no\nSleep benefit: yes"
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes, patient 'AII-11' from 'Family A' does have non-motor symptoms of parkinsonism.\n\nAccording to Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3, patient AII-11 experienced:\n*   Orthostatic hypotension\n*   Incontinence\n*   Urinary urgency\n*   Dementia\n*   Sleep benefit\n\nAdditionally, the \"Clinical Presentation\" section on page 3 states that patient AII-11 \"underwent gastrostomy for progressive dysphagia, then developed cognitive dysfunction without hallucination.\" Dysphagia and cognitive dysfunction are non-motor symptoms.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have non-motor symptoms of parkinsonism?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have non-motor symptoms of parkinsonism?\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "NM_018206.4",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Which genome build/transcript was used?",
+  "context": "Based *only* on the information contained within the provided document:\n\nFor the analysis of the VPS35 gene, which includes patient 'BIII-8' from 'Family B':\n*   **Transcript:** RefSeq accession number NM_018206.4 was used. (Found on page 2, \"Genetic Analysis\" section: \"Patients with ADPD and SPD were examined for the following 7 variants... of VPS35 (RefSeq accession number NM_018206.4).\")\n*   **Genome Build:** Information not found. (The document does not specify which genome build, such as hg19/GRCh37 or hg38/GRCh38, was used.)"
+}

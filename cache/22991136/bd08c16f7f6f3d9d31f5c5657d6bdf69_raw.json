@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the observed (mutant) allele for the second mutation?",
+  "context": "Based on the information in the document:\n\n*   Page 3, under \"Results\", it states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n*   Patient CII-3 is listed in Table 1 as a carrier of the p.D620N mutation.\n\nTherefore, according to this document, patient CII-3 was only found to have the p.D620N mutation in the VPS35 gene, and no other variants (which would constitute a \"second mutation\" in this gene) were detected.\n\nInformation not found."
+}

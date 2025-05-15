@@ -1,0 +1,5 @@
+{
+  "raw_answer": "het",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the genotype of the third mutation?",
+  "context": "Information not found.\n\nThe document states that patient BIII-8 (from Family B) carries the heterozygous p.D620N mutation in the VPS35 gene (Table 1 shows genotype A/G for VPS35 p.D620N). The text on page 3 also mentions: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" This indicates that only one mutation within the VPS35 gene was identified for this patient. The document does not provide information about any \"second\" or \"third\" mutation for patient BIII-8."
+}

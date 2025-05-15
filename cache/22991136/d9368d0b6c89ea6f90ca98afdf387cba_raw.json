@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the original alias or alternate notation for the first mutation as reported in the article?",
+  "context": "On page 2, in the second paragraph of the left column, the article states: \"Mutation of c.1858G>A (p.D620N) was identified in 3 Austrian families...\"\n\nPatient CII-3 from Family C is later identified as having the p.D620N mutation (Table 1 and Table 2 on page 3).\n\nTherefore, the original alias or alternate notation for the p.D620N mutation, as reported in the article when it's first mentioned, is c.1858G>A.\n\nc.1858G>A"
+}

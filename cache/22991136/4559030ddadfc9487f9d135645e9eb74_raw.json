@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the genotype of the third mutation?",
+  "context": "Information not found.\n\n**Reasoning:**\nThe document states on page 3, in the paragraph below Figure 1: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Patient AII-11 from Family A is identified as carrying the p.D620N mutation (Figure 1A, Table 1). The study screened for 7 reported variants of VPS35, and p.D620N was the only one detected in any patient (Abstract: \"None of the other reported variants of VPS35 were detected.\"). Therefore, the document only provides information about one mutation (p.D620N) for patient AII-11 within the VPS35 gene and explicitly states no other variants in VPS35 were found in these patients. There is no mention of a \"third mutation\" for this specific patient."
+}

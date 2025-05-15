@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have bradykinesia?",
+  "context": "Yes, patient 'CII-3' from 'Family C' does have bradykinesia.\n\nThis information is found in Table 2 on page 3, under the \"Patient ID\" column \"CII-3\", where the row \"Bradykinesia\" is marked with a \"+\"."
+}

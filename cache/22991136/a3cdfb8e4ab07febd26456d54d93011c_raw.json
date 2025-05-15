@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the second gene with a pathogenic variant found in the patient (if any)?",
+  "context": "Based only on the information contained within the provided document:\n\nThe document states on page 3: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Patient CII-3 is one of the patients carrying the p.D620N mutation in the VPS35 gene (Table 1 and Table 2).\n\nThe study focused on screening for variants in the VPS35 gene. While it mentions on page 2 that \"Some of the selected subjects had been confirmed negative for SNCA, PARK2, PINK1, PARK7, LRRK2, and PLA2G6 mutations,\" it does not specify if patient CII-3 was among those screened for these other genes, nor does it state that any pathogenic variants were found in other genes for patient CII-3.\n\nTherefore, the document identifies a pathogenic variant in VPS35 for patient CII-3 but does not provide information about a second gene with a pathogenic variant found in this specific patient.\n\nInformation not found"
+}

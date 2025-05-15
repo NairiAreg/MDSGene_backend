@@ -1,0 +1,5 @@
+{
+  "raw_answer": "On page 4, in the first paragraph of the \"Discussion\" section, the text states: \"Patient D, who developed upper limb rest tremor at age 42, had no family history of PD. **She** underwent subthalamic nucleus deep brain stimulation (STN-DBS) at age 60...\"\n\nAdditionally, on page 4, in the fifth paragraph of the \"Discussion\" section, the text states: \"Because the family history of patient D was unknown, **she** was categorized as SPD.\"\n\nBased on these statements, patient D is female.",
+  "question": "Regarding patient 'D': What is the patient's sex/gender?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': What is the patient's sex/gender?\n\nIf the information is not found in the document, state 'Information not found'."
+}

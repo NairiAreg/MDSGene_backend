@@ -1,0 +1,5 @@
+{
+  "raw_answer": "upper limb rest tremor",
+  "question": "Format answer for: Regarding patient 'D': What was the initial symptom of the patient?",
+  "context": "Based on the information in the document, the initial symptom of patient 'D' was \"upper limb rest tremor\".\n\nThis is stated on page 4, in the first paragraph of the \"Discussion\" section (although it is describing the clinical presentation from the previous section): \"Patient D, who developed upper limb rest tremor at age 42, had no family history of PD.\" Table 2 on page 3 also indicates \"Resting tremor\" as a feature for patient D with an \"Age at disease onset (y)\" of 42."
+}

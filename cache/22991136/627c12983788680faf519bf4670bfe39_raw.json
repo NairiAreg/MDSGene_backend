@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': At what age did the patient die (if applicable)?",
+  "context": "Based on the information in the document:\n\n*   Figure 1A shows the pedigree for Family A. The legend for Figure 1 states: \"forward slash through symbol, deceased individuals\". Patient AII-11 in Family A does not have a forward slash through his symbol.\n*   Table 2, \"Clinical features of patients with p.D620N mutation,\" lists patient AII-11. His age at disease onset was 62, and the disease duration was 15 years. A note at the bottom states, \"MIBG scintigraphy was performed when AII-11 was 76 years old.\"\n*   The \"Clinical Presentation\" section on page 3 states: \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62.\"\n\nThe document describes patient AII-11 as being 77 years old at the time of the report and provides details of his condition at various ages (62, 75, 76). There is no mention of his death or an age at death.\n\nTherefore, the answer is:\nInformation not found"
+}

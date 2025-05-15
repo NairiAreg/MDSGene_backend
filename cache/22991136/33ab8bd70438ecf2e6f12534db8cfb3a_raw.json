@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the physical genomic location of the second mutation?",
+  "context": "Based on the information contained within the provided document:\n\nFor patient CII-3 from Family C, the document states:\n1.  Patient CII-3 carries the heterozygous p.D620N mutation in the VPS35 gene (Table 1, Fig. 1C).\n2.  \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" (Page 3, left column, paragraph 2).\n3.  The study screened for 7 reported nonsynonymous missense variants of VPS35, and \"None of the other reported variants of VPS35 were detected.\" (Abstract, page 1).\n\nThe document only identifies one mutation (p.D620N) in the VPS35 gene for patient CII-3 and explicitly states that no other variants in VPS35 were found in these patients. Therefore, information about a \"second mutation\" for patient CII-3 is not provided.\n\nInformation not found."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on Table 2, \"Clinical features of patients with p.D620N mutation,\" there is a row for \"Sleep benefit\". For patient BIII-8, the entry for \"Sleep benefit\" is \"+\".\n\nHowever, \"sleep benefit\" refers to the phenomenon where Parkinson's symptoms improve after sleep, and is not itself a sleep disorder. The table does not contain a specific row for \"sleep disorders\" (e.g., insomnia, REM sleep behavior disorder, restless legs syndrome).\n\nTherefore, based *only* on the information in the document:\n\nInformation not found.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Does the patient have sleep disorders?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Does the patient have sleep disorders?\n\nIf the information is not found in the document, state 'Information not found'."
+}

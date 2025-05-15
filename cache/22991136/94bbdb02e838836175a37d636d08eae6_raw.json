@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3, the disease duration for patient AII-11 is 15 years.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What is the disease duration for this patient?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What is the disease duration for this patient?\n\nIf the information is not found in the document, state 'Information not found'."
+}

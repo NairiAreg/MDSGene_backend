@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have postural instability?",
+  "context": "Yes, patient 'BIII-8' from family 'Family B' does have postural instability.\n\nThis information is found in Table 2 on page 3, \"Clinical features of patients with p.D620N mutation\". In the column for patient 'BIII-8', the row for 'Postural instability' has a '+' symbol, indicating the presence of this symptom."
+}

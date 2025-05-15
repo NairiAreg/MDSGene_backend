@@ -1,0 +1,5 @@
+{
+  "raw_answer": "7",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the disease duration for this patient?",
+  "context": "Based on Table 2, \"Clinical features of patients with p.D620N mutation\", for patient 'CII-3', the 'Disease duration (y)' is 7.\n\nTherefore, the disease duration for patient 'CII-3' from family 'Family C' is 7 years."
+}

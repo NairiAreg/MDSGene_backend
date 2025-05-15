@@ -1,0 +1,5 @@
+{
+  "raw_answer": "15",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the disease duration for this patient?",
+  "context": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3, the disease duration for patient AII-11 is 15 years."
+}

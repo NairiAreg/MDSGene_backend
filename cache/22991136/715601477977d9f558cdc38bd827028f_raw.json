@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The observed (mutant) allele for the p.D620N mutation in patient 'AII-11' is A.\n\nThis is found in Table 1 on page 3, under the row \"VPS35 p.D620N\" and the column \"AII-11\", which lists \"A\". The text on page 2, under \"Genetic Analysis\", also specifies the mutation as \"c.1858G>A (p.D620N)\", indicating G is the original nucleotide and A is the mutant nucleotide.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What is the observed (mutant) allele for the first mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What is the observed (mutant) allele for the first mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

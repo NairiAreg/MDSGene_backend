@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the original alias or alternate notation for the first mutation as reported in the article?",
+  "context": "For patient 'AII-11' from family 'Family A', the mutation reported in the article is p.D620N.\n\nOn page 2, under the section \"Genetic Analysis\", the text states: \"Mutation of c.1858G>A (p.D620N) was identified in 3 Austrian families...\"\nLater, on page 4, in the \"Discussion\" section, it states: \"Based on haplotype analysis reported in previous studies, the substitution of VPS35 c.1858G>A (p.D620N) occurs from independent mutational events.\"\n\nTherefore, an alternate notation for the p.D620N mutation as reported in the article is c.1858G>A.\n\nThe original alias or alternate notation for the first mutation (p.D620N) as reported in the article for patient 'AII-11' from 'Family A' is **c.1858G>A**."
+}

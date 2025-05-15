@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the original alias or alternate notation for the second mutation as reported in the article?",
+  "context": "Based *only* on the information contained within the provided document:\n\nThe document states on page 3, under the \"Results\" section, \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Patient AII-11 is one of the patients carrying the p.D620N mutation (Fig. 1, Table 1, Table 2).\n\nTherefore, the document does not report a second mutation for patient 'AII-11'.\n\nInformation not found."
+}

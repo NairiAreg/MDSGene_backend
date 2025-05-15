@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The document states on page 3, in the paragraph following Figure 1: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nSince patient CII-3 from Family C is identified as carrying the p.D620N mutation (Table 1, page 3), this statement applies to CII-3. Therefore, according to the document, no second mutation in the exons of VPS35 was found for patient CII-3.\n\nInformation not found",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What is the genotype of the second mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What is the genotype of the second mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

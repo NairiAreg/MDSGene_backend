@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") and the accompanying text on page 3 (\"Clinical Presentation\"), patient BIII-8's initial symptom was:\n\n\"Patients BIII-8 and CII-3 both developed upper limb rest tremor at ages 34 and 55, respectively.\"\n\nFor patient BIII-8, the age of onset was 55. Therefore, the initial symptom was **upper limb rest tremor**.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': What was the initial symptom of the patient?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': What was the initial symptom of the patient?\n\nIf the information is not found in the document, state 'Information not found'."
+}

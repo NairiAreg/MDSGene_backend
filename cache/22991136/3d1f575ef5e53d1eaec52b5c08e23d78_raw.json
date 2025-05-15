@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Third mutation protein change?",
+  "context": "Information not found.\n\n(The document states that patient CII-3 has the p.D620N mutation in the VPS35 gene. It also states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Therefore, information about a \"third mutation protein change\" for this specific patient is not provided.)"
+}

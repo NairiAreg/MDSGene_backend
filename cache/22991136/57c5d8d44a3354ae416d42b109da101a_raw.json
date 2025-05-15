@@ -1,0 +1,5 @@
+{
+  "raw_answer": "G",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the reference allele for the first mutation?",
+  "context": "The document states on page 2, under \"Genetic Analysis,\" that the p.D620N mutation corresponds to c.1858G>A. This means the Guanine (G) allele is changed to an Adenine (A) allele. Therefore, the reference allele is G.\n\nTable 1 on page 3 shows that patient CII-3 has the genotype A/G for \"VPS35 p.D620N\". This means one allele is A (the mutant allele) and the other is G (the reference allele).\n\nThe reference allele for the first mutation (p.D620N, which is c.1858G>A) for patient 'CII-3' is G."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Information not found.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What is the genomic-level notation for the second mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What is the genomic-level notation for the second mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

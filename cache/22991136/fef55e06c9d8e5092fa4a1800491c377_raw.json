@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'D': Second mutation protein change?",
+  "context": "On page 3, the text states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient D is identified as having the p.D620N mutation (Table 1 and Table 2). According to the quoted sentence, no other variants in VPS35 were found in these patients. Therefore, the document does not provide information about a second mutation protein change for patient D.\n\nInformation not found"
+}

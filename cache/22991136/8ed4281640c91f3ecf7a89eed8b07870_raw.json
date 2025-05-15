@@ -1,0 +1,5 @@
+{
+  "raw_answer": "8",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': What is the lower age limit for study inclusion (if any)?",
+  "context": "On page 2, under \"Patients and Methods\" and the \"Subjects\" subsection, the document states:\n\"The study subjects were 308 Japanese patients (300 index patients) with ADPD (age at disease onset [AAO; mean ± SD], 51.1 ± 11.7 years; **range, 8-83 years**; female/male [F/M] ratio, 1.35) and 433 Japanese SPD patients (AAO, 47.2 ± 12.9 years; range, 5-88 years; F/M ratio, 1.09) selected from the gene bank of Juntendo University.\"\n\nPatient CII-3 is from Family C, which is described as a family with Autosomal Dominant Parkinson's Disease (ADPD), as the p.D620N mutation was detected in 3 patients with ADPD (Abstract and page 3, Figure 1C and Table 2).\n\nFor ADPD patients, the age at disease onset (AAO) range for inclusion in the study was 8-83 years. Therefore, the lower age limit for disease onset for study inclusion for this group of patients was 8 years.\n\n8 years (age at disease onset)"
+}

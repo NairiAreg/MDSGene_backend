@@ -1,0 +1,5 @@
+{
+  "raw_answer": "BIII-8",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the entry identifier for this data?",
+  "context": "Based on the information contained within the provided document:\n\nIn Table 1 (\"Haplotype analysis of VPS35 p.D620N mutation carriers\") and Table 2 (\"Clinical features of patients with p.D620N mutation\"), the patient is referred to under the column \"Patient ID\". For the patient in question from Family B, the identifier listed is **BIII-8**.\n\nTherefore, the entry identifier for this data, as used within this document, is BIII-8."
+}

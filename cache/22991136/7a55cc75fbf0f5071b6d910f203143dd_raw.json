@@ -1,0 +1,5 @@
+{
+  "raw_answer": "no",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Does the patient have atypical parkinsonian features?",
+  "context": "Based *only* on the information contained within the provided document:\n\nThe document states in the Abstract: \"Patients with the VPS35 mutation showed typical tremor-predominant PD.\" Furthermore, in the Discussion section (page 4), it says: \"The clinical symptoms of our patients with VPS35 mutation closely resembled the idiopathic PD form, with tremor-dominant dopa-responsive parkinsonism.\" Patient AII-11 is one of these patients with the VPS35 mutation. The document does not describe patient AII-11 as having atypical parkinsonian features; rather, it consistently characterizes the presentation of patients with this mutation (including AII-11) as typical Parkinson's disease.\n\nTherefore, the patient does not have atypical parkinsonian features according to the characterization provided in the document."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on Table 2 \"Clinical features of patients with p.D620N mutation\" on page 3, patient CII-3's clinical features are listed. The table includes rows for \"Hallucination,\" \"Other psychosis,\" and \"Dementia.\" For patient CII-3, all of these are marked with a \"—\" (dash), indicating absence.\n\nHowever, \"Depression\" is not explicitly listed as a clinical feature in Table 2 for any patient, including CII-3. While depression is a psychiatric condition, the table separates out \"Hallucination,\" \"Other psychosis,\" and \"Dementia.\" Without a specific entry for \"Depression,\" we cannot confirm its presence or absence.\n\nTherefore, based only on the information contained within the provided document:\n\nInformation not found",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Does the patient have depression?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Does the patient have depression?\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have resting tremor?",
+  "context": "Yes, patient 'BIII-8' from family 'Family B' does have resting tremor.\n\nThis information is found in Table 2 on page 3, under the \"Patient ID\" column for \"BIII-8\", in the row labeled \"Resting tremor\". The entry is \"+\"."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based only on the information contained within the provided document:\n\nThe document states that patient 'D' has the p.D620N mutation in the VPS35 gene (Page 3, Table 2; Page 4, first paragraph of \"Discussion\"). It also mentions, \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35\" (Page 3, first paragraph under \"Results\").\n\nThe document does not provide information about any other genes with pathogenic variants found specifically in patient 'D'. Therefore, the information regarding a second or third gene with a pathogenic variant for patient 'D' is not found.\n\nInformation not found.",
+  "question": "Regarding patient 'D': What is the third gene with a pathogenic variant found in the patient (if any)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': What is the third gene with a pathogenic variant found in the patient (if any)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

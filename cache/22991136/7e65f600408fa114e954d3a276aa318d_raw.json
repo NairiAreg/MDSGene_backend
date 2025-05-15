@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Set mdsgene_decision to IN for all eligible patients who meet inclusion criteria and are included in MDSGene. If a patient is not included (e.g., does not fulfill criteria or is listed only for reference), set mdsgene_decision to EX. For excluded patients, ensure to provide the reason for exclusion in the patient’s comments. If unclear, enter -99.",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Include this patient in MDSGene?",
+  "context": "Information not found."
+}

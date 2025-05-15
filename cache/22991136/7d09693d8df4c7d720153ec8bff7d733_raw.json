@@ -1,0 +1,5 @@
+{
+  "raw_answer": "PD",
+  "question": "Regarding patient 'D': What is the abbreviation of the disease or condition diagnosed in this patient?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': What is the abbreviation of the disease or condition diagnosed in this patient?\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have motor fluctuations?",
+  "context": "Yes, patient CII-3 from family 'Family C' has motor fluctuations.\n\nTable 2, \"Clinical features of patients with p.D620N mutation,\" indicates that patient 'CII-3' has \"Wearing off\" (+). \"Wearing off\" is a type of motor fluctuation. The table also indicates \"Levodopa-induced dyskinesia\" (+) for patient CII-3."
+}

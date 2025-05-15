@@ -1,0 +1,5 @@
+{
+  "raw_answer": "pathogenic",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the pathogenicity classification for the first mutation?",
+  "context": "Based *only* on the information contained within the provided document:\n\nThe document states on page 2, in the third paragraph under the \"Parkinson's disease\" heading: \"One missense mutation has been reported to be **pathogenic** for PD.3,4 Mutation of c.1858G>A (p.D620N) was identified...\".\n\nFurthermore, on page 3, in the \"Results\" section, the first paragraph states: \"The p.D620N has been reported previously as a **pathogenic mutation** for familial PD.3,4,6\".\n\nPatient AII-11 is identified as having the p.D620N mutation (Table 1, page 3, and Figure 1A, page 3).\n\nTherefore, the pathogenicity classification for the first (and only specified) mutation for patient 'AII-11' is **pathogenic**."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "The document states on page 3: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient CII-3 is listed in Table 1 and Figure 1C as carrying the p.D620N mutation. Since no other variants in VPS35 were detected for patients with the p.D620N mutation, there is no \"second mutation\" in the VPS35 gene for patient CII-3 mentioned in the document.\n\nTherefore, the zygosity of a second mutation cannot be determined.\n\nInformation not found",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Zygosity of second mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Zygosity of second mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

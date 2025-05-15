@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes.\n\nTable 2 (\"Clinical features of patients with p.D620N mutation\") on page 3 indicates that patient 'BIII-8' has \"Orthostatic hypotension\" (marked with a \"+\"). Orthostatic hypotension is a non-motor symptom of parkinsonism. The table also indicates \"Sleep benefit\" (marked with a \"+\") for patient BIII-8, which is also considered a non-motor phenomenon associated with Parkinson's disease.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Does the patient have non-motor symptoms of parkinsonism?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Does the patient have non-motor symptoms of parkinsonism?\n\nIf the information is not found in the document, state 'Information not found'."
+}

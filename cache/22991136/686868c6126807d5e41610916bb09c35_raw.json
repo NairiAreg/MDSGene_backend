@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Yes, there is an additional comment regarding patient 'AII-11' from 'Family A' concerning the study methodology, specifically about when a clinical assessment was performed.\n\nTable 2, which details the clinical features of patients with the p.D620N mutation, includes data for patient 'AII-11'. For the \"Cardiac MIBG scintigraphy\" entry for AII-11, there is a footnote 'a'. This footnote states: \"aMIBG scintigraphy was performed when AII-11 was 76 years old.\"",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': Are there any additional comments about the study methodology?",
+  "context": "Yes, there is an additional comment regarding patient 'AII-11' from 'Family A' concerning the study methodology, specifically about when a clinical assessment was performed.\n\nTable 2, which details the clinical features of patients with the p.D620N mutation, includes data for patient 'AII-11'. For the \"Cardiac MIBG scintigraphy\" entry for AII-11, there is a footnote 'a'. This footnote states: \"aMIBG scintigraphy was performed when AII-11 was 76 years old.\""
+}

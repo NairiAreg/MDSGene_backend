@@ -1,0 +1,5 @@
+{
+  "raw_answer": "On page 3, Table 1 (\"Haplotype analysis of VPS35 p.D620N mutation carriers\") provides information for patient CII-3. For the \"VPS35 p.D620N\" row, the entry for CII-3 is \"A/G\".\n\nOn page 2, under \"Genetic Analysis\", the text states: \"...genotyped for c.1858G>A (p.D620N) mutation...\". This indicates that the p.D620N mutation corresponds to a change from G to A at nucleotide position c.1858.\n\nTherefore, the mutant allele is 'A'.\n\nA",
+  "question": "Regarding patient 'CII-3' from family 'Family C': What is the observed (mutant) allele for the first mutation?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': What is the observed (mutant) allele for the first mutation?\n\nIf the information is not found in the document, state 'Information not found'."
+}

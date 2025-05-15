@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information contained within the provided document:\n\nFor patient 'AII-11':\n*   Table 2 (\"Clinical features of patients with p.D620N mutation\") indicates \"–\" (minus sign) for \"Hallucination\" and \"–\" for \"Other psychosis\".\n*   The \"Clinical Presentation\" section on page 3 states: \"Patient AII-11... developed cognitive dysfunction without hallucination.\"\n\nTherefore, patient 'AII-11' from family 'Family A' does not have psychotic symptoms.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Does the patient have psychotic symptoms?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Does the patient have psychotic symptoms?\n\nIf the information is not found in the document, state 'Information not found'."
+}

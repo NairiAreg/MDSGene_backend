@@ -1,0 +1,5 @@
+{
+  "raw_answer": "yes",
+  "question": "Format answer for: Regarding patient 'CII-3' from family 'Family C': Does the patient have dyskinesia?",
+  "context": "Yes, patient 'CII-3' has levodopa-induced dyskinesia. This is indicated by a \"+\" symbol in Table 2 under the \"CII-3\" column for the row \"Levodopa-induced dyskinesia\"."
+}

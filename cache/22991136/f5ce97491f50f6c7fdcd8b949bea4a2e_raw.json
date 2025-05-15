@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Figure 1 (page 3), specifically the pedigree for \"Family A\" (labeled \"A\"):\n\nThe caption for Figure 1 states: \"arrow, proband\". \"Proband\" is another term for index case.\nIn pedigree A, the arrow points to individual III-5.\nPatient AII-11 does not have an arrow pointing to them.\n\nTherefore, patient AII-11 is not the index case in Family A.",
+  "question": "Regarding patient 'AII-11' from family 'Family A': Is this patient the index case in the family?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': Is this patient the index case in the family?\n\nIf the information is not found in the document, state 'Information not found'."
+}

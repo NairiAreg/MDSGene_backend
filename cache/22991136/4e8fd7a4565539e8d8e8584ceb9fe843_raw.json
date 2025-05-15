@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What functional evidence supports the pathogenicity of the second mutation?",
+  "context": "Information not found.\n\n**Reasoning:**\nThe document states on page 3, first paragraph under Figure 1: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\" Patient AII-11 from Family A is identified as carrying the p.D620N mutation (Table 1, Figure 1). Therefore, according to this document, patient AII-11 does not have a \"second mutation\" in the VPS35 gene. Consequently, no functional evidence for a \"second mutation\" in this patient can be provided based solely on this document. The functional evidence discussed in the paper pertains to the p.D620N mutation itself."
+}

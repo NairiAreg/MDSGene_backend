@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 2 (\"Clinical features of patients with p.D620N mutation\") on page 3, the age at disease onset (y) for patient 'AII-11' was 62.\n\nThis is also stated in the \"Clinical Presentation\" section on page 3: \"Patient AII-11 was a 77-year-old man who developed right upper limb rest tremor at age 62.\"",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What was the age at onset (AAO) of symptoms for this patient?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What was the age at onset (AAO) of symptoms for this patient?\n\nIf the information is not found in the document, state 'Information not found'."
+}

@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'AII-11' from family 'Family A': What is the genotype of the second mutation?",
+  "context": "Based on the information in the document:\n\nPage 3, left column, first paragraph states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient AII-11 is identified as carrying the p.D620N mutation. Therefore, according to this document, there is no second mutation in the VPS35 gene for patient AII-11.\n\nInformation not found"
+}

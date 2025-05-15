@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the genomic-level notation for the second mutation?",
+  "context": "On page 3, the first paragraph under the \"Results\" section states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient BIII-8 is identified as carrying the p.D620N mutation (Fig. 1B, Table 1).\n\nTherefore, based on the information in the document, patient BIII-8 was found to have the p.D620N mutation, and no other variants in the exons of VPS35 were detected for patients with this mutation. The question asks for the \"second mutation\". Since no other exonic variants were found, there is no information about a second mutation for this patient within the exons of VPS35.\n\nInformation not found."
+}

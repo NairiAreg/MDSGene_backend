@@ -1,0 +1,5 @@
+{
+  "raw_answer": "In Table 2, \"Clinical features of patients with p.D620N mutation\", the row for \"Sleep benefit\" and the column for patient \"CII-3\" shows a \"+\" symbol. This indicates that patient CII-3 does have sleep benefit.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Does the patient have sleep benefit?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Does the patient have sleep benefit?\n\nIf the information is not found in the document, state 'Information not found'."
+}

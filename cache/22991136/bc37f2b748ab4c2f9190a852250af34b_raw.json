@@ -1,0 +1,5 @@
+{
+  "raw_answer": "M",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': What is the patient's sex/gender?",
+  "context": "Based on the information in Figure 1B (pedigree for Family B) on page 3 of the document:\n\n*   The symbol for patient 'BIII-8' is a **square**.\n*   The legend for Figure 1 states: \"square, male\".\n\nTherefore, the patient's sex/gender is **male**."
+}

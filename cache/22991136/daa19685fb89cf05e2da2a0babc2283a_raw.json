@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Enter 'yes' if dystonic tremor is present, 'no' if explicitly stated as absent, or -99 if not reported.",
+  "question": "Format answer for: Regarding patient 'BIII-8' from family 'Family B': Does the patient have dystonic tremor?",
+  "context": "Information not found."
+}

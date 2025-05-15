@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Patient CII-3 from Family C developed upper limb rest tremor at age 34. The father of patient CII-3 also developed PD. Haplotype analysis showed that patient CII-3 had a different genotype of D16S3105 (a locus very close to VPS35) compared with the disease allele of patient AII-11 (from Family A). This suggests that the p.D620N mutation in patient CII-3 (Family C) probably occurred independently. Family C did not have the same alleles for the D16S3105 microsatellite as Family A and patient D.",
+  "question": "Regarding patient 'CII-3' from family 'Family C': Any additional comments about this patient?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'CII-3' from family 'Family C': Any additional comments about this patient?\n\nIf the information is not found in the document, state 'Information not found'."
+}

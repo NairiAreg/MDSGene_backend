@@ -1,0 +1,5 @@
+{
+  "raw_answer": "-99",
+  "question": "Format answer for: Regarding patient 'D': What is the patient's sex/gender?",
+  "context": "On page 4, in the first paragraph of the \"Discussion\" section, the text states: \"Patient D, who developed upper limb rest tremor at age 42, had no family history of PD. **She** underwent subthalamic nucleus deep brain stimulation (STN-DBS) at age 60...\"\n\nAdditionally, on page 4, in the fifth paragraph of the \"Discussion\" section, the text states: \"Because the family history of patient D was unknown, **she** was categorized as SPD.\"\n\nBased on these statements, patient D is female."
+}

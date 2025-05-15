@@ -1,0 +1,5 @@
+{
+  "raw_answer": "On page 3, the text states: \"Patients carrying the p.D620N mutation did not have any other variants in all exons of VPS35.\"\n\nPatient D is identified as having the p.D620N mutation (Table 1 and Table 2). According to the quoted sentence, no other variants in VPS35 were found in these patients. Therefore, the document does not provide information about a second mutation protein change for patient D.\n\nInformation not found",
+  "question": "Regarding patient 'D': Second mutation protein change?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'D': Second mutation protein change?\n\nIf the information is not found in the document, state 'Information not found'."
+}

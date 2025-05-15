@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Table 2 and the \"Clinical Presentation\" section on page 3:\n\nPatient AII-11 developed \"right upper limb rest tremor at age 62.\" This is presented as the first symptom. The next symptoms mentioned are \"progressive dysphagia\" and \"cognitive dysfunction without hallucination,\" which developed at age 75, 13 years after the initial onset.\n\nThe document does not specify a *second initial symptom* occurring at or near the time of the first symptom. Therefore, the answer is:\n\nInformation not found",
+  "question": "Regarding patient 'AII-11' from family 'Family A': What was the second initial symptom of the patient (if applicable)?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'AII-11' from family 'Family A': What was the second initial symptom of the patient (if applicable)?\n\nIf the information is not found in the document, state 'Information not found'."
+}

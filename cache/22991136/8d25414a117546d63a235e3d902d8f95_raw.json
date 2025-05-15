@@ -1,0 +1,5 @@
+{
+  "raw_answer": "Based on the information in Figure 1B (Pedigree for Family B) on page 3:\n*   Patient BIII-8 is represented as individual III-8, a filled square, indicating an affected male.\n*   His father is individual II-5, a filled square, indicating he is affected.\n*   His sister is individual III-2, a filled circle, indicating she is affected.\n*   His paternal uncle is individual II-3, a filled square, indicating he is affected.\n\nSince patient BIII-8 has affected family members (father, sister, and paternal uncle), there is a family history of the disease.\n\nYes, there is a family history of the disease.",
+  "question": "Regarding patient 'BIII-8' from family 'Family B': Is there a family history of the disease?",
+  "context": "Based *only* on the information contained within the provided document, answer the following question:\n\nRegarding patient 'BIII-8' from family 'Family B': Is there a family history of the disease?\n\nIf the information is not found in the document, state 'Information not found'."
+}
